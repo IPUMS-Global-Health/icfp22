@@ -1,0 +1,232 @@
+---
+title: "PMA Data Explore"
+author: "Matt Gunther"
+date: "3/10/2022"
+
+---
+
+```{r}
+# load libraries and source functions 
+source(here::here("r/functions.R")) 
+setup_icfp()
+
+# load pma longitudinal samples (wide format, female respondents only)
+dat <- read_ipums_micro(
+ ddi = here("data/pma_00114.xml"),
+ data = here("data/pma_00114.dat.gz")
+)
+
+# Setup
+dat <- dat %>% 
+  mutate(
+    POP = case_when(
+      !is.na(GEOCD) ~ paste("DRC -", GEOCD %>% as_factor),
+      !is.na(GEONG) ~ paste("Nigeria -", GEONG %>% as_factor),
+      TRUE ~ COUNTRY %>% as_factor %>% as.character
+    ),
+    EAID = EAID_1,
+    STRATA = if_else(!is.na(GEOCD), GEOCD %>% as.integer, 
+                     STRATA_1 %>% as.integer)
+  ) %>% 
+  filter(
+    RESULTFQ_1 == 1 & RESULTFQ_2 == 1,
+    RESIDENT_1 %in% c(11, 22) & RESIDENT_2 %in% c(11, 22)
+  )
+```
+
+# Reasons for Unmet Need 
+
+Senderowicz and Maloney [-@Senderowicz2022-ao] critique unmet need because it conflates access and demand: 
+
+> Demand-side unmet need represents women who are choosing not to use contraception, not because contraception is inaccessible, but because they do not see a need for it in their own lives.
+>
+> `r tufte::quote_footer('---[-@Senderowicz2022-ao]')`
+
+
+Machiyama et al. [-@Machiyama2017-mp] propose a 5-part causal framework for unmet need. 
+
+```{r}
+knitr::include_graphics(here("images/causes.png"))
+```
+
+# PMA 
+
+PMA's definition for unmet need *excludes* women who are infecund / menopausal, not sexually active, PPA following an intended birth, or used EC in the last 12 months. We may have non-use reasons for these women, but we'll exclude them from our analysis.
+
+```{r}
+dat <- dat %>% mutate(across(starts_with("UNMETYN"), ~.x == 1))
+```
+
+PMA's definition for unmet need may *include* women who are currently pregnant or open (ambivalent) to a pregnancy within the next two years. It may also include women who gave no reason (non-response). We cannot account for their non-use reasons. 
+
+```{r}
+dat <- dat %>% 
+  mutate(
+    NIU = if_any(starts_with("FPYNOT") & ends_with("1"), ~.x == 99),
+    FPYNOTPREG = PREGNANT_1 == 1,
+    FPYNOTUNSURE = FERTPREF_1 == 97 | PREFTIMECH_1 == 97,
+    FPYNOTNR = UNMETYN_1 & !NIU & !FPYNOTPREG & !FPYNOTUNSURE 
+  ) 
+```
+
+# Categories    
+
+Disapproval: 
+  - Up to God / fatalistic
+  - Religious prohibition
+  - Respondent opposed
+  - Husband / partner opposed
+  - Others opposed
+
+Method-specific barriers:
+  - Inconvenient to use
+  - Interferes with body's processes 
+  - Fear of side effects
+  - Health concerns
+  - Knows no method
+  - Knows no source
+  - Lack of access / too far
+  - Costs too much
+  - Preferred method not available
+  - No method available
+
+Low risk: 
+  - Menopausal / Hysterectomy
+  - Subfecund / Infecund
+  - Not married 
+  - Infrequent sex / Not having sex
+  - Not menstruated since last birth
+  - Breastfeeding
+  - Husband away for multiple days 
+  - *Currently pregnant* 
+  
+Other:
+  - Other
+  - Do not know
+  - *No response*
+  - *Unsure about future pregnancy*
+  
+```{r}
+dat %>% 
+  filter(UNMETYN_1 == 1) %>% 
+  group_by(POP) %>% 
+  summarise(across(
+    c(starts_with("FPYNOT") & ends_with("1"), 
+      FPYNOTPREG, FPYNOTUNSURE, FPYNOTNR),
+    ~cur_data() %>% 
+      summarise(prop = weighted.mean(.x == 1, PANELWEIGHT))
+  )) %>%
+  pivot_longer(!POP, names_to = "var_name") %>% 
+  unnest(value) %>%
+  left_join(
+    dat %>% 
+      select(starts_with("FPYNOT") & ends_with("1")) %>% 
+      ipums_var_info() %>% 
+      select(var_name, var_label) %>% 
+      mutate(var_label = var_label %>% 
+               str_remove("Reason not using FP: ") %>% 
+               str_to_title()
+      )
+  ) %>% 
+  mutate(
+    var_label = case_when(
+      var_name == "FPYNOTPREG" ~ "Currently Pregnant",
+      var_name == "FPYNOTUNSURE" ~ "Uncertain Fertility Plans",
+      var_name == "FPYNOTNR" ~ "No response",
+      TRUE ~ var_label
+    ) %>% 
+      fct_reorder(prop, mean)
+  ) %>% 
+  ggplot(aes(x = POP, y = var_label, fill = prop)) + 
+  geom_tile() + 
+  geom_text(aes(
+    label = prop %>% scales::percent(1), 
+    color = prop > 0.17
+  )) +
+  theme_minimal() + 
+   scale_fill_gradient(
+    na.value = "transparent",
+    low =  "#00263A05",
+    high = "#00263A"
+  ) + 
+  scale_color_manual(values = c("black", "white")) + 
+  labs(
+    title = "Reasons given for unmet need at Phase 1"
+  )
+```
+  
+# Recoding 
+  
+```{r}
+output <- dat %>% 
+  mutate(across(starts_with("FPYNOT"), ~.x == 1)) %>% 
+  transmute(
+    POP,
+    PANELWEIGHT, EAID, STRATA,
+    UNMETYN_1, UNMETYN_2,
+    FPYOPPOSED = if_any(c(FPYNOTRELIG_1, FPYNOTOPPF_1, FPYNOTFATE_1, 
+                          FPYNOTOPPH_1, FPYNOTOPPO_1)),
+    FPYMETHOD = if_any(c(FPYNOTFAR_1, FPYNOTBODY_1, FPYNOTCOST_1, FPYNOTKNO_1,
+                      FPYNOTSRC_1, FPYNOTSIDEF_1, FPYNOTSDHLTH_1, FPYNOTCONV_1,
+                      FPYNOTAVAIL_1, FPYNOTAVAILP_1)),
+    FPYLOWRISK = if_any(c(FPYNOTBSTFD_1, FPYNOTHSBAWAY_1, FPYNOTMENO_1,
+                       FPYNOTAMEN_1, FPYNOTNOSEX_1, FPYNOTMAR_1, FPYNOTINF_1,
+                       FPYNOTPREG)),
+    FPYOTHER = if_any(c(FPYNOTDK_1, FPYNOTOTH_1, FPYNOTUNSURE, FPYNOTNR))
+  ) %>%
+  mutate(across(starts_with("FPY"), ~if_else(!UNMETYN_1, FALSE, .x)))
+```
+
+# Grouped 
+
+```{r}
+output %>% 
+  filter(UNMETYN_1 == 1) %>% 
+  group_by(POP) %>% 
+  summarise(across(starts_with("FPY"), ~weighted.mean(.x, PANELWEIGHT))) %>% 
+  pivot_longer(!POP, names_to = "var_name") %>% 
+  ggplot(aes(x = POP, y = var_name, fill = value)) + 
+  geom_tile() + 
+  geom_text(aes(
+    label = value %>% scales::percent(1), 
+    color = value > 0.3
+  )) +
+  theme_minimal() + 
+   scale_fill_gradient(
+    na.value = "transparent",
+    low =  "#00263A05",
+    high = "#00263A"
+  ) + 
+  scale_color_manual(values = c("black", "white")) + 
+  labs(
+    title = "Percent with unmet need at Phase 2"
+  )
+```
+
+
+# Model 
+
+Remember: don't filter the samples to include only women with `UNMETYN_1`, as this changes the degrees of freedom (and standard error estimation). Including `UNMETYN_1` as a covariate yields the exact same estimates, but with correct standard errors; the interpretation is the same (only the intercept changes).
+
+```{r}
+# ols 
+output %>% 
+  # filter(POP %in% c("Burkina Faso", "Kenya")) %>% 
+  group_by(POP) %>% 
+  summarise(
+    x = cur_data() %>%  
+      as_survey_design(weight = PANELWEIGHT, id = EAID, strata = STRATA) %>% 
+      svyglm(
+        formula = UNMETYN_2 ~ FPYOPPOSED + FPYMETHOD + FPYLOWRISK + 
+          FPYOTHER + UNMETYN_1,
+        family = "quasibinomial",
+        design = .
+      ) %>% 
+      tidy(exp = TRUE, conf.int = TRUE) %>%
+      mutate(sig = gtools::stars.pval(p.value))
+  ) %>% 
+  unnest(x) 
+
+
+```
+

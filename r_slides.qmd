@@ -1,0 +1,845 @@
+---
+title: |
+  <h2 style='font-size: 70px'>
+  IPUMS PMA Data Workshop
+  </h2>
+  <div style='margin-bottom: 50px; font-size: 40px'>
+  Reasons for Unmet Need for Family Planning <br>in PMA Panel Surveys
+  </div>
+author: 
+  - |
+    <p style='font-size: 25px; margin-left: 50px'>
+      <img src='images/devon.png' width='100' style='vertical-align: middle'> 
+      Devon Kristiansen - Project Manager
+    </p>
+  - |
+    <p style='font-size: 25px; margin-left: 50px'>
+      <img src='images/matt.png' width='100' style='vertical-align: middle'>
+      Matt Gunther - Senior Data Analyst 
+    </p>
+    
+format: 
+  revealjs: 
+    theme: [default, custom.scss]
+    logo: images/logo-navy.png
+    chalkboard: true
+    smaller: true
+    scrollable: false
+    incremental: true
+    preview-links: false
+    echo: true
+    reference-location: document
+    link-external-icon: true
+bibliography: cites.bib
+
+---
+
+## Today's Goals 
+
+  - Introduce measures of Unmet Need in PMA Panel Surveys
+  - Open an IPUMS PMA data extract in **Stata** 
+  - Explore women's reasons for Unmet Need in Phase 1 of the panel
+  - Predict women's Unmet Need in Phase 2 of the panel 
+  
+::: {.fragment}  
+```{r, echo=FALSE}
+library(kableExtra)
+library(tidyverse)
+
+options(knitr.kable.NA = '')
+
+avail <- read_csv("data/sample_avail.csv") 
+names(avail)[2] <- paste0(
+  names(avail)[2], 
+  footnote_marker_symbol(1)
+)
+
+avail %>%   
+  arrange(Sample) %>% 
+  kable(escape = FALSE, format = "html", table.attr = "style='width:100%;'") %>% 
+  kable_styling(font_size = 18) %>% 
+  add_header_above(c(" " = 2, "Now Available from IPUMS PMA" = 3)) %>% 
+  scroll_box(
+    width = "100%", 
+    box_css = paste(
+      sep = "; ",
+      "margin-bottom: 1em",
+      "margin-top: 0em",
+      "border: 0px solid #ddd",
+      "padding: 5px"
+    )
+  ) %>%
+  footnote(
+    symbol = paste0(
+      "<small><em>",
+      "Each data collection phase is spaced one year apart",
+      "</em></small>"), 
+    escape = FALSE
+  )
+```
+:::
+
+# Unmet Need 
+
+## What is Unmet Need? 
+
+::: {.fragment}
+Women who are capable of becoming pregnant are said to have unmet need if they might want to **limit** or **space** births, but are not using a family planning method.
+:::
+::: {.fragment}
+Examples: 
+
+  - Layla wants to have a child someday, but she is not so sure she wants to have one soon. If neither she nor her husband are currently using any family planning method, Layla would have **unmet need for spacing** pregnancies. 
+  - Yasmine is currently pregnant with her fourth child. She had planned to stop having children after her third child, so her fourth pregnancy indicates that Yasmine has **unmet need for limiting** pregnancies. 
+  - At age 15, Fatimata is not using any family planning method because she is not sexually active. Fatimata has no unmet need because she is **not at risk** for becoming pregnant.
+:::
+
+## How is Unmet Need Measured? 
+
+::: {.fragment}
+PMA uses several different survey questions to determine which women are: 
+
+  - Sexually active (including non-married women who have had sex within 30 days)
+  - Neither infecund nor menopausal 
+  - Express uncertainty or intentions to space or limit pregnancies (including their current pregnancy, or recent pregnancy if PPA)
+  - Not currently using a family planning method (including prior sterilization, emergency methods within the last year, traditional methods, and all modern methods)
+:::
+
+## IPUMS PMA Harmonized Variables
+
+::: {.fragment}
+[UNMETNEED](https://pma.ipums.org/pma-action/variables/UNMETNEED) explains whether each female respondent has: 
+
+  - unmet need for **spacing** births
+  - unmet need for **limiting** births
+  - is **not at risk** of becoming pregnant
+  - is currently using family planning for **spacing** births
+  - is currently using family planning for **limiting** births
+  - is not using family planning with **no unmet need**
+:::
+
+::: {.fragment}
+[UNMETYN](https://pma.ipums.org/pma-action/variables/UNMETYN) is binary:
+
+  - **Yes**
+  - **No**
+:::
+
+# Unmet Need in Stata 
+
+## Setup 
+
+Our extract includes data from two phases of the panel study in **Burkina Faso** and **Kenya** (female respondents only). 
+
+We drop women who only completed one of the two interviews, and those who are not members of the *de facto* population. 
+
+::: {.fragment}
+```{r, results='hide'}
+library(ipumsr)
+library(tidyverse)
+library(srvyr)
+library(survey)
+library(scales)
+library(broom)
+library(gtsummary)
+
+# load pma longitudinal samples (wide format, female respondents only)
+dat <- read_ipums_micro(
+ ddi = here::here("data/pma_00114.xml"),
+ data = here::here("data/pma_00114.dat.gz")
+)
+
+# keep only panel members in the de facto population 
+dat <- dat %>% 
+  mutate(COUNTRY = COUNTRY %>% as_factor %>% as.character) %>% 
+  filter(
+    RESULTFQ_1 == 1 & RESULTFQ_2 == 1,
+    RESIDENT_1 %in% c(11, 22) & RESIDENT_2 %in% c(11, 22)
+  )
+```
+
+```{r, echo=FALSE}
+dat <- dat %>% filter(COUNTRY %in% c("Burkina Faso", "Kenya"))
+```
+:::
+
+## Unmet Need by Country at Phase 1
+
+::: {.columns}
+:::: {.column width="50%"}
+[PANELWEIGHT](https://pma.ipums.org/pma-action/variables/UNMETNEED) is the sampling weight for panel members (controls for loss to follow-up).
+
+[EAID_1](https://pma.ipums.org/pma-action/variables/EAID_1) and [STRATA_1](https://pma.ipums.org/pma-action/variables/STRATA_1) are the sample clusters and strata used to select households at Phase 1.
+
+```{r, echo = TRUE, eval = FALSE}
+dat %>% 
+  as_survey_design(
+    weight = PANELWEIGHT, 
+    id = EAID_1, 
+    strata = STRATA_1
+  ) %>% 
+  mutate(across(
+    c(UNMETNEED_1, UNMETYN_1), 
+    ~.x %>%  as_factor %>% fct_drop
+  )) %>% 
+  tbl_svysummary(
+    by = COUNTRY, 
+    include = c(UNMETNEED_1, UNMETYN_1), 
+    statistic = list(everything() ~ "{p}%")
+  ) %>% 
+  modify_header(
+    update = list(
+      label ~ " ", 
+      stat_1 ~ "Burkina Faso", 
+      stat_2 ~ "Kenya"
+    )
+  ) %>% 
+  modify_footnote(
+    c(stat_1, stat_2) ~ "Weighted Percent"
+  )
+```
+::::
+:::: {.column width="50%"}
+```{r, echo = FALSE, eval = TRUE}
+dat %>% 
+  as_survey_design(weight = PANELWEIGHT, id = EAID_1, strata = STRATA_1) %>% 
+  mutate(across(c(UNMETNEED_1, UNMETYN_1), ~.x %>%  as_factor %>% fct_drop)) %>% 
+  tbl_svysummary(
+    by = COUNTRY, 
+    include = c(UNMETNEED_1, UNMETYN_1), 
+    statistic = list(everything() ~ "{p}%")
+  ) %>% 
+  modify_header(update = list(label ~ " ", 
+                              stat_1 ~ "Burkina Faso", stat_2 ~ "Kenya")) %>% 
+  modify_footnote(c(stat_1, stat_2) ~ "Weighted Percent")
+```
+::::
+:::
+
+## Unmet Need by Country at Phase 2
+
+::: {.columns}
+:::: {.column width="50%"}
+[EAID_1](https://pma.ipums.org/pma-action/variables/EAID_1) and [STRATA_1](https://pma.ipums.org/pma-action/variables/STRATA_1) can also be used for estimating Phase 2 outcomes. 
+
+Panel members were found in the same study area again at Phase 2. 
+
+```{r, echo = TRUE, eval = FALSE, `code-line-numbers`="4,5,8,13"}
+dat %>% 
+  as_survey_design(
+    weight = PANELWEIGHT, 
+    id = EAID_1, 
+    strata = STRATA_1
+  ) %>% 
+  mutate(across(
+    c(UNMETNEED_2, UNMETYN_2), 
+    ~.x %>%  as_factor %>% fct_drop
+  )) %>% 
+  tbl_svysummary(
+    by = COUNTRY, 
+    include = c(UNMETNEED_2, UNMETYN_2), 
+    statistic = list(everything() ~ "{p}%")
+  ) %>% 
+  modify_header(
+    update = list(
+      label ~ " ", 
+      stat_1 ~ "Burkina Faso", 
+      stat_2 ~ "Kenya"
+    )
+  ) %>% 
+  modify_footnote(
+    c(stat_1, stat_2) ~ "Weighted Percent"
+  )
+```
+::::
+:::: {.column width="50%"}
+```{r, echo = FALSE, eval = TRUE}
+dat %>% 
+  as_survey_design(
+    weight = PANELWEIGHT, 
+    id = EAID_1, 
+    strata = STRATA_1
+  ) %>% 
+  mutate(across(
+    c(UNMETNEED_2, UNMETYN_2), 
+    ~.x %>%  as_factor %>% fct_drop
+  )) %>% 
+  tbl_svysummary(
+    by = COUNTRY, 
+    include = c(UNMETNEED_2, UNMETYN_2), 
+    statistic = list(everything() ~ "{p}%")
+  ) %>% 
+  modify_header(
+    update = list(
+      label ~ " ", 
+      stat_1 ~ "Burkina Faso", 
+      stat_2 ~ "Kenya"
+    )
+  ) %>% 
+  modify_footnote(
+    c(stat_1, stat_2) ~ "Weighted Percent"
+  )
+```
+::::
+:::
+
+
+# Research Question 
+
+::: {.fragment}
+How well can we predict **Phase 2 Unmet Need** if we only know whether a woman had **Phase 1 Unmet Need**? 
+:::
+
+## Logistic Regression 
+
+```{r}
+models <- dat %>% 
+  mutate(across(matches("UNMETYN"), ~.x == 1)) %>% 
+  group_by(COUNTRY) %>% 
+  summarise(
+    glm = cur_data() %>% 
+      as_survey_design(weight = PANELWEIGHT, id = EAID_1, strata = STRATA_1) %>% 
+      svyglm(UNMETYN_2 ~ UNMETYN_1, design = ., family = "quasibinomial") %>% 
+      list()
+  )
+
+models
+```
+
+## Results 
+
+::: {.columns}
+:::: {.column width="60%"}
+```{r, echo=TRUE, eval=FALSE}
+models$glm %>% 
+  map2(models$COUNTRY,
+    ~.x %>% 
+      tbl_regression(
+        exponentiate = TRUE,
+        show_single_row = where(is.logical),
+        pvalue_fun = ~style_pvalue(.x, digits = 2),
+        label = list(UNMETYN_1 ~ "Phase 1 Unmet Need")
+      ) %>%
+      add_significance_stars(hide_se = TRUE) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y)) %>% 
+      modify_footnote(estimate ~ NA, abbreviation = TRUE) 
+  ) %>% 
+  tbl_merge(tab_spanner = FALSE) %>% 
+  modify_caption("### Odds Ratios for Phase 2 Unmet Need")
+```
+::::
+:::: {.column width="5%"}
+::::
+:::: {.column width="35%"}
+```{r, echo=FALSE}
+models$glm %>% 
+  map2(models$COUNTRY,
+    ~.x %>% 
+      tbl_regression(
+        exponentiate = TRUE,
+        show_single_row = where(is.logical),
+        pvalue_fun = ~style_pvalue(.x, digits = 2),
+        label = list(UNMETYN_1 ~ "Phase 1 Unmet Need")
+      ) %>%
+      add_significance_stars(hide_se = TRUE) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y)) %>% 
+      modify_footnote(estimate ~ NA, abbreviation = TRUE) 
+  ) %>% 
+  tbl_merge(tab_spanner = FALSE) %>% 
+  modify_caption("### Odds Ratios for Phase 2 Unmet Need")
+```
+::::
+:::
+::: {.fragment}
+Phase 1 Unmet Need is a significant predictor of Unmet Need at Phase 2. 
+:::
+::: {.fragment}
+Women with Unmet Need at Phase 1 have about **four times** the odds of Phase 2 Unmet Need compared with women who had none. 
+::: 
+
+# Reasons for Unmet Need 
+
+::: {.fragment}
+If we know **why a woman had Phase 1 Unmet Need**, does this improve our ability to predict her **Phase 2 Unmet Need**? 
+:::
+
+## Why are Reasons Important? 
+
+::: {.fragment}
+Alone, Unmet Need does not explain access or desire to use family planning. 
+:::
+::: {.fragment}
+Senderowicz and Maloney [-@Senderowicz2022-ao] suggest dividing Unmet Need into **supply-** and **demand-driven** factors.
+
+> Demand-side unmet need represents women who are choosing not to use contraception, not because contraception is inaccessible, but because they do not see a need for it in their own lives.
+
+:::
+::: {.fragment}
+Machiyama et al. [-@Machiyama2017-mp] propose a 5-part causal framework for unmet need. 
+
+![](images/causes.png){.absolute top=300 left=150 width="800"}
+
+:::
+
+
+## Reasons Surveyed by PMA {auto-animate=true} 
+
+::: {.fragment}
+<pre><code style="padding-bottom: 1em; color: black;">
+Can you tell me why you are not using 
+a method to prevent pregnancy?
+</code></pre>
+
+<pre><code style="padding: 0; color: black;">[] Not married</code></pre>
+<pre><code style="padding: 0; color: black;">[] Infrequent sex / Not having sex</code></pre>
+<pre><code style="padding: 0; color: black;">[] Menopausal / Hysterectomy</code></pre>
+<pre><code style="padding: 0; color: black;">[] Subfecund / Infecund</code></pre>
+<pre><code style="padding: 0; color: black;">[] Not menstruated since last birth</code></pre>
+<pre><code style="padding: 0; color: black;">[] Breastfeeding</code></pre>
+<pre><code style="padding: 0; color: black;">[] Husband away for multiple days</code></pre>
+<pre><code style="padding: 0; color: black;">[] Up to God / fatalistic</code></pre>
+<pre><code style="padding: 0; color: black;">[] Respondent opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Husband / partner opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Others opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Religious prohibition</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no method</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no source</code></pre>
+<pre><code style="padding: 0; color: black;">[] Fear of side effects</code></pre>
+<pre><code style="padding: 0; color: black;">[] Health concerns</code></pre>
+<pre><code style="padding: 0; color: black;">[] Lack of access / too far</code></pre>
+<pre><code style="padding: 0; color: black;">[] Costs too much</code></pre>
+<pre><code style="padding: 0; color: black;">[] Preferred method not available</code></pre>
+<pre><code style="padding: 0; color: black;">[] No method available</code></pre>
+<pre><code style="padding: 0; color: black;">[] Inconvenient to use</code></pre>
+<pre><code style="padding: 0; color: black;">[] Interferes with body's processes</code></pre>
+<pre><code style="padding: 0; color: black;">[] Other</code></pre>
+<pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
+<pre><code style="padding: 0; color: black;">[] No response</code></pre>
+:::
+::: {.fragment}
+<div style="position: absolute; top: 25%; left: 50%;">
+<h3>
+Recoding
+</h3>
+</div>
+:::
+
+## Reasons Surveyed by PMA  {auto-animate=true} 
+
+<pre><code style="padding-bottom: 1em; color: black;">
+Can you tell me why you are not using 
+a method to prevent pregnancy?
+</code></pre>
+
+<pre><code style="padding: 0; color: #B41821;">[] Not married</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Infrequent sex / Not having sex</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Menopausal / Hysterectomy</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Subfecund / Infecund</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Not menstruated since last birth</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Breastfeeding</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Husband away for multiple days</code></pre>
+<pre><code style="padding: 0; color: black;">[] Up to God / fatalistic</code></pre>
+<pre><code style="padding: 0; color: black;">[] Respondent opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Husband / partner opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Others opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Religious prohibition</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no method</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no source</code></pre>
+<pre><code style="padding: 0; color: black;">[] Fear of side effects</code></pre>
+<pre><code style="padding: 0; color: black;">[] Health concerns</code></pre>
+<pre><code style="padding: 0; color: black;">[] Lack of access / too far</code></pre>
+<pre><code style="padding: 0; color: black;">[] Costs too much</code></pre>
+<pre><code style="padding: 0; color: black;">[] Preferred method not available</code></pre>
+<pre><code style="padding: 0; color: black;">[] No method available</code></pre>
+<pre><code style="padding: 0; color: black;">[] Inconvenient to use</code></pre>
+<pre><code style="padding: 0; color: black;">[] Interferes with body's processes</code></pre>
+<pre><code style="padding: 0; color: black;">[] Other</code></pre>
+<pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
+<pre><code style="padding: 0; color: black;">[] No response</code></pre>
+
+<div style="position: absolute; top: 25%; left: 50%;">
+<h3>
+Recoding
+</h3>
+<p style="color: #B41821;">Low risk of becoming pregnant</p>
+</div>
+
+## Reasons Surveyed by PMA  {auto-animate=true} 
+
+<pre><code style="padding-bottom: 1em; color: black;">
+Can you tell me why you are not using 
+a method to prevent pregnancy?
+</code></pre>
+
+<pre><code style="padding: 0; color: #B41821;">[] Not married</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Infrequent sex / Not having sex</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Menopausal / Hysterectomy</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Subfecund / Infecund</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Not menstruated since last birth</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Breastfeeding</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Husband away for multiple days</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Up to God / fatalistic</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Respondent opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Husband / partner opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Others opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Religious prohibition</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no method</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no source</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Fear of side effects</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Health concerns</code></pre>
+<pre><code style="padding: 0; color: black;">[] Lack of access / too far</code></pre>
+<pre><code style="padding: 0; color: black;">[] Costs too much</code></pre>
+<pre><code style="padding: 0; color: black;">[] Preferred method not available</code></pre>
+<pre><code style="padding: 0; color: black;">[] No method available</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Inconvenient to use</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Interferes with body's processes</code></pre>
+<pre><code style="padding: 0; color: black;">[] Other</code></pre>
+<pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
+<pre><code style="padding: 0; color: black;">[] No response</code></pre>
+
+<div style="position: absolute; top: 25%; left: 50%;">
+<h3>
+Recoding
+</h3>
+<p style="color: #B41821;">Low risk of becoming pregnant</p>
+<p style="color: #DC863C;">Opposition or prohibition</p>
+</div>
+
+## Reasons Surveyed by PMA  {auto-animate=true} 
+
+<pre><code style="padding-bottom: 1em; color: black;">
+Can you tell me why you are not using 
+a method to prevent pregnancy?
+</code></pre>
+
+<pre><code style="padding: 0; color: #B41821;">[] Not married</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Infrequent sex / Not having sex</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Menopausal / Hysterectomy</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Subfecund / Infecund</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Not menstruated since last birth</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Breastfeeding</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Husband away for multiple days</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Up to God / fatalistic</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Respondent opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Husband / partner opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Others opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Religious prohibition</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Knows no method</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Knows no source</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Fear of side effects</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Health concerns</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Lack of access / too far</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Costs too much</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Preferred method not available</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] No method available</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Inconvenient to use</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Interferes with body's processes</code></pre>
+<pre><code style="padding: 0; color: black;">[] Other</code></pre>
+<pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
+<pre><code style="padding: 0; color: black;">[] No response</code></pre>
+
+<div style="position: absolute; top: 25%; left: 50%;">
+<h3>
+Recoding
+</h3>
+<p style="color: #B41821;">Low risk of becoming pregnant</p>
+<p style="color: #DC863C;">Opposition or prohibition</p>
+<p style="color: #44ACC8;">Method Access</p>
+::: {.fragment}
+<p>Other / Unknown</p>
+:::
+</div>
+
+
+## Who gave reasons? 
+
+Most - but *not all* - women with unmet need were asked to give reasons for non-use. 
+
+Most - but *not all* - women who gave reasons for non-use also have unmet need.
+
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(here::here("images/venn_diagram1.png"))
+```
+
+## Who gave reasons? 
+
+Most - but *not all* - women with unmet need were asked to give reasons for non-use. 
+
+Most - but *not all* - women who gave reasons for non-use also have unmet need.
+
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(here::here("images/venn_diagram2.png"))
+```
+
+## Who gave reasons? 
+
+Most - but *not all* - women with unmet need were asked to give reasons for non-use. 
+
+Most - but *not all* - women who gave reasons for non-use also have unmet need.
+
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(here::here("images/venn_diagram3.png"))
+```
+
+## Who gave reasons? 
+
+Most - but *not all* - women with unmet need were asked to give reasons for non-use. 
+
+Most - but *not all* - women who gave reasons for non-use also have unmet need.
+
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(here::here("images/venn_diagram4.png"))
+```
+
+---
+<h3> Popularity of Reasons For Phase 1 Unmet Need </h3>
+
+```{r, echo = FALSE}
+library(sysfonts)
+library(showtext)
+sysfonts::font_add(
+    family = "cabrito", 
+    regular = here::here("fonts/cabritosansnormregular-webfont.ttf")
+  )
+update_geom_defaults("text", list(family = "cabrito", size = 3))
+showtext::showtext_auto()
+  
+dat %>% 
+  filter(UNMETYN_1 == 1) %>% 
+  group_by(COUNTRY) %>% 
+  summarise(across(
+    c(starts_with("FPYNOT") & ends_with("1"), PREGNANT_1),
+    ~cur_data() %>% summarise(prop = weighted.mean(.x == 1, PANELWEIGHT))
+  )) %>% 
+  pivot_longer(!COUNTRY, names_to = "var_name") %>% 
+  unnest(value) %>% 
+  left_join(
+    dat %>% 
+      select(starts_with("FPYNOT") & ends_with("1"), PREGNANT_1) %>% 
+      ipums_var_info() %>% 
+      select(var_name, var_label) 
+  ) %>% 
+  mutate(
+    var_label = var_label %>% 
+      str_remove("Reason not using FP: ") %>% 
+      str_to_title() %>% 
+      str_replace("Pregnancy Status", "Currently Pregnant") %>% 
+      fct_reorder(prop, mean)
+  ) %>% 
+  ggplot(aes(x = COUNTRY, y = var_label, fill = prop)) + 
+  geom_tile() + 
+  geom_text(aes(
+    label = prop %>% scales::percent(1), 
+    color = prop > 0.11
+  )) +
+  theme_minimal() %+replace% 
+  theme(
+    legend.position = "none",
+    text = element_text(family = "cabrito", size = 13),
+    panel.grid = element_blank(),
+    axis.title = element_blank()
+  ) + 
+  scale_fill_gradient(
+    na.value = "transparent",
+    low =  "#00263A05",
+    high = "#00263A"
+  ) + 
+  scale_color_manual(values = c("black", "white")) +
+  scale_x_discrete(position = "top") 
+```
+
+## Recoding 
+
+```{r}
+dat <- dat %>% 
+  mutate(
+    across(
+      c(starts_with("UNMETYN"), starts_with("FPYNOT"), starts_with("PREGNANT")),
+      ~.x == 1
+    ),
+    FPYOPPOSED = if_any(c(FPYNOTRELIG_1, FPYNOTOPPF_1, FPYNOTFATE_1,
+                          FPYNOTOPPH_1, FPYNOTOPPO_1, FPYNOTSIDEF_1,
+                          FPYNOTSDHLTH_1,  FPYNOTCONV_1, FPYNOTBODY_1)),
+    FPYMETHOD = if_any(c(FPYNOTFAR_1, FPYNOTCOST_1, FPYNOTKNO_1,
+                      FPYNOTSRC_1, FPYNOTAVAIL_1, FPYNOTAVAILP_1, 
+                      PREGNANT_1)),
+    FPYLOWRISK = if_any(c(FPYNOTBSTFD_1, FPYNOTHSBAWAY_1, FPYNOTMENO_1,
+                       FPYNOTAMEN_1, FPYNOTNOSEX_1, FPYNOTMAR_1, FPYNOTINF_1
+                       )),
+    FPYOTHER = UNMETYN_1 & !FPYOPPOSED & !FPYMETHOD & !FPYLOWRISK,
+    across(
+      c(FPYOPPOSED, FPYMETHOD, FPYLOWRISK),
+      ~if_else(UNMETYN_1, .x, FALSE)
+    )
+  )
+```
+
+
+## Recoded Reasons by Country
+
+::: {.columns}
+:::: {.column width="50%"}
+```{r, echo = TRUE, eval = FALSE}
+dat %>% 
+  filter(UNMETYN_1) %>% 
+  as_survey_design(
+    weight = PANELWEIGHT, 
+    id = EAID_1, 
+    strata = STRATA_1
+  ) %>% 
+  tbl_svysummary(
+    by = COUNTRY, 
+    include = c(
+      FPYOPPOSED, 
+      FPYMETHOD, 
+      FPYLOWRISK, 
+      FPYOTHER
+    ), 
+    label = list(
+      FPYOPPOSED ~ "Opposition or prohibition", 
+      FPYMETHOD ~ "Method access",
+      FPYLOWRISK ~ "Low risk of becoming pregnant",
+      FPYOTHER ~ "Other / Unknown Reason"
+    ),
+    statistic = list(everything() ~ "{p}%")
+  ) %>% 
+  modify_header(update = list(
+      label ~ " ", 
+      stat_1 ~ "Burkina Faso", 
+      stat_2 ~ "Kenya"
+  )) %>% 
+  modify_footnote(
+    c(stat_1, stat_2) ~ "Weighted Percent"
+  )
+```
+::::
+:::: {.column width="5%"}
+::::
+:::: {.column width="45%"}
+```{r, echo = FALSE, eval = TRUE}
+dat %>% 
+  filter(UNMETYN_1) %>% 
+  as_survey_design(
+    weight = PANELWEIGHT, 
+    id = EAID_1, 
+    strata = STRATA_1
+  ) %>% 
+  tbl_svysummary(
+    by = COUNTRY, 
+    include = c(
+      FPYOPPOSED, 
+      FPYMETHOD, 
+      FPYLOWRISK, 
+      FPYOTHER
+    ), 
+    label = list(
+      FPYOPPOSED ~ "Opposition or prohibition", 
+      FPYMETHOD ~ "Method access",
+      FPYLOWRISK ~ "Low risk of becoming pregnant",
+      FPYOTHER ~ "Other / Unknown Reason"
+    ),
+    statistic = list(everything() ~ "{p}%")
+  ) %>% 
+  modify_header(update = list(
+      label ~ " ", 
+      stat_1 ~ "Burkina Faso", 
+      stat_2 ~ "Kenya"
+  )) %>% 
+  modify_footnote(c(stat_1, stat_2) ~ "Weighted Percent")
+```
+
+Reminder: women could give more than one reason!
+::::
+:::
+
+## Model
+
+```{r}
+models <- dat %>% 
+  group_by(COUNTRY) %>% 
+  summarise(
+    glm = cur_data() %>%  
+      as_survey_design(weight = PANELWEIGHT, id = EAID_1, strata = STRATA_1) %>% 
+      svyglm(
+        formula = UNMETYN_2 ~ FPYOPPOSED + FPYMETHOD + FPYLOWRISK + UNMETYN_1,
+        family = "quasibinomial",
+        design = .
+      ) %>% 
+      list()
+  ) 
+
+models
+```
+
+## Results 
+
+::: {.columns}
+:::: {.column width="60%"}
+```{r, echo=TRUE, eval = FALSE}
+models$glm %>% 
+  map2(models$COUNTRY,
+    ~.x %>% 
+      tbl_regression(
+        exp = TRUE, show_single_row = where(is.logical),
+        pvalue_fun = ~style_pvalue(.x, digits = 2),
+        label = list(
+          FPYOPPOSED ~ "Opposition or prohibition", 
+          FPYMETHOD ~ "Method access",
+          FPYLOWRISK ~ "Low risk of becoming pregnant",
+          UNMETYN_1 ~ "Unmet Need"
+        )
+      ) %>%
+      add_significance_stars(hide_se = TRUE) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y)) %>% 
+      modify_footnote(estimate ~ NA, abbreviation = TRUE) 
+  ) %>% 
+  tbl_merge(tab_spanner = FALSE) %>% 
+  modify_caption("### Odds Ratios for Phase 2 Unmet Need")
+```
+::::
+:::: {.column width="5%"}
+::::
+:::: {.column width="35%"}
+```{r, echo=FALSE, eval = TRUE}
+models$glm %>% 
+  map2(models$COUNTRY,
+    ~.x %>% 
+      tbl_regression(
+        exponentiate = TRUE,
+        show_single_row = where(is.logical),
+        pvalue_fun = ~style_pvalue(.x, digits = 2),
+        label = list(
+          FPYOPPOSED ~ "Opposition or prohibition",
+          FPYMETHOD ~ "Method access",
+          FPYLOWRISK ~ "Low risk of becoming pregnant",
+          UNMETYN_1 ~ "Unmet Need"
+        )
+      ) %>%
+      add_significance_stars(hide_se = TRUE) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y)) %>% 
+      modify_footnote(estimate ~ NA, abbreviation = TRUE) 
+  ) %>% 
+  tbl_merge(tab_spanner = FALSE) %>% 
+  modify_caption("### Odds Ratios for Phase 2 Unmet Need")
+```
+::::
+
+:::: {.fragment}
+Compared to women who gave no reason, women who were **opposed** to using family planning were *significantly* more likely to have Phase 2 unmet need. 
+::::
+:::: {.fragment}
+Women with **method access** issues - less clear! 
+::::
+:::: {.fragment}
+Women **not at risk** for becoming pregnant were: 
+
+  * *not significantly* more likely to have Phase 2 unmet need in Burkina Faso
+  * significantly *less* likely to have Phase 2 unmet need in Kenya 
+::::
+:::
+
+## Next Steps 
+
+*insert slide*
+
+## References

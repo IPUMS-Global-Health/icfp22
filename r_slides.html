@@ -1,0 +1,3740 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="r_slides_files/libs/clipboard/clipboard.min.js"></script>
+<script src="r_slides_files/libs/quarto-html/tabby.min.js"></script>
+<script src="r_slides_files/libs/quarto-html/popper.min.js"></script>
+<script src="r_slides_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="r_slides_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="r_slides_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
+<link href="r_slides_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-0.9.592">
+
+  <title>quarto-input25e3a5a5</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="r_slides_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="r_slides_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+  <link rel="stylesheet" href="r_slides_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="r_slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="r_slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="r_slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="r_slides_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="r_slides_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="r_slides_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  
+  <script src="r_slides_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="r_slides_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="center">
+  <h1 class="title"></h1><h2 style="font-size: 70px">
+IPUMS PMA Data Workshop
+</h2>
+<div style="margin-bottom: 50px; font-size: 40px">
+<p>Reasons for Unmet Need for Family Planning <br>in PMA Panel Surveys</p>
+</div>
+  <p class="author"></p><p style="font-size: 25px; margin-left: 50px">
+<img src="images/devon.png" width="100" style="vertical-align: middle"> Devon Kristiansen - Project Manager
+</p><p></p>
+  <p class="author"></p><p style="font-size: 25px; margin-left: 50px">
+<img src="images/matt.png" width="100" style="vertical-align: middle"> Matt Gunther - Senior Data Analyst
+</p><p></p>
+</section>
+
+<section id="todays-goals" class="slide level2">
+<h2>Today’s Goals</h2>
+<ul>
+<li class="fragment">Introduce measures of Unmet Need in PMA Panel Surveys</li>
+<li class="fragment">Open an IPUMS PMA data extract in <strong>Stata</strong></li>
+<li class="fragment">Explore women’s reasons for Unmet Need in Phase 1 of the panel</li>
+<li class="fragment">Predict women’s Unmet Need in Phase 2 of the panel</li>
+</ul>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+
+<div style="margin-bottom: 1em; margin-top: 0em; border: 0px solid #ddd; padding: 5pxoverflow-x: scroll; width:100%; border-bottom: 0;">
+<table style="width:100%; font-size: 18px; margin-left: auto; margin-right: auto;" class="table">
+ <thead>
+<tr>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="2"></th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">Now Available from IPUMS PMA</div></th>
+</tr>
+  <tr>
+   <th style="text-align:left;"> Sample </th>
+   <th style="text-align:left;"> Phase 1 Data Collection<sup>*</sup> </th>
+   <th style="text-align:left;"> Phase 1 </th>
+   <th style="text-align:left;"> Phase 2 </th>
+   <th style="text-align:left;"> Phase 3 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> <font style="color: #98579B">Burkina Faso</font> </td>
+   <td style="text-align:left;"> Dec 2019 - Mar 2020 </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> <font style="color: #98579B">Kenya</font> </td>
+   <td style="text-align:left;"> Nov 2019 - Dec 2019 </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cote d'Ivoire </td>
+   <td style="text-align:left;"> Sep 2020 - Dec 2020 </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DRC - Kinshasa </td>
+   <td style="text-align:left;"> Dec 2019 - Feb 2020 </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> DRC - Kongo Central </td>
+   <td style="text-align:left;"> Dec 2019 - Feb 2020 </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> India - Rajasthan </td>
+   <td style="text-align:left;"> Aug 2020 - Oct 2020 </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nigeria - Kano </td>
+   <td style="text-align:left;"> Dec 2019 - Jan 2020 </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Nigeria - Lagos </td>
+   <td style="text-align:left;"> Dec 2019 - Jan 2020 </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Uganda </td>
+   <td style="text-align:left;"> Sep 2020 - Oct 2020 </td>
+   <td style="text-align:left;"> x </td>
+   <td style="text-align:left;">  </td>
+   <td style="text-align:left;">  </td>
+  </tr>
+</tbody>
+</table>
+
+<sup>*</sup> <small><em>Each data collection phase is spaced one year apart</em></small>
+
+</div>
+
+</div>
+</div>
+</div>
+</section>
+<section>
+<section id="unmet-need" class="title-slide slide level1 center">
+<h1>Unmet Need</h1>
+
+</section>
+<section id="what-is-unmet-need" class="slide level2">
+<h2>What is Unmet Need?</h2>
+<div class="fragment">
+<p>Women who are capable of becoming pregnant are said to have unmet need if they might want to <strong>limit</strong> or <strong>space</strong> births, but are not using a family planning method.</p>
+</div>
+<div class="fragment">
+<p>Examples:</p>
+<ul>
+<li class="fragment">Layla wants to have a child someday, but she is not so sure she wants to have one soon. If neither she nor her husband are currently using any family planning method, Layla would have <strong>unmet need for spacing</strong> pregnancies.</li>
+<li class="fragment">Yasmine is currently pregnant with her fourth child. She had planned to stop having children after her third child, so her fourth pregnancy indicates that Yasmine has <strong>unmet need for limiting</strong> pregnancies.</li>
+<li class="fragment">At age 15, Fatimata is not using any family planning method because she is not sexually active. Fatimata has no unmet need because she is <strong>not at risk</strong> for becoming pregnant.</li>
+</ul>
+</div>
+</section>
+<section id="how-is-unmet-need-measured" class="slide level2">
+<h2>How is Unmet Need Measured?</h2>
+<div class="fragment">
+<p>PMA uses several different survey questions to determine which women are:</p>
+<ul>
+<li class="fragment">Sexually active (including non-married women who have had sex within 30 days)</li>
+<li class="fragment">Neither infecund nor menopausal</li>
+<li class="fragment">Express uncertainty or intentions to space or limit pregnancies (including their current pregnancy, or recent pregnancy if PPA)</li>
+<li class="fragment">Not currently using a family planning method (including prior sterilization, emergency methods within the last year, traditional methods, and all modern methods)</li>
+</ul>
+</div>
+</section>
+<section id="ipums-pma-harmonized-variables" class="slide level2">
+<h2>IPUMS PMA Harmonized Variables</h2>
+<div class="fragment">
+<p><a href="https://pma.ipums.org/pma-action/variables/UNMETNEED">UNMETNEED</a> explains whether each female respondent has:</p>
+<ul>
+<li class="fragment">unmet need for <strong>spacing</strong> births</li>
+<li class="fragment">unmet need for <strong>limiting</strong> births</li>
+<li class="fragment">is <strong>not at risk</strong> of becoming pregnant</li>
+<li class="fragment">is currently using family planning for <strong>spacing</strong> births</li>
+<li class="fragment">is currently using family planning for <strong>limiting</strong> births</li>
+<li class="fragment">is not using family planning with <strong>no unmet need</strong></li>
+</ul>
+</div>
+<div class="fragment">
+<p><a href="https://pma.ipums.org/pma-action/variables/UNMETYN">UNMETYN</a> is binary:</p>
+<ul>
+<li class="fragment"><strong>Yes</strong></li>
+<li class="fragment"><strong>No</strong></li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="unmet-need-in-stata" class="title-slide slide level1 center">
+<h1>Unmet Need in Stata</h1>
+
+</section>
+<section id="setup" class="slide level2">
+<h2>Setup</h2>
+<p>Our extract includes data from two phases of the panel study in <strong>Burkina Faso</strong> and <strong>Kenya</strong> (female respondents only).</p>
+<p>We drop women who only completed one of the two interviews, and those who are not members of the <em>de facto</em> population.</p>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(ipumsr)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(srvyr)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(survey)</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(gtsummary)</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co"># load pma longitudinal samples (wide format, female respondents only)</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>dat <span class="ot">&lt;-</span> <span class="fu">read_ipums_micro</span>(</span>
+<span id="cb1-11"><a href="#cb1-11"></a> <span class="at">ddi =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/pma_00114.xml"</span>),</span>
+<span id="cb1-12"><a href="#cb1-12"></a> <span class="at">data =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/pma_00114.dat.gz"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13"></a>)</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co"># keep only panel members in the de facto population </span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
+<span id="cb1-17"><a href="#cb1-17"></a>  <span class="fu">mutate</span>(<span class="at">COUNTRY =</span> COUNTRY <span class="sc">%&gt;%</span> as_factor <span class="sc">%&gt;%</span> as.character) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-18"><a href="#cb1-18"></a>  <span class="fu">filter</span>(</span>
+<span id="cb1-19"><a href="#cb1-19"></a>    RESULTFQ_1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> RESULTFQ_2 <span class="sc">==</span> <span class="dv">1</span>,</span>
+<span id="cb1-20"><a href="#cb1-20"></a>    RESIDENT_1 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">22</span>) <span class="sc">&amp;</span> RESIDENT_2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">22</span>)</span>
+<span id="cb1-21"><a href="#cb1-21"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+
+</div>
+</div>
+</section>
+<section id="unmet-need-by-country-at-phase-1" class="slide level2">
+<h2>Unmet Need by Country at Phase 1</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><a href="https://pma.ipums.org/pma-action/variables/UNMETNEED">PANELWEIGHT</a> is the sampling weight for panel members (controls for loss to follow-up).</p>
+<p><a href="https://pma.ipums.org/pma-action/variables/EAID_1">EAID_1</a> and <a href="https://pma.ipums.org/pma-action/variables/STRATA_1">STRATA_1</a> are the sample clusters and strata used to select households at Phase 1.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">as_survey_design</span>(</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="at">weight =</span> PANELWEIGHT, </span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="at">id =</span> EAID_1, </span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="at">strata =</span> STRATA_1</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="fu">c</span>(UNMETNEED_1, UNMETYN_1), </span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="sc">~</span>.x <span class="sc">%&gt;%</span>  as_factor <span class="sc">%&gt;%</span> fct_drop</span>
+<span id="cb2-10"><a href="#cb2-10"></a>  )) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-11"><a href="#cb2-11"></a>  <span class="fu">tbl_svysummary</span>(</span>
+<span id="cb2-12"><a href="#cb2-12"></a>    <span class="at">by =</span> COUNTRY, </span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="at">include =</span> <span class="fu">c</span>(UNMETNEED_1, UNMETYN_1), </span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="at">statistic =</span> <span class="fu">list</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"{p}%"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-16"><a href="#cb2-16"></a>  <span class="fu">modify_header</span>(</span>
+<span id="cb2-17"><a href="#cb2-17"></a>    <span class="at">update =</span> <span class="fu">list</span>(</span>
+<span id="cb2-18"><a href="#cb2-18"></a>      label <span class="sc">~</span> <span class="st">" "</span>, </span>
+<span id="cb2-19"><a href="#cb2-19"></a>      stat_1 <span class="sc">~</span> <span class="st">"Burkina Faso"</span>, </span>
+<span id="cb2-20"><a href="#cb2-20"></a>      stat_2 <span class="sc">~</span> <span class="st">"Kenya"</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>    )</span>
+<span id="cb2-22"><a href="#cb2-22"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-23"><a href="#cb2-23"></a>  <span class="fu">modify_footnote</span>(</span>
+<span id="cb2-24"><a href="#cb2-24"></a>    <span class="fu">c</span>(stat_1, stat_2) <span class="sc">~</span> <span class="st">"Weighted Percent"</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="jododdntwp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#jododdntwp .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#jododdntwp .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jododdntwp .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#jododdntwp .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#jododdntwp .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jododdntwp .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#jododdntwp .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#jododdntwp .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#jododdntwp .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#jododdntwp .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#jododdntwp .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#jododdntwp .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#jododdntwp .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#jododdntwp .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#jododdntwp .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#jododdntwp .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#jododdntwp .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jododdntwp .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#jododdntwp .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#jododdntwp .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jododdntwp .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#jododdntwp .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#jododdntwp .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jododdntwp .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jododdntwp .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#jododdntwp .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#jododdntwp .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#jododdntwp .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jododdntwp .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jododdntwp .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#jododdntwp .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#jododdntwp .gt_left {
+  text-align: left;
+}
+
+#jododdntwp .gt_center {
+  text-align: center;
+}
+
+#jododdntwp .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#jododdntwp .gt_font_normal {
+  font-weight: normal;
+}
+
+#jododdntwp .gt_font_bold {
+  font-weight: bold;
+}
+
+#jododdntwp .gt_font_italic {
+  font-style: italic;
+}
+
+#jododdntwp .gt_super {
+  font-size: 65%;
+}
+
+#jododdntwp .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#jododdntwp .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#jododdntwp .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#jododdntwp .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#jododdntwp .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#jododdntwp .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#jododdntwp .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Burkina Faso<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Kenya<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Unmet need</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Unmet need to space</td>
+<td class="gt_row gt_center">17%</td>
+<td class="gt_row gt_center">7.3%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Unmet need to limit</td>
+<td class="gt_row gt_center">3.7%</td>
+<td class="gt_row gt_center">4.9%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Using to space</td>
+<td class="gt_row gt_center">22%</td>
+<td class="gt_row gt_center">24%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Using to limit</td>
+<td class="gt_row gt_center">6.6%</td>
+<td class="gt_row gt_center">22%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Infecund or menopausal</td>
+<td class="gt_row gt_center">8.8%</td>
+<td class="gt_row gt_center">5.8%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Not sexually active</td>
+<td class="gt_row gt_center">17%</td>
+<td class="gt_row gt_center">27%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">No unmet need</td>
+<td class="gt_row gt_center">24%</td>
+<td class="gt_row gt_center">9.7%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">No response or missing</td>
+<td class="gt_row gt_center">0.1%</td>
+<td class="gt_row gt_center">&lt;0.1%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">NIU (not in universe)</td>
+<td class="gt_row gt_center">&lt;0.1%</td>
+<td class="gt_row gt_center">&lt;0.1%</td></tr>
+    <tr><td class="gt_row gt_left">Total unmet need</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">No unmet need</td>
+<td class="gt_row gt_center">79%</td>
+<td class="gt_row gt_center">88%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Unmet need</td>
+<td class="gt_row gt_center">21%</td>
+<td class="gt_row gt_center">12%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">NIU (not in universe)</td>
+<td class="gt_row gt_center">&lt;0.1%</td>
+<td class="gt_row gt_center">&lt;0.1%</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="3"><sup class="gt_footnote_marks">1</sup> Weighted Percent</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="unmet-need-by-country-at-phase-2" class="slide level2">
+<h2>Unmet Need by Country at Phase 2</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><a href="https://pma.ipums.org/pma-action/variables/EAID_1">EAID_1</a> and <a href="https://pma.ipums.org/pma-action/variables/STRATA_1">STRATA_1</a> can also be used for estimating Phase 2 outcomes.</p>
+<p>Panel members were found in the same study area again at Phase 2.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" data-code-line-numbers="4,5,8,13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">as_survey_design</span>(</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="at">weight =</span> PANELWEIGHT, </span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="at">id =</span> EAID_1, </span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="at">strata =</span> STRATA_1</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="fu">c</span>(UNMETNEED_2, UNMETYN_2), </span>
+<span id="cb3-9"><a href="#cb3-9"></a>    <span class="sc">~</span>.x <span class="sc">%&gt;%</span>  as_factor <span class="sc">%&gt;%</span> fct_drop</span>
+<span id="cb3-10"><a href="#cb3-10"></a>  )) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-11"><a href="#cb3-11"></a>  <span class="fu">tbl_svysummary</span>(</span>
+<span id="cb3-12"><a href="#cb3-12"></a>    <span class="at">by =</span> COUNTRY, </span>
+<span id="cb3-13"><a href="#cb3-13"></a>    <span class="at">include =</span> <span class="fu">c</span>(UNMETNEED_2, UNMETYN_2), </span>
+<span id="cb3-14"><a href="#cb3-14"></a>    <span class="at">statistic =</span> <span class="fu">list</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"{p}%"</span>)</span>
+<span id="cb3-15"><a href="#cb3-15"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-16"><a href="#cb3-16"></a>  <span class="fu">modify_header</span>(</span>
+<span id="cb3-17"><a href="#cb3-17"></a>    <span class="at">update =</span> <span class="fu">list</span>(</span>
+<span id="cb3-18"><a href="#cb3-18"></a>      label <span class="sc">~</span> <span class="st">" "</span>, </span>
+<span id="cb3-19"><a href="#cb3-19"></a>      stat_1 <span class="sc">~</span> <span class="st">"Burkina Faso"</span>, </span>
+<span id="cb3-20"><a href="#cb3-20"></a>      stat_2 <span class="sc">~</span> <span class="st">"Kenya"</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>    )</span>
+<span id="cb3-22"><a href="#cb3-22"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-23"><a href="#cb3-23"></a>  <span class="fu">modify_footnote</span>(</span>
+<span id="cb3-24"><a href="#cb3-24"></a>    <span class="fu">c</span>(stat_1, stat_2) <span class="sc">~</span> <span class="st">"Weighted Percent"</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="hrowmvyhtq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#hrowmvyhtq .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hrowmvyhtq .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hrowmvyhtq .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hrowmvyhtq .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hrowmvyhtq .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hrowmvyhtq .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hrowmvyhtq .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hrowmvyhtq .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hrowmvyhtq .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hrowmvyhtq .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hrowmvyhtq .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hrowmvyhtq .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hrowmvyhtq .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hrowmvyhtq .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hrowmvyhtq .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hrowmvyhtq .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hrowmvyhtq .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hrowmvyhtq .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#hrowmvyhtq .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#hrowmvyhtq .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hrowmvyhtq .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#hrowmvyhtq .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#hrowmvyhtq .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hrowmvyhtq .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hrowmvyhtq .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hrowmvyhtq .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hrowmvyhtq .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hrowmvyhtq .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hrowmvyhtq .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hrowmvyhtq .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hrowmvyhtq .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hrowmvyhtq .gt_left {
+  text-align: left;
+}
+
+#hrowmvyhtq .gt_center {
+  text-align: center;
+}
+
+#hrowmvyhtq .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hrowmvyhtq .gt_font_normal {
+  font-weight: normal;
+}
+
+#hrowmvyhtq .gt_font_bold {
+  font-weight: bold;
+}
+
+#hrowmvyhtq .gt_font_italic {
+  font-style: italic;
+}
+
+#hrowmvyhtq .gt_super {
+  font-size: 65%;
+}
+
+#hrowmvyhtq .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#hrowmvyhtq .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#hrowmvyhtq .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#hrowmvyhtq .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#hrowmvyhtq .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#hrowmvyhtq .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#hrowmvyhtq .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Burkina Faso<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Kenya<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Unmet need</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Unmet need to space</td>
+<td class="gt_row gt_center">14%</td>
+<td class="gt_row gt_center">6.6%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Unmet need to limit</td>
+<td class="gt_row gt_center">3.5%</td>
+<td class="gt_row gt_center">3.7%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Using to space</td>
+<td class="gt_row gt_center">26%</td>
+<td class="gt_row gt_center">30%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Using to limit</td>
+<td class="gt_row gt_center">7.3%</td>
+<td class="gt_row gt_center">23%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Infecund or menopausal</td>
+<td class="gt_row gt_center">9.7%</td>
+<td class="gt_row gt_center">5.0%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Not sexually active</td>
+<td class="gt_row gt_center">15%</td>
+<td class="gt_row gt_center">23%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">No unmet need</td>
+<td class="gt_row gt_center">24%</td>
+<td class="gt_row gt_center">8.9%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">No response or missing</td>
+<td class="gt_row gt_center">0.1%</td>
+<td class="gt_row gt_center">0%</td></tr>
+    <tr><td class="gt_row gt_left">Total unmet need</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">No unmet need</td>
+<td class="gt_row gt_center">82%</td>
+<td class="gt_row gt_center">90%</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Unmet need</td>
+<td class="gt_row gt_center">18%</td>
+<td class="gt_row gt_center">10%</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="3"><sup class="gt_footnote_marks">1</sup> Weighted Percent</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="research-question" class="title-slide slide level1 center">
+<h1>Research Question</h1>
+<div class="fragment">
+<p>How well can we predict <strong>Phase 2 Unmet Need</strong> if we only know whether a woman had <strong>Phase 1 Unmet Need</strong>?</p>
+</div>
+</section>
+<section id="logistic-regression" class="slide level2">
+<h2>Logistic Regression</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>models <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">matches</span>(<span class="st">"UNMETYN"</span>), <span class="sc">~</span>.x <span class="sc">==</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">group_by</span>(COUNTRY) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    <span class="at">glm =</span> <span class="fu">cur_data</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb4-6"><a href="#cb4-6"></a>      <span class="fu">as_survey_design</span>(<span class="at">weight =</span> PANELWEIGHT, <span class="at">id =</span> EAID_1, <span class="at">strata =</span> STRATA_1) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-7"><a href="#cb4-7"></a>      <span class="fu">svyglm</span>(UNMETYN_2 <span class="sc">~</span> UNMETYN_1, <span class="at">design =</span> ., <span class="at">family =</span> <span class="st">"quasibinomial"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8"></a>      <span class="fu">list</span>()</span>
+<span id="cb4-9"><a href="#cb4-9"></a>  )</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a>models</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  COUNTRY      glm     
+  &lt;chr&gt;        &lt;list&gt;  
+1 Burkina Faso &lt;svyglm&gt;
+2 Kenya        &lt;svyglm&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="results" class="slide level2">
+<h2>Results</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>models<span class="sc">$</span>glm <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">map2</span>(models<span class="sc">$</span>COUNTRY,</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="sc">~</span>.x <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4"></a>      <span class="fu">tbl_regression</span>(</span>
+<span id="cb6-5"><a href="#cb6-5"></a>        <span class="at">exponentiate =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>        <span class="at">show_single_row =</span> <span class="fu">where</span>(is.logical),</span>
+<span id="cb6-7"><a href="#cb6-7"></a>        <span class="at">pvalue_fun =</span> <span class="sc">~</span><span class="fu">style_pvalue</span>(.x, <span class="at">digits =</span> <span class="dv">2</span>),</span>
+<span id="cb6-8"><a href="#cb6-8"></a>        <span class="at">label =</span> <span class="fu">list</span>(UNMETYN_1 <span class="sc">~</span> <span class="st">"Phase 1 Unmet Need"</span>)</span>
+<span id="cb6-9"><a href="#cb6-9"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>      <span class="fu">add_significance_stars</span>(<span class="at">hide_se =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-11"><a href="#cb6-11"></a>      <span class="fu">modify_header</span>(<span class="at">update =</span> <span class="fu">list</span>(label <span class="sc">~</span> <span class="st">" "</span>, <span class="at">estimate =</span> .y)) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-12"><a href="#cb6-12"></a>      <span class="fu">modify_footnote</span>(estimate <span class="sc">~</span> <span class="cn">NA</span>, <span class="at">abbreviation =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb6-13"><a href="#cb6-13"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-14"><a href="#cb6-14"></a>  <span class="fu">tbl_merge</span>(<span class="at">tab_spanner =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-15"><a href="#cb6-15"></a>  <span class="fu">modify_caption</span>(<span class="st">"### Odds Ratios for Phase 2 Unmet Need"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:35%;">
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="yxqltcresv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#yxqltcresv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#yxqltcresv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yxqltcresv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#yxqltcresv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#yxqltcresv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yxqltcresv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#yxqltcresv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#yxqltcresv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#yxqltcresv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#yxqltcresv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#yxqltcresv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#yxqltcresv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yxqltcresv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#yxqltcresv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#yxqltcresv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#yxqltcresv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#yxqltcresv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yxqltcresv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#yxqltcresv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#yxqltcresv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yxqltcresv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#yxqltcresv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#yxqltcresv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yxqltcresv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yxqltcresv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#yxqltcresv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#yxqltcresv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#yxqltcresv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yxqltcresv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yxqltcresv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#yxqltcresv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#yxqltcresv .gt_left {
+  text-align: left;
+}
+
+#yxqltcresv .gt_center {
+  text-align: center;
+}
+
+#yxqltcresv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#yxqltcresv .gt_font_normal {
+  font-weight: normal;
+}
+
+#yxqltcresv .gt_font_bold {
+  font-weight: bold;
+}
+
+#yxqltcresv .gt_font_italic {
+  font-style: italic;
+}
+
+#yxqltcresv .gt_super {
+  font-size: 65%;
+}
+
+#yxqltcresv .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#yxqltcresv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#yxqltcresv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#yxqltcresv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#yxqltcresv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#yxqltcresv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#yxqltcresv .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  <caption><h3>Odds Ratios for Phase 2 Unmet Need</h3>
+</caption>
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Burkina Faso<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Kenya<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Phase 1 Unmet Need</td>
+<td class="gt_row gt_center">4.22***</td>
+<td class="gt_row gt_center">3.94***</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="3"><sup class="gt_footnote_marks">1</sup> *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Phase 1 Unmet Need is a significant predictor of Unmet Need at Phase 2.</p>
+</div>
+<div class="fragment">
+<p>Women with Unmet Need at Phase 1 have about <strong>four times</strong> the odds of Phase 2 Unmet Need compared with women who had none.</p>
+</div>
+</section></section>
+<section>
+<section id="reasons-for-unmet-need" class="title-slide slide level1 center">
+<h1>Reasons for Unmet Need</h1>
+<div class="fragment">
+<p>If we know <strong>why a woman had Phase 1 Unmet Need</strong>, does this improve our ability to predict her <strong>Phase 2 Unmet Need</strong>?</p>
+</div>
+</section>
+<section id="why-are-reasons-important" class="slide level2">
+<h2>Why are Reasons Important?</h2>
+<div class="fragment">
+<p>Alone, Unmet Need does not explain access or desire to use family planning.</p>
+</div>
+<div class="fragment">
+<p>Senderowicz and Maloney <span class="citation" data-cites="Senderowicz2022-ao">(<a href="#/ref-Senderowicz2022-ao" role="doc-biblioref" onclick="return false;">2022</a>)</span> suggest dividing Unmet Need into <strong>supply-</strong> and <strong>demand-driven</strong> factors.</p>
+<blockquote>
+<p>Demand-side unmet need represents women who are choosing not to use contraception, not because contraception is inaccessible, but because they do not see a need for it in their own lives.</p>
+</blockquote>
+</div>
+<div class="fragment">
+<p>Machiyama et al. <span class="citation" data-cites="Machiyama2017-mp">(<a href="#/ref-Machiyama2017-mp" role="doc-biblioref" onclick="return false;">2017</a>)</span> propose a 5-part causal framework for unmet need.</p>
+<p><img data-src="images/causes.png" class="absolute" style="top: 300px; left: 150px; width: 800px; "></p>
+</div>
+</section>
+<section id="reasons-surveyed-by-pma" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Reasons Surveyed by PMA</h2>
+<div class="fragment">
+<pre><code style="padding-bottom: 1em; color: black;">
+Can you tell me why you are not using 
+a method to prevent pregnancy?
+</code></pre>
+<pre><code style="padding: 0; color: black;">[] Not married</code></pre>
+<pre><code style="padding: 0; color: black;">[] Infrequent sex / Not having sex</code></pre>
+<pre><code style="padding: 0; color: black;">[] Menopausal / Hysterectomy</code></pre>
+<pre><code style="padding: 0; color: black;">[] Subfecund / Infecund</code></pre>
+<pre><code style="padding: 0; color: black;">[] Not menstruated since last birth</code></pre>
+<pre><code style="padding: 0; color: black;">[] Breastfeeding</code></pre>
+<pre><code style="padding: 0; color: black;">[] Husband away for multiple days</code></pre>
+<pre><code style="padding: 0; color: black;">[] Up to God / fatalistic</code></pre>
+<pre><code style="padding: 0; color: black;">[] Respondent opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Husband / partner opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Others opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Religious prohibition</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no method</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no source</code></pre>
+<pre><code style="padding: 0; color: black;">[] Fear of side effects</code></pre>
+<pre><code style="padding: 0; color: black;">[] Health concerns</code></pre>
+<pre><code style="padding: 0; color: black;">[] Lack of access / too far</code></pre>
+<pre><code style="padding: 0; color: black;">[] Costs too much</code></pre>
+<pre><code style="padding: 0; color: black;">[] Preferred method not available</code></pre>
+<pre><code style="padding: 0; color: black;">[] No method available</code></pre>
+<pre><code style="padding: 0; color: black;">[] Inconvenient to use</code></pre>
+<pre><code style="padding: 0; color: black;">[] Interferes with body's processes</code></pre>
+<pre><code style="padding: 0; color: black;">[] Other</code></pre>
+<pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
+<pre><code style="padding: 0; color: black;">[] No response</code></pre>
+</div>
+<div class="fragment">
+<div style="position: absolute; top: 25%; left: 50%;">
+<h3>
+Recoding
+</h3>
+</div>
+</div>
+</section>
+<section id="reasons-surveyed-by-pma-1" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Reasons Surveyed by PMA</h2>
+<pre><code style="padding-bottom: 1em; color: black;">
+Can you tell me why you are not using 
+a method to prevent pregnancy?
+</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Not married</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Infrequent sex / Not having sex</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Menopausal / Hysterectomy</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Subfecund / Infecund</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Not menstruated since last birth</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Breastfeeding</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Husband away for multiple days</code></pre>
+<pre><code style="padding: 0; color: black;">[] Up to God / fatalistic</code></pre>
+<pre><code style="padding: 0; color: black;">[] Respondent opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Husband / partner opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Others opposed</code></pre>
+<pre><code style="padding: 0; color: black;">[] Religious prohibition</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no method</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no source</code></pre>
+<pre><code style="padding: 0; color: black;">[] Fear of side effects</code></pre>
+<pre><code style="padding: 0; color: black;">[] Health concerns</code></pre>
+<pre><code style="padding: 0; color: black;">[] Lack of access / too far</code></pre>
+<pre><code style="padding: 0; color: black;">[] Costs too much</code></pre>
+<pre><code style="padding: 0; color: black;">[] Preferred method not available</code></pre>
+<pre><code style="padding: 0; color: black;">[] No method available</code></pre>
+<pre><code style="padding: 0; color: black;">[] Inconvenient to use</code></pre>
+<pre><code style="padding: 0; color: black;">[] Interferes with body's processes</code></pre>
+<pre><code style="padding: 0; color: black;">[] Other</code></pre>
+<pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
+<pre><code style="padding: 0; color: black;">[] No response</code></pre>
+<div style="position: absolute; top: 25%; left: 50%;">
+<h3>
+Recoding
+</h3>
+<p style="color: #B41821;">
+Low risk of becoming pregnant
+</p>
+</div>
+</section>
+<section id="reasons-surveyed-by-pma-2" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Reasons Surveyed by PMA</h2>
+<pre><code style="padding-bottom: 1em; color: black;">
+Can you tell me why you are not using 
+a method to prevent pregnancy?
+</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Not married</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Infrequent sex / Not having sex</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Menopausal / Hysterectomy</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Subfecund / Infecund</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Not menstruated since last birth</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Breastfeeding</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Husband away for multiple days</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Up to God / fatalistic</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Respondent opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Husband / partner opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Others opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Religious prohibition</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no method</code></pre>
+<pre><code style="padding: 0; color: black;">[] Knows no source</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Fear of side effects</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Health concerns</code></pre>
+<pre><code style="padding: 0; color: black;">[] Lack of access / too far</code></pre>
+<pre><code style="padding: 0; color: black;">[] Costs too much</code></pre>
+<pre><code style="padding: 0; color: black;">[] Preferred method not available</code></pre>
+<pre><code style="padding: 0; color: black;">[] No method available</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Inconvenient to use</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Interferes with body's processes</code></pre>
+<pre><code style="padding: 0; color: black;">[] Other</code></pre>
+<pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
+<pre><code style="padding: 0; color: black;">[] No response</code></pre>
+<div style="position: absolute; top: 25%; left: 50%;">
+<h3>
+Recoding
+</h3>
+<p style="color: #B41821;">
+Low risk of becoming pregnant
+</p>
+<p style="color: #DC863C;">
+Opposition or prohibition
+</p>
+</div>
+</section>
+<section id="reasons-surveyed-by-pma-3" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Reasons Surveyed by PMA</h2>
+<pre><code style="padding-bottom: 1em; color: black;">
+Can you tell me why you are not using 
+a method to prevent pregnancy?
+</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Not married</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Infrequent sex / Not having sex</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Menopausal / Hysterectomy</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Subfecund / Infecund</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Not menstruated since last birth</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Breastfeeding</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Husband away for multiple days</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Up to God / fatalistic</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Respondent opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Husband / partner opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Others opposed</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Religious prohibition</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Knows no method</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Knows no source</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Fear of side effects</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Health concerns</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Lack of access / too far</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Costs too much</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Preferred method not available</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] No method available</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Inconvenient to use</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Interferes with body's processes</code></pre>
+<pre><code style="padding: 0; color: black;">[] Other</code></pre>
+<pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
+<pre><code style="padding: 0; color: black;">[] No response</code></pre>
+<div style="position: absolute; top: 25%; left: 50%;">
+<h3>
+Recoding
+</h3>
+<p style="color: #B41821;">
+Low risk of becoming pregnant
+</p>
+<p style="color: #DC863C;">
+Opposition or prohibition
+</p>
+<p style="color: #44ACC8;">
+Method Access
+</p>
+<div class="fragment">
+<p>
+Other / Unknown
+</p>
+</div>
+</div>
+</section>
+<section id="who-gave-reasons" class="slide level2">
+<h2>Who gave reasons?</h2>
+<p>Most - but <em>not all</em> - women with unmet need were asked to give reasons for non-use.</p>
+<p>Most - but <em>not all</em> - women who gave reasons for non-use also have unmet need.</p>
+
+<img data-src="images/venn_diagram1.png" width="1722" class="r-stretch quarto-figure-center"></section>
+<section id="who-gave-reasons-1" class="slide level2">
+<h2>Who gave reasons?</h2>
+<p>Most - but <em>not all</em> - women with unmet need were asked to give reasons for non-use.</p>
+<p>Most - but <em>not all</em> - women who gave reasons for non-use also have unmet need.</p>
+
+<img data-src="images/venn_diagram2.png" width="1720" class="r-stretch quarto-figure-center"></section>
+<section id="who-gave-reasons-2" class="slide level2">
+<h2>Who gave reasons?</h2>
+<p>Most - but <em>not all</em> - women with unmet need were asked to give reasons for non-use.</p>
+<p>Most - but <em>not all</em> - women who gave reasons for non-use also have unmet need.</p>
+
+<img data-src="images/venn_diagram3.png" width="1725" class="r-stretch quarto-figure-center"></section>
+<section id="who-gave-reasons-3" class="slide level2">
+<h2>Who gave reasons?</h2>
+<p>Most - but <em>not all</em> - women with unmet need were asked to give reasons for non-use.</p>
+<p>Most - but <em>not all</em> - women who gave reasons for non-use also have unmet need.</p>
+
+<img data-src="images/venn_diagram4.png" width="1724" class="r-stretch quarto-figure-center"></section>
+<section class="slide level2">
+
+<h3>
+Popularity of Reasons For Phase 1 Unmet Need
+</h3>
+
+<img data-src="r_slides_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+<section id="recoding" class="slide level2">
+<h2>Recoding</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="fu">across</span>(</span>
+<span id="cb7-4"><a href="#cb7-4"></a>      <span class="fu">c</span>(<span class="fu">starts_with</span>(<span class="st">"UNMETYN"</span>), <span class="fu">starts_with</span>(<span class="st">"FPYNOT"</span>), <span class="fu">starts_with</span>(<span class="st">"PREGNANT"</span>)),</span>
+<span id="cb7-5"><a href="#cb7-5"></a>      <span class="sc">~</span>.x <span class="sc">==</span> <span class="dv">1</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a>    ),</span>
+<span id="cb7-7"><a href="#cb7-7"></a>    <span class="at">FPYOPPOSED =</span> <span class="fu">if_any</span>(<span class="fu">c</span>(FPYNOTRELIG_1, FPYNOTOPPF_1, FPYNOTFATE_1,</span>
+<span id="cb7-8"><a href="#cb7-8"></a>                          FPYNOTOPPH_1, FPYNOTOPPO_1, FPYNOTSIDEF_1,</span>
+<span id="cb7-9"><a href="#cb7-9"></a>                          FPYNOTSDHLTH_1,  FPYNOTCONV_1, FPYNOTBODY_1)),</span>
+<span id="cb7-10"><a href="#cb7-10"></a>    <span class="at">FPYMETHOD =</span> <span class="fu">if_any</span>(<span class="fu">c</span>(FPYNOTFAR_1, FPYNOTCOST_1, FPYNOTKNO_1,</span>
+<span id="cb7-11"><a href="#cb7-11"></a>                      FPYNOTSRC_1, FPYNOTAVAIL_1, FPYNOTAVAILP_1, </span>
+<span id="cb7-12"><a href="#cb7-12"></a>                      PREGNANT_1)),</span>
+<span id="cb7-13"><a href="#cb7-13"></a>    <span class="at">FPYLOWRISK =</span> <span class="fu">if_any</span>(<span class="fu">c</span>(FPYNOTBSTFD_1, FPYNOTHSBAWAY_1, FPYNOTMENO_1,</span>
+<span id="cb7-14"><a href="#cb7-14"></a>                       FPYNOTAMEN_1, FPYNOTNOSEX_1, FPYNOTMAR_1, FPYNOTINF_1</span>
+<span id="cb7-15"><a href="#cb7-15"></a>                       )),</span>
+<span id="cb7-16"><a href="#cb7-16"></a>    <span class="at">FPYOTHER =</span> UNMETYN_1 <span class="sc">&amp;</span> <span class="sc">!</span>FPYOPPOSED <span class="sc">&amp;</span> <span class="sc">!</span>FPYMETHOD <span class="sc">&amp;</span> <span class="sc">!</span>FPYLOWRISK,</span>
+<span id="cb7-17"><a href="#cb7-17"></a>    <span class="fu">across</span>(</span>
+<span id="cb7-18"><a href="#cb7-18"></a>      <span class="fu">c</span>(FPYOPPOSED, FPYMETHOD, FPYLOWRISK),</span>
+<span id="cb7-19"><a href="#cb7-19"></a>      <span class="sc">~</span><span class="fu">if_else</span>(UNMETYN_1, .x, <span class="cn">FALSE</span>)</span>
+<span id="cb7-20"><a href="#cb7-20"></a>    )</span>
+<span id="cb7-21"><a href="#cb7-21"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="recoded-reasons-by-country" class="slide level2">
+<h2>Recoded Reasons by Country</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dat <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">filter</span>(UNMETYN_1) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">as_survey_design</span>(</span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="at">weight =</span> PANELWEIGHT, </span>
+<span id="cb8-5"><a href="#cb8-5"></a>    <span class="at">id =</span> EAID_1, </span>
+<span id="cb8-6"><a href="#cb8-6"></a>    <span class="at">strata =</span> STRATA_1</span>
+<span id="cb8-7"><a href="#cb8-7"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">tbl_svysummary</span>(</span>
+<span id="cb8-9"><a href="#cb8-9"></a>    <span class="at">by =</span> COUNTRY, </span>
+<span id="cb8-10"><a href="#cb8-10"></a>    <span class="at">include =</span> <span class="fu">c</span>(</span>
+<span id="cb8-11"><a href="#cb8-11"></a>      FPYOPPOSED, </span>
+<span id="cb8-12"><a href="#cb8-12"></a>      FPYMETHOD, </span>
+<span id="cb8-13"><a href="#cb8-13"></a>      FPYLOWRISK, </span>
+<span id="cb8-14"><a href="#cb8-14"></a>      FPYOTHER</span>
+<span id="cb8-15"><a href="#cb8-15"></a>    ), </span>
+<span id="cb8-16"><a href="#cb8-16"></a>    <span class="at">label =</span> <span class="fu">list</span>(</span>
+<span id="cb8-17"><a href="#cb8-17"></a>      FPYOPPOSED <span class="sc">~</span> <span class="st">"Opposition or prohibition"</span>, </span>
+<span id="cb8-18"><a href="#cb8-18"></a>      FPYMETHOD <span class="sc">~</span> <span class="st">"Method access"</span>,</span>
+<span id="cb8-19"><a href="#cb8-19"></a>      FPYLOWRISK <span class="sc">~</span> <span class="st">"Low risk of becoming pregnant"</span>,</span>
+<span id="cb8-20"><a href="#cb8-20"></a>      FPYOTHER <span class="sc">~</span> <span class="st">"Other / Unknown Reason"</span></span>
+<span id="cb8-21"><a href="#cb8-21"></a>    ),</span>
+<span id="cb8-22"><a href="#cb8-22"></a>    <span class="at">statistic =</span> <span class="fu">list</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"{p}%"</span>)</span>
+<span id="cb8-23"><a href="#cb8-23"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-24"><a href="#cb8-24"></a>  <span class="fu">modify_header</span>(<span class="at">update =</span> <span class="fu">list</span>(</span>
+<span id="cb8-25"><a href="#cb8-25"></a>      label <span class="sc">~</span> <span class="st">" "</span>, </span>
+<span id="cb8-26"><a href="#cb8-26"></a>      stat_1 <span class="sc">~</span> <span class="st">"Burkina Faso"</span>, </span>
+<span id="cb8-27"><a href="#cb8-27"></a>      stat_2 <span class="sc">~</span> <span class="st">"Kenya"</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a>  )) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-29"><a href="#cb8-29"></a>  <span class="fu">modify_footnote</span>(</span>
+<span id="cb8-30"><a href="#cb8-30"></a>    <span class="fu">c</span>(stat_1, stat_2) <span class="sc">~</span> <span class="st">"Weighted Percent"</span></span>
+<span id="cb8-31"><a href="#cb8-31"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:45%;">
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="tabdsmexii" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#tabdsmexii .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#tabdsmexii .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tabdsmexii .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#tabdsmexii .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#tabdsmexii .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tabdsmexii .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#tabdsmexii .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#tabdsmexii .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#tabdsmexii .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#tabdsmexii .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#tabdsmexii .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#tabdsmexii .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tabdsmexii .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#tabdsmexii .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#tabdsmexii .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#tabdsmexii .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#tabdsmexii .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tabdsmexii .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#tabdsmexii .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#tabdsmexii .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tabdsmexii .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#tabdsmexii .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#tabdsmexii .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tabdsmexii .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tabdsmexii .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#tabdsmexii .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#tabdsmexii .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#tabdsmexii .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tabdsmexii .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tabdsmexii .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#tabdsmexii .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#tabdsmexii .gt_left {
+  text-align: left;
+}
+
+#tabdsmexii .gt_center {
+  text-align: center;
+}
+
+#tabdsmexii .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#tabdsmexii .gt_font_normal {
+  font-weight: normal;
+}
+
+#tabdsmexii .gt_font_bold {
+  font-weight: bold;
+}
+
+#tabdsmexii .gt_font_italic {
+  font-style: italic;
+}
+
+#tabdsmexii .gt_super {
+  font-size: 65%;
+}
+
+#tabdsmexii .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#tabdsmexii .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#tabdsmexii .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#tabdsmexii .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#tabdsmexii .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#tabdsmexii .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#tabdsmexii .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Burkina Faso<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Kenya<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Opposition or prohibition</td>
+<td class="gt_row gt_center">38%</td>
+<td class="gt_row gt_center">38%</td></tr>
+    <tr><td class="gt_row gt_left">Method access</td>
+<td class="gt_row gt_center">20%</td>
+<td class="gt_row gt_center">24%</td></tr>
+    <tr><td class="gt_row gt_left">Low risk of becoming pregnant</td>
+<td class="gt_row gt_center">32%</td>
+<td class="gt_row gt_center">46%</td></tr>
+    <tr><td class="gt_row gt_left">Other / Unknown Reason</td>
+<td class="gt_row gt_center">19%</td>
+<td class="gt_row gt_center">7.9%</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="3"><sup class="gt_footnote_marks">1</sup> Weighted Percent</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+<p>Reminder: women could give more than one reason!</p>
+</div>
+</div>
+</section>
+<section id="model" class="slide level2">
+<h2>Model</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>models <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">group_by</span>(COUNTRY) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="at">glm =</span> <span class="fu">cur_data</span>() <span class="sc">%&gt;%</span>  </span>
+<span id="cb9-5"><a href="#cb9-5"></a>      <span class="fu">as_survey_design</span>(<span class="at">weight =</span> PANELWEIGHT, <span class="at">id =</span> EAID_1, <span class="at">strata =</span> STRATA_1) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="#cb9-6"></a>      <span class="fu">svyglm</span>(</span>
+<span id="cb9-7"><a href="#cb9-7"></a>        <span class="at">formula =</span> UNMETYN_2 <span class="sc">~</span> FPYOPPOSED <span class="sc">+</span> FPYMETHOD <span class="sc">+</span> FPYLOWRISK <span class="sc">+</span> UNMETYN_1,</span>
+<span id="cb9-8"><a href="#cb9-8"></a>        <span class="at">family =</span> <span class="st">"quasibinomial"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9"></a>        <span class="at">design =</span> .</span>
+<span id="cb9-10"><a href="#cb9-10"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-11"><a href="#cb9-11"></a>      <span class="fu">list</span>()</span>
+<span id="cb9-12"><a href="#cb9-12"></a>  ) </span>
+<span id="cb9-13"><a href="#cb9-13"></a></span>
+<span id="cb9-14"><a href="#cb9-14"></a>models</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  COUNTRY      glm     
+  &lt;chr&gt;        &lt;list&gt;  
+1 Burkina Faso &lt;svyglm&gt;
+2 Kenya        &lt;svyglm&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="results-1" class="slide level2">
+<h2>Results</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>models<span class="sc">$</span>glm <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">map2</span>(models<span class="sc">$</span>COUNTRY,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    <span class="sc">~</span>.x <span class="sc">%&gt;%</span> </span>
+<span id="cb11-4"><a href="#cb11-4"></a>      <span class="fu">tbl_regression</span>(</span>
+<span id="cb11-5"><a href="#cb11-5"></a>        <span class="at">exp =</span> <span class="cn">TRUE</span>, <span class="at">show_single_row =</span> <span class="fu">where</span>(is.logical),</span>
+<span id="cb11-6"><a href="#cb11-6"></a>        <span class="at">pvalue_fun =</span> <span class="sc">~</span><span class="fu">style_pvalue</span>(.x, <span class="at">digits =</span> <span class="dv">2</span>),</span>
+<span id="cb11-7"><a href="#cb11-7"></a>        <span class="at">label =</span> <span class="fu">list</span>(</span>
+<span id="cb11-8"><a href="#cb11-8"></a>          FPYOPPOSED <span class="sc">~</span> <span class="st">"Opposition or prohibition"</span>, </span>
+<span id="cb11-9"><a href="#cb11-9"></a>          FPYMETHOD <span class="sc">~</span> <span class="st">"Method access"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10"></a>          FPYLOWRISK <span class="sc">~</span> <span class="st">"Low risk of becoming pregnant"</span>,</span>
+<span id="cb11-11"><a href="#cb11-11"></a>          UNMETYN_1 <span class="sc">~</span> <span class="st">"Unmet Need"</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a>        )</span>
+<span id="cb11-13"><a href="#cb11-13"></a>      ) <span class="sc">%&gt;%</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a>      <span class="fu">add_significance_stars</span>(<span class="at">hide_se =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-15"><a href="#cb11-15"></a>      <span class="fu">modify_header</span>(<span class="at">update =</span> <span class="fu">list</span>(label <span class="sc">~</span> <span class="st">" "</span>, <span class="at">estimate =</span> .y)) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-16"><a href="#cb11-16"></a>      <span class="fu">modify_footnote</span>(estimate <span class="sc">~</span> <span class="cn">NA</span>, <span class="at">abbreviation =</span> <span class="cn">TRUE</span>) </span>
+<span id="cb11-17"><a href="#cb11-17"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-18"><a href="#cb11-18"></a>  <span class="fu">tbl_merge</span>(<span class="at">tab_spanner =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-19"><a href="#cb11-19"></a>  <span class="fu">modify_caption</span>(<span class="st">"### Odds Ratios for Phase 2 Unmet Need"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:35%;">
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="efmmqjflfv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#efmmqjflfv .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#efmmqjflfv .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#efmmqjflfv .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#efmmqjflfv .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#efmmqjflfv .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#efmmqjflfv .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#efmmqjflfv .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#efmmqjflfv .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#efmmqjflfv .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#efmmqjflfv .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#efmmqjflfv .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#efmmqjflfv .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#efmmqjflfv .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#efmmqjflfv .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#efmmqjflfv .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#efmmqjflfv .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#efmmqjflfv .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#efmmqjflfv .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#efmmqjflfv .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#efmmqjflfv .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#efmmqjflfv .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#efmmqjflfv .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#efmmqjflfv .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#efmmqjflfv .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#efmmqjflfv .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#efmmqjflfv .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#efmmqjflfv .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#efmmqjflfv .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#efmmqjflfv .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#efmmqjflfv .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#efmmqjflfv .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#efmmqjflfv .gt_left {
+  text-align: left;
+}
+
+#efmmqjflfv .gt_center {
+  text-align: center;
+}
+
+#efmmqjflfv .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#efmmqjflfv .gt_font_normal {
+  font-weight: normal;
+}
+
+#efmmqjflfv .gt_font_bold {
+  font-weight: bold;
+}
+
+#efmmqjflfv .gt_font_italic {
+  font-style: italic;
+}
+
+#efmmqjflfv .gt_super {
+  font-size: 65%;
+}
+
+#efmmqjflfv .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#efmmqjflfv .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#efmmqjflfv .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#efmmqjflfv .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#efmmqjflfv .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#efmmqjflfv .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#efmmqjflfv .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  <caption><h3>Odds Ratios for Phase 2 Unmet Need</h3>
+</caption>
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Burkina Faso<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Kenya<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Opposition or prohibition</td>
+<td class="gt_row gt_center">1.55*</td>
+<td class="gt_row gt_center">1.77*</td></tr>
+    <tr><td class="gt_row gt_left">Method access</td>
+<td class="gt_row gt_center">1.88</td>
+<td class="gt_row gt_center">0.84</td></tr>
+    <tr><td class="gt_row gt_left">Low risk of becoming pregnant</td>
+<td class="gt_row gt_center">1.44</td>
+<td class="gt_row gt_center">0.77</td></tr>
+    <tr><td class="gt_row gt_left">Unmet Need</td>
+<td class="gt_row gt_center">2.78***</td>
+<td class="gt_row gt_center">3.61***</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="3"><sup class="gt_footnote_marks">1</sup> *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+</div><div class="fragment">
+<p>Compared to women who gave no reason, women who were <strong>opposed</strong> to using family planning were <em>significantly</em> more likely to have Phase 2 unmet need.</p>
+</div><div class="fragment">
+<p>Women with <strong>method access</strong> issues - less clear!</p>
+</div><div class="fragment">
+<p>Women <strong>not at risk</strong> for becoming pregnant were:</p>
+<ul>
+<li class="fragment"><em>not significantly</em> more likely to have Phase 2 unmet need in Burkina Faso</li>
+<li class="fragment">significantly <em>less</em> likely to have Phase 2 unmet need in Kenya</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="next-steps" class="slide level2">
+<h2>Next Steps</h2>
+<p><em>insert slide</em></p>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+
+<img src="images/logo-navy.png" class="slide-logo r-stretch"><div class="footer footer-default">
+
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-Machiyama2017-mp" class="csl-entry" role="doc-biblioentry">
+Machiyama, Kazuyo, John B Casterline, Joyce N Mumah, Fauzia Akhter Huda, Francis Obare, George Odwe, Caroline W Kabiru, Sharifa Yeasmin, and John Cleland. 2017. <span>“Reasons for Unmet Need for Family Planning, with Attention to the Measurement of Fertility Preferences: Protocol for a Multi-Site Cohort Study.”</span> <em>Reproductive Health</em> 14 (1): 23. <a href="http://dx.doi.org/10.1186/s12978-016-0268-z">http://dx.doi.org/10.1186/s12978-016-0268-z</a>.
+</div>
+<div id="ref-Senderowicz2022-ao" class="csl-entry" role="doc-biblioentry">
+Senderowicz, Leigh, and Nicole Maloney. 2022. <span>“Supply-Side Versus Demand-Side Unmet Need: Implications for Family Planning Programs.”</span> <em>Population and Development Review</em> 48 (3): 689–722. <a href="https://onlinelibrary.wiley.com/doi/10.1111/padr.12478">https://onlinelibrary.wiley.com/doi/10.1111/padr.12478</a>.
+</div>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="r_slides_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="r_slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="r_slides_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="r_slides_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="r_slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="r_slides_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="r_slides_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="r_slides_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="r_slides_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="r_slides_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="r_slides_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        setTimeout(function() {
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          let href = ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+        var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+              // default icon
+              link.classList.add("external");
+          }
+        }
+    });
+    </script>
+    
+
+</body></html>
