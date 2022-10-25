@@ -30,6 +30,8 @@ format:
     echo: true
     reference-location: document
     link-external-icon: true
+    width: 1400 
+    height: 800
 bibliography: cites.bib
 
 ---
@@ -377,7 +379,7 @@ Senderowicz and Maloney [-@Senderowicz2022-ao] suggest dividing Unmet Need into 
 ::: {.fragment}
 Machiyama et al. [-@Machiyama2017-mp] propose a 5-part causal framework for unmet need. 
 
-![](images/causes.png){.absolute top=300 left=150 width="800"}
+![](images/causes.png){.absolute top=400 left=150 width="800"}
 
 :::
 
@@ -840,6 +842,31 @@ Women **not at risk** for becoming pregnant were:
 
 ## Next Steps 
 
-*insert slide*
+::: {.fragment}
+What controls could we add to our model? 
+
+  - [AGE](https://pma.ipums.org/pma-action/variables/AGE) age 
+  - [MARSTAT](https://pma.ipums.org/pma-action/variables/MARSTAT) marital status 
+  - [WEALTHQ](https://pma.ipums.org/pma-action/variables/WEALTHQ) household wealth (quartile or tertile)
+  - [CHEB](https://pma.ipums.org/pma-action/variables/CHEB) parity 
+  - [FPUSPLAN](https://pma.ipums.org/pma-action/variables/FPUSPLAN) plans for future use of a method
+:::
+
+::: {.fragment}
+Comparison with results from other IPUMS Global Health surveys
+
+  - IPUMS DHS: [Why Not Use Family Planning](https://www.idhsdata.org/idhs-action/variables/group?id=fp_whynot) variable group; [UNMETNEED](https://www.idhsdata.org/idhs-action/variables/UNMETNEED), [UNMETNEED2](https://www.idhsdata.org/idhs-action/variables/UNMETNEED2), and [UNMETNEED3](https://www.idhsdata.org/idhs-action/variables/UNMETNEED3),
+  - IPUMS MICS: *coming soon!* 
+:::
+
+## New at IPUMS
+
+```{r, out.width="100%"}
+#| echo: false
+knitr::include_url(
+  height = "600px",
+  url = "https://variable-search.ipums.org/#/?query=unmetneed"
+)
+```
 
 ## References
