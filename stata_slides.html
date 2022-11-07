@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="r_slides_files/libs/clipboard/clipboard.min.js"></script>
-<script src="r_slides_files/libs/quarto-html/tabby.min.js"></script>
-<script src="r_slides_files/libs/quarto-html/popper.min.js"></script>
-<script src="r_slides_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="r_slides_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="r_slides_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
-<link href="r_slides_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="stata_slides_files/libs/clipboard/clipboard.min.js"></script>
+<script src="stata_slides_files/libs/quarto-html/tabby.min.js"></script>
+<script src="stata_slides_files/libs/quarto-html/popper.min.js"></script>
+<script src="stata_slides_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="stata_slides_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="stata_slides_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
+<link href="stata_slides_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-0.9.592">
 
-  <title>quarto-inputf4c6137f</title>
+  <title>quarto-input11a5c187</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="r_slides_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="r_slides_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="stata_slides_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="stata_slides_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -106,13 +106,13 @@
       margin-left: 2em;
     }
   </style>
-  <link rel="stylesheet" href="r_slides_files/libs/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="r_slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="r_slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="r_slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="r_slides_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="r_slides_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="r_slides_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="stata_slides_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="stata_slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="stata_slides_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="stata_slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="stata_slides_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="stata_slides_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="stata_slides_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -398,8 +398,8 @@
     }
   </style>
   
-  <script src="r_slides_files/libs/kePrint-0.0.1/kePrint.js"></script>
-  <link href="r_slides_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+  <script src="stata_slides_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="stata_slides_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body>
   <div class="reveal">
@@ -582,34 +582,35 @@ IPUMS PMA Data Workshop
 <section id="setup" class="slide level2">
 <h2>Setup</h2>
 <p>Our extract includes data from two phases of the panel study in <strong>Burkina Faso</strong> and <strong>Kenya</strong> (female respondents only).</p>
-<p>We drop women who only completed one of the two interviews, and those who are not members of the <em>de facto</em> population.</p>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(ipumsr)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(srvyr)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(survey)</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">library</span>(scales)</span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">library</span>(broom)</span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">library</span>(gtsummary)</span>
-<span id="cb1-8"><a href="#cb1-8"></a></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co"># load pma longitudinal samples (wide format, female respondents only)</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>dat <span class="ot">&lt;-</span> <span class="fu">read_ipums_micro</span>(</span>
-<span id="cb1-11"><a href="#cb1-11"></a> <span class="at">ddi =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/pma_00114.xml"</span>),</span>
-<span id="cb1-12"><a href="#cb1-12"></a> <span class="at">data =</span> here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/pma_00114.dat.gz"</span>)</span>
-<span id="cb1-13"><a href="#cb1-13"></a>)</span>
-<span id="cb1-14"><a href="#cb1-14"></a></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="co"># keep only panel members in the de facto population </span></span>
-<span id="cb1-16"><a href="#cb1-16"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
-<span id="cb1-17"><a href="#cb1-17"></a>  <span class="fu">mutate</span>(<span class="at">COUNTRY =</span> COUNTRY <span class="sc">%&gt;%</span> as_factor <span class="sc">%&gt;%</span> as.character) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-18"><a href="#cb1-18"></a>  <span class="fu">filter</span>(</span>
-<span id="cb1-19"><a href="#cb1-19"></a>    RESULTFQ_1 <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> RESULTFQ_2 <span class="sc">==</span> <span class="dv">1</span>,</span>
-<span id="cb1-20"><a href="#cb1-20"></a>    RESIDENT_1 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">22</span>) <span class="sc">&amp;</span> RESIDENT_2 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">11</span>, <span class="dv">22</span>)</span>
-<span id="cb1-21"><a href="#cb1-21"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
 <div class="cell">
 
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1"></a>cd <span class="st">"C:\Users\krist108\Documents\krist108 stuff\ISRDI\ICFP 2022 workshop"</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>use pma_00178<span class="op">.</span>dta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p>We drop women who only completed one of the two interviews…</p>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1"></a>keep <span class="cf">if</span> resultfq_1 <span class="op">==</span> <span class="dv">1</span> <span class="op">&amp;</span> resultfq_2 <span class="op">==</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>(8,361 observations deleted)</code></pre>
+</div>
+<div class="fragment">
+<p>and those who are not members of the <em>de facto</em> population.</p>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1"></a>keep <span class="cf">if</span> <span class="op">(</span>resident_1 <span class="op">==</span> <span class="dv">11</span> <span class="op">|</span> resident_1 <span class="op">==</span> <span class="dv">22</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span>resident_2 <span class="op">==</span> <span class="dv">11</span> <span class="op">|</span> resident_2 <span class="op">==</span> <span class="dv">22</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>(358 observations deleted)</code></pre>
 </div>
 </section>
 <section id="unmet-need-by-country-at-phase-1" class="slide level2">
@@ -619,42 +620,29 @@ IPUMS PMA Data Workshop
 <p><a href="https://pma.ipums.org/pma-action/variables/UNMETNEED">PANELWEIGHT</a> is the sampling weight for panel members (controls for loss to follow-up).</p>
 <p><a href="https://pma.ipums.org/pma-action/variables/EAID_1">EAID_1</a> and <a href="https://pma.ipums.org/pma-action/variables/STRATA_1">STRATA_1</a> are the sample clusters and strata used to select households at Phase 1.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>dat <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">as_survey_design</span>(</span>
-<span id="cb2-3"><a href="#cb2-3"></a>    <span class="at">weight =</span> PANELWEIGHT, </span>
-<span id="cb2-4"><a href="#cb2-4"></a>    <span class="at">id =</span> EAID_1, </span>
-<span id="cb2-5"><a href="#cb2-5"></a>    <span class="at">strata =</span> STRATA_1</span>
-<span id="cb2-6"><a href="#cb2-6"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-7"><a href="#cb2-7"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
-<span id="cb2-8"><a href="#cb2-8"></a>    <span class="fu">c</span>(UNMETNEED_1, UNMETYN_1), </span>
-<span id="cb2-9"><a href="#cb2-9"></a>    <span class="sc">~</span>.x <span class="sc">%&gt;%</span>  as_factor <span class="sc">%&gt;%</span> fct_drop</span>
-<span id="cb2-10"><a href="#cb2-10"></a>  )) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-11"><a href="#cb2-11"></a>  <span class="fu">tbl_svysummary</span>(</span>
-<span id="cb2-12"><a href="#cb2-12"></a>    <span class="at">by =</span> COUNTRY, </span>
-<span id="cb2-13"><a href="#cb2-13"></a>    <span class="at">include =</span> <span class="fu">c</span>(UNMETNEED_1, UNMETYN_1), </span>
-<span id="cb2-14"><a href="#cb2-14"></a>    <span class="at">statistic =</span> <span class="fu">list</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"{p}%"</span>)</span>
-<span id="cb2-15"><a href="#cb2-15"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-16"><a href="#cb2-16"></a>  <span class="fu">modify_header</span>(</span>
-<span id="cb2-17"><a href="#cb2-17"></a>    <span class="at">update =</span> <span class="fu">list</span>(</span>
-<span id="cb2-18"><a href="#cb2-18"></a>      label <span class="sc">~</span> <span class="st">" "</span>, </span>
-<span id="cb2-19"><a href="#cb2-19"></a>      stat_1 <span class="sc">~</span> <span class="st">"Burkina Faso"</span>, </span>
-<span id="cb2-20"><a href="#cb2-20"></a>      stat_2 <span class="sc">~</span> <span class="st">"Kenya"</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a>    )</span>
-<span id="cb2-22"><a href="#cb2-22"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-23"><a href="#cb2-23"></a>  <span class="fu">modify_footnote</span>(</span>
-<span id="cb2-24"><a href="#cb2-24"></a>    <span class="fu">c</span>(stat_1, stat_2) <span class="sc">~</span> <span class="st">"Weighted Percent"</span></span>
-<span id="cb2-25"><a href="#cb2-25"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1"></a>svyset <span class="op">[</span>pw<span class="op">=</span>panelweight<span class="op">],</span> psu<span class="op">(</span>eaid_1<span class="op">)</span> strata<span class="op">(</span>strata_1<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>Information from <code>svyset</code> can be used to produce <strong>weighted percentages</strong> like those shown to the right. (SEs would also be adjusted for cluster sampling).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1"></a>svy<span class="op">:</span> tab unmetneed_1 country<span class="op">,</span> col</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a>svy<span class="op">:</span> tab unmetyn_1 country<span class="op">,</span> col</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note: we will set NIU cases to <code>missing</code> (see universe tab for details).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1"></a>replace unmetyn_1 <span class="op">=</span> <span class="op">.</span> <span class="cf">if</span> unmetyn_1 <span class="op">==</span> <span class="dv">99</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<pre><code>(2 real changes made, 2 to missing)</code></pre>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 
-<div id="ipqmrvkzyj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="upyhumxyza" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ipqmrvkzyj .gt_table {
+#upyhumxyza .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -679,7 +667,7 @@ IPUMS PMA Data Workshop
   border-left-color: #D3D3D3;
 }
 
-#ipqmrvkzyj .gt_heading {
+#upyhumxyza .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -691,7 +679,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#ipqmrvkzyj .gt_title {
+#upyhumxyza .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -703,7 +691,7 @@ IPUMS PMA Data Workshop
   border-bottom-width: 0;
 }
 
-#ipqmrvkzyj .gt_subtitle {
+#upyhumxyza .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -715,13 +703,13 @@ IPUMS PMA Data Workshop
   border-top-width: 0;
 }
 
-#ipqmrvkzyj .gt_bottom_border {
+#upyhumxyza .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ipqmrvkzyj .gt_col_headings {
+#upyhumxyza .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -736,7 +724,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#ipqmrvkzyj .gt_col_heading {
+#upyhumxyza .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -756,7 +744,7 @@ IPUMS PMA Data Workshop
   overflow-x: hidden;
 }
 
-#ipqmrvkzyj .gt_column_spanner_outer {
+#upyhumxyza .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -768,15 +756,15 @@ IPUMS PMA Data Workshop
   padding-right: 4px;
 }
 
-#ipqmrvkzyj .gt_column_spanner_outer:first-child {
+#upyhumxyza .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ipqmrvkzyj .gt_column_spanner_outer:last-child {
+#upyhumxyza .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ipqmrvkzyj .gt_column_spanner {
+#upyhumxyza .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -788,7 +776,7 @@ IPUMS PMA Data Workshop
   width: 100%;
 }
 
-#ipqmrvkzyj .gt_group_heading {
+#upyhumxyza .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -813,7 +801,7 @@ IPUMS PMA Data Workshop
   vertical-align: middle;
 }
 
-#ipqmrvkzyj .gt_empty_group_heading {
+#upyhumxyza .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -828,15 +816,15 @@ IPUMS PMA Data Workshop
   vertical-align: middle;
 }
 
-#ipqmrvkzyj .gt_from_md > :first-child {
+#upyhumxyza .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ipqmrvkzyj .gt_from_md > :last-child {
+#upyhumxyza .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ipqmrvkzyj .gt_row {
+#upyhumxyza .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -855,7 +843,7 @@ IPUMS PMA Data Workshop
   overflow-x: hidden;
 }
 
-#ipqmrvkzyj .gt_stub {
+#upyhumxyza .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -868,7 +856,7 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#ipqmrvkzyj .gt_stub_row_group {
+#upyhumxyza .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -882,11 +870,11 @@ IPUMS PMA Data Workshop
   vertical-align: top;
 }
 
-#ipqmrvkzyj .gt_row_group_first td {
+#upyhumxyza .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ipqmrvkzyj .gt_summary_row {
+#upyhumxyza .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -896,16 +884,16 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#ipqmrvkzyj .gt_first_summary_row {
+#upyhumxyza .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ipqmrvkzyj .gt_first_summary_row.thick {
+#upyhumxyza .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ipqmrvkzyj .gt_last_summary_row {
+#upyhumxyza .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -915,7 +903,7 @@ IPUMS PMA Data Workshop
   border-bottom-color: #D3D3D3;
 }
 
-#ipqmrvkzyj .gt_grand_summary_row {
+#upyhumxyza .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -925,7 +913,7 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#ipqmrvkzyj .gt_first_grand_summary_row {
+#upyhumxyza .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -935,11 +923,11 @@ IPUMS PMA Data Workshop
   border-top-color: #D3D3D3;
 }
 
-#ipqmrvkzyj .gt_striped {
+#upyhumxyza .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ipqmrvkzyj .gt_table_body {
+#upyhumxyza .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -948,7 +936,7 @@ IPUMS PMA Data Workshop
   border-bottom-color: #D3D3D3;
 }
 
-#ipqmrvkzyj .gt_footnotes {
+#upyhumxyza .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -962,7 +950,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#ipqmrvkzyj .gt_footnote {
+#upyhumxyza .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -971,7 +959,7 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#ipqmrvkzyj .gt_sourcenotes {
+#upyhumxyza .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -985,7 +973,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#ipqmrvkzyj .gt_sourcenote {
+#upyhumxyza .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -993,64 +981,64 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#ipqmrvkzyj .gt_left {
+#upyhumxyza .gt_left {
   text-align: left;
 }
 
-#ipqmrvkzyj .gt_center {
+#upyhumxyza .gt_center {
   text-align: center;
 }
 
-#ipqmrvkzyj .gt_right {
+#upyhumxyza .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ipqmrvkzyj .gt_font_normal {
+#upyhumxyza .gt_font_normal {
   font-weight: normal;
 }
 
-#ipqmrvkzyj .gt_font_bold {
+#upyhumxyza .gt_font_bold {
   font-weight: bold;
 }
 
-#ipqmrvkzyj .gt_font_italic {
+#upyhumxyza .gt_font_italic {
   font-style: italic;
 }
 
-#ipqmrvkzyj .gt_super {
+#upyhumxyza .gt_super {
   font-size: 65%;
 }
 
-#ipqmrvkzyj .gt_footnote_marks {
+#upyhumxyza .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#ipqmrvkzyj .gt_asterisk {
+#upyhumxyza .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ipqmrvkzyj .gt_indent_1 {
+#upyhumxyza .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ipqmrvkzyj .gt_indent_2 {
+#upyhumxyza .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ipqmrvkzyj .gt_indent_3 {
+#upyhumxyza .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ipqmrvkzyj .gt_indent_4 {
+#upyhumxyza .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ipqmrvkzyj .gt_indent_5 {
+#upyhumxyza .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1126,43 +1114,22 @@ IPUMS PMA Data Workshop
 <div class="column" style="width:50%;">
 <p><a href="https://pma.ipums.org/pma-action/variables/EAID_1">EAID_1</a> and <a href="https://pma.ipums.org/pma-action/variables/STRATA_1">STRATA_1</a> can also be used for estimating Phase 2 outcomes.</p>
 <p>Panel members were found in the same study area again at Phase 2.</p>
+<p>No need to adjust <code>svyset</code>!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" data-code-line-numbers="4,5,8,13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>dat <span class="sc">%&gt;%</span> </span>
-<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">as_survey_design</span>(</span>
-<span id="cb3-3"><a href="#cb3-3"></a>    <span class="at">weight =</span> PANELWEIGHT, </span>
-<span id="cb3-4"><a href="#cb3-4"></a>    <span class="at">id =</span> EAID_1, </span>
-<span id="cb3-5"><a href="#cb3-5"></a>    <span class="at">strata =</span> STRATA_1</span>
-<span id="cb3-6"><a href="#cb3-6"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-7"><a href="#cb3-7"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(</span>
-<span id="cb3-8"><a href="#cb3-8"></a>    <span class="fu">c</span>(UNMETNEED_2, UNMETYN_2), </span>
-<span id="cb3-9"><a href="#cb3-9"></a>    <span class="sc">~</span>.x <span class="sc">%&gt;%</span>  as_factor <span class="sc">%&gt;%</span> fct_drop</span>
-<span id="cb3-10"><a href="#cb3-10"></a>  )) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-11"><a href="#cb3-11"></a>  <span class="fu">tbl_svysummary</span>(</span>
-<span id="cb3-12"><a href="#cb3-12"></a>    <span class="at">by =</span> COUNTRY, </span>
-<span id="cb3-13"><a href="#cb3-13"></a>    <span class="at">include =</span> <span class="fu">c</span>(UNMETNEED_2, UNMETYN_2), </span>
-<span id="cb3-14"><a href="#cb3-14"></a>    <span class="at">statistic =</span> <span class="fu">list</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"{p}%"</span>)</span>
-<span id="cb3-15"><a href="#cb3-15"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-16"><a href="#cb3-16"></a>  <span class="fu">modify_header</span>(</span>
-<span id="cb3-17"><a href="#cb3-17"></a>    <span class="at">update =</span> <span class="fu">list</span>(</span>
-<span id="cb3-18"><a href="#cb3-18"></a>      label <span class="sc">~</span> <span class="st">" "</span>, </span>
-<span id="cb3-19"><a href="#cb3-19"></a>      stat_1 <span class="sc">~</span> <span class="st">"Burkina Faso"</span>, </span>
-<span id="cb3-20"><a href="#cb3-20"></a>      stat_2 <span class="sc">~</span> <span class="st">"Kenya"</span></span>
-<span id="cb3-21"><a href="#cb3-21"></a>    )</span>
-<span id="cb3-22"><a href="#cb3-22"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-23"><a href="#cb3-23"></a>  <span class="fu">modify_footnote</span>(</span>
-<span id="cb3-24"><a href="#cb3-24"></a>    <span class="fu">c</span>(stat_1, stat_2) <span class="sc">~</span> <span class="st">"Weighted Percent"</span></span>
-<span id="cb3-25"><a href="#cb3-25"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1"></a>svy<span class="op">:</span> tab unmetneed_2 country<span class="op">,</span> col</span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a>svy<span class="op">:</span> tab unmetyn_2 country<span class="op">,</span> col</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
 
-<div id="cryqjrsywk" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="gxjkervktt" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#cryqjrsywk .gt_table {
+#gxjkervktt .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1187,7 +1154,7 @@ IPUMS PMA Data Workshop
   border-left-color: #D3D3D3;
 }
 
-#cryqjrsywk .gt_heading {
+#gxjkervktt .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1199,7 +1166,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#cryqjrsywk .gt_title {
+#gxjkervktt .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1211,7 +1178,7 @@ IPUMS PMA Data Workshop
   border-bottom-width: 0;
 }
 
-#cryqjrsywk .gt_subtitle {
+#gxjkervktt .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1223,13 +1190,13 @@ IPUMS PMA Data Workshop
   border-top-width: 0;
 }
 
-#cryqjrsywk .gt_bottom_border {
+#gxjkervktt .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#cryqjrsywk .gt_col_headings {
+#gxjkervktt .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1244,7 +1211,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#cryqjrsywk .gt_col_heading {
+#gxjkervktt .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1264,7 +1231,7 @@ IPUMS PMA Data Workshop
   overflow-x: hidden;
 }
 
-#cryqjrsywk .gt_column_spanner_outer {
+#gxjkervktt .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1276,15 +1243,15 @@ IPUMS PMA Data Workshop
   padding-right: 4px;
 }
 
-#cryqjrsywk .gt_column_spanner_outer:first-child {
+#gxjkervktt .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#cryqjrsywk .gt_column_spanner_outer:last-child {
+#gxjkervktt .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#cryqjrsywk .gt_column_spanner {
+#gxjkervktt .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1296,7 +1263,7 @@ IPUMS PMA Data Workshop
   width: 100%;
 }
 
-#cryqjrsywk .gt_group_heading {
+#gxjkervktt .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1321,7 +1288,7 @@ IPUMS PMA Data Workshop
   vertical-align: middle;
 }
 
-#cryqjrsywk .gt_empty_group_heading {
+#gxjkervktt .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1336,15 +1303,15 @@ IPUMS PMA Data Workshop
   vertical-align: middle;
 }
 
-#cryqjrsywk .gt_from_md > :first-child {
+#gxjkervktt .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#cryqjrsywk .gt_from_md > :last-child {
+#gxjkervktt .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#cryqjrsywk .gt_row {
+#gxjkervktt .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1363,7 +1330,7 @@ IPUMS PMA Data Workshop
   overflow-x: hidden;
 }
 
-#cryqjrsywk .gt_stub {
+#gxjkervktt .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1376,7 +1343,7 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#cryqjrsywk .gt_stub_row_group {
+#gxjkervktt .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1390,11 +1357,11 @@ IPUMS PMA Data Workshop
   vertical-align: top;
 }
 
-#cryqjrsywk .gt_row_group_first td {
+#gxjkervktt .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#cryqjrsywk .gt_summary_row {
+#gxjkervktt .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1404,16 +1371,16 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#cryqjrsywk .gt_first_summary_row {
+#gxjkervktt .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#cryqjrsywk .gt_first_summary_row.thick {
+#gxjkervktt .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#cryqjrsywk .gt_last_summary_row {
+#gxjkervktt .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1423,7 +1390,7 @@ IPUMS PMA Data Workshop
   border-bottom-color: #D3D3D3;
 }
 
-#cryqjrsywk .gt_grand_summary_row {
+#gxjkervktt .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1433,7 +1400,7 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#cryqjrsywk .gt_first_grand_summary_row {
+#gxjkervktt .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1443,11 +1410,11 @@ IPUMS PMA Data Workshop
   border-top-color: #D3D3D3;
 }
 
-#cryqjrsywk .gt_striped {
+#gxjkervktt .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#cryqjrsywk .gt_table_body {
+#gxjkervktt .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1456,7 +1423,7 @@ IPUMS PMA Data Workshop
   border-bottom-color: #D3D3D3;
 }
 
-#cryqjrsywk .gt_footnotes {
+#gxjkervktt .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1470,7 +1437,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#cryqjrsywk .gt_footnote {
+#gxjkervktt .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -1479,7 +1446,7 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#cryqjrsywk .gt_sourcenotes {
+#gxjkervktt .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1493,7 +1460,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#cryqjrsywk .gt_sourcenote {
+#gxjkervktt .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1501,64 +1468,64 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#cryqjrsywk .gt_left {
+#gxjkervktt .gt_left {
   text-align: left;
 }
 
-#cryqjrsywk .gt_center {
+#gxjkervktt .gt_center {
   text-align: center;
 }
 
-#cryqjrsywk .gt_right {
+#gxjkervktt .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#cryqjrsywk .gt_font_normal {
+#gxjkervktt .gt_font_normal {
   font-weight: normal;
 }
 
-#cryqjrsywk .gt_font_bold {
+#gxjkervktt .gt_font_bold {
   font-weight: bold;
 }
 
-#cryqjrsywk .gt_font_italic {
+#gxjkervktt .gt_font_italic {
   font-style: italic;
 }
 
-#cryqjrsywk .gt_super {
+#gxjkervktt .gt_super {
   font-size: 65%;
 }
 
-#cryqjrsywk .gt_footnote_marks {
+#gxjkervktt .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#cryqjrsywk .gt_asterisk {
+#gxjkervktt .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#cryqjrsywk .gt_indent_1 {
+#gxjkervktt .gt_indent_1 {
   text-indent: 5px;
 }
 
-#cryqjrsywk .gt_indent_2 {
+#gxjkervktt .gt_indent_2 {
   text-indent: 10px;
 }
 
-#cryqjrsywk .gt_indent_3 {
+#gxjkervktt .gt_indent_3 {
   text-indent: 15px;
 }
 
-#cryqjrsywk .gt_indent_4 {
+#gxjkervktt .gt_indent_4 {
   text-indent: 20px;
 }
 
-#cryqjrsywk .gt_indent_5 {
+#gxjkervktt .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1631,60 +1598,36 @@ IPUMS PMA Data Workshop
 </section>
 <section id="logistic-regression" class="slide level2">
 <h2>Logistic Regression</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>models <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">matches</span>(<span class="st">"UNMETYN"</span>), <span class="sc">~</span>.x <span class="sc">==</span> <span class="dv">1</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">group_by</span>(COUNTRY) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb4-5"><a href="#cb4-5"></a>    <span class="at">glm =</span> <span class="fu">cur_data</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb4-6"><a href="#cb4-6"></a>      <span class="fu">as_survey_design</span>(<span class="at">weight =</span> PANELWEIGHT, <span class="at">id =</span> EAID_1, <span class="at">strata =</span> STRATA_1) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-7"><a href="#cb4-7"></a>      <span class="fu">svyglm</span>(UNMETYN_2 <span class="sc">~</span> UNMETYN_1, <span class="at">design =</span> ., <span class="at">family =</span> <span class="st">"quasibinomial"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-8"><a href="#cb4-8"></a>      <span class="fu">list</span>()</span>
-<span id="cb4-9"><a href="#cb4-9"></a>  )</span>
-<span id="cb4-10"><a href="#cb4-10"></a></span>
-<span id="cb4-11"><a href="#cb4-11"></a>models</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 2
-  COUNTRY      glm     
-  &lt;chr&gt;        &lt;list&gt;  
-1 Burkina Faso &lt;svyglm&gt;
-2 Kenya        &lt;svyglm&gt;</code></pre>
-</div>
-</div>
-</section>
-<section id="results" class="slide level2">
-<h2>Results</h2>
 <div class="columns">
-<div class="column" style="width:60%;">
+<div class="column" style="width:40%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>models<span class="sc">$</span>glm <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">map2</span>(models<span class="sc">$</span>COUNTRY,</span>
-<span id="cb6-3"><a href="#cb6-3"></a>    <span class="sc">~</span>.x <span class="sc">%&gt;%</span> </span>
-<span id="cb6-4"><a href="#cb6-4"></a>      <span class="fu">tbl_regression</span>(</span>
-<span id="cb6-5"><a href="#cb6-5"></a>        <span class="at">exponentiate =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb6-6"><a href="#cb6-6"></a>        <span class="at">show_single_row =</span> <span class="fu">where</span>(is.logical),</span>
-<span id="cb6-7"><a href="#cb6-7"></a>        <span class="at">pvalue_fun =</span> <span class="sc">~</span><span class="fu">style_pvalue</span>(.x, <span class="at">digits =</span> <span class="dv">2</span>),</span>
-<span id="cb6-8"><a href="#cb6-8"></a>        <span class="at">label =</span> <span class="fu">list</span>(UNMETYN_1 <span class="sc">~</span> <span class="st">"Phase 1 Unmet Need"</span>)</span>
-<span id="cb6-9"><a href="#cb6-9"></a>      ) <span class="sc">%&gt;%</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a>      <span class="fu">add_significance_stars</span>(<span class="at">hide_se =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-11"><a href="#cb6-11"></a>      <span class="fu">modify_header</span>(<span class="at">update =</span> <span class="fu">list</span>(label <span class="sc">~</span> <span class="st">" "</span>, <span class="at">estimate =</span> .y)) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-12"><a href="#cb6-12"></a>      <span class="fu">modify_footnote</span>(estimate <span class="sc">~</span> <span class="cn">NA</span>, <span class="at">abbreviation =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb6-13"><a href="#cb6-13"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-14"><a href="#cb6-14"></a>  <span class="fu">tbl_merge</span>(<span class="at">tab_spanner =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb6-15"><a href="#cb6-15"></a>  <span class="fu">modify_caption</span>(<span class="st">"### Odds Ratios for Phase 2 Unmet Need"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<div class="fragment">
+<p>Burkina Faso</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1"></a>svy<span class="op">:</span> logit unmetyn_2 unmetyn_1 <span class="cf">if</span> country <span class="op">==</span> <span class="dv">1</span><span class="op">,</span> or</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p>Kenya</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1"></a>svy<span class="op">:</span> logit unmetyn_2 unmetyn_1 <span class="cf">if</span> country <span class="op">==</span> <span class="dv">7</span><span class="op">,</span> or</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 </div><div class="column" style="width:5%;">
 
-</div><div class="column" style="width:35%;">
+</div><div class="column" style="position: absolute; top: 20%;">
+<div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
 
-<div id="vddfupiasg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="foiqzdrmyg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#vddfupiasg .gt_table {
+#foiqzdrmyg .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -1709,7 +1652,7 @@ IPUMS PMA Data Workshop
   border-left-color: #D3D3D3;
 }
 
-#vddfupiasg .gt_heading {
+#foiqzdrmyg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1721,7 +1664,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#vddfupiasg .gt_title {
+#foiqzdrmyg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1733,7 +1676,7 @@ IPUMS PMA Data Workshop
   border-bottom-width: 0;
 }
 
-#vddfupiasg .gt_subtitle {
+#foiqzdrmyg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1745,13 +1688,13 @@ IPUMS PMA Data Workshop
   border-top-width: 0;
 }
 
-#vddfupiasg .gt_bottom_border {
+#foiqzdrmyg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vddfupiasg .gt_col_headings {
+#foiqzdrmyg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1766,7 +1709,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#vddfupiasg .gt_col_heading {
+#foiqzdrmyg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1786,7 +1729,7 @@ IPUMS PMA Data Workshop
   overflow-x: hidden;
 }
 
-#vddfupiasg .gt_column_spanner_outer {
+#foiqzdrmyg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1798,15 +1741,15 @@ IPUMS PMA Data Workshop
   padding-right: 4px;
 }
 
-#vddfupiasg .gt_column_spanner_outer:first-child {
+#foiqzdrmyg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vddfupiasg .gt_column_spanner_outer:last-child {
+#foiqzdrmyg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vddfupiasg .gt_column_spanner {
+#foiqzdrmyg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1818,7 +1761,7 @@ IPUMS PMA Data Workshop
   width: 100%;
 }
 
-#vddfupiasg .gt_group_heading {
+#foiqzdrmyg .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1843,7 +1786,7 @@ IPUMS PMA Data Workshop
   vertical-align: middle;
 }
 
-#vddfupiasg .gt_empty_group_heading {
+#foiqzdrmyg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1858,15 +1801,15 @@ IPUMS PMA Data Workshop
   vertical-align: middle;
 }
 
-#vddfupiasg .gt_from_md > :first-child {
+#foiqzdrmyg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vddfupiasg .gt_from_md > :last-child {
+#foiqzdrmyg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vddfupiasg .gt_row {
+#foiqzdrmyg .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1885,7 +1828,7 @@ IPUMS PMA Data Workshop
   overflow-x: hidden;
 }
 
-#vddfupiasg .gt_stub {
+#foiqzdrmyg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1898,7 +1841,7 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#vddfupiasg .gt_stub_row_group {
+#foiqzdrmyg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1912,11 +1855,11 @@ IPUMS PMA Data Workshop
   vertical-align: top;
 }
 
-#vddfupiasg .gt_row_group_first td {
+#foiqzdrmyg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vddfupiasg .gt_summary_row {
+#foiqzdrmyg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1926,16 +1869,16 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#vddfupiasg .gt_first_summary_row {
+#foiqzdrmyg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vddfupiasg .gt_first_summary_row.thick {
+#foiqzdrmyg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vddfupiasg .gt_last_summary_row {
+#foiqzdrmyg .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1945,7 +1888,7 @@ IPUMS PMA Data Workshop
   border-bottom-color: #D3D3D3;
 }
 
-#vddfupiasg .gt_grand_summary_row {
+#foiqzdrmyg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1955,7 +1898,7 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#vddfupiasg .gt_first_grand_summary_row {
+#foiqzdrmyg .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1965,11 +1908,11 @@ IPUMS PMA Data Workshop
   border-top-color: #D3D3D3;
 }
 
-#vddfupiasg .gt_striped {
+#foiqzdrmyg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vddfupiasg .gt_table_body {
+#foiqzdrmyg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1978,7 +1921,7 @@ IPUMS PMA Data Workshop
   border-bottom-color: #D3D3D3;
 }
 
-#vddfupiasg .gt_footnotes {
+#foiqzdrmyg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1992,7 +1935,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#vddfupiasg .gt_footnote {
+#foiqzdrmyg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -2001,7 +1944,7 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#vddfupiasg .gt_sourcenotes {
+#foiqzdrmyg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2015,7 +1958,7 @@ IPUMS PMA Data Workshop
   border-right-color: #D3D3D3;
 }
 
-#vddfupiasg .gt_sourcenote {
+#foiqzdrmyg .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2023,87 +1966,100 @@ IPUMS PMA Data Workshop
   padding-right: 5px;
 }
 
-#vddfupiasg .gt_left {
+#foiqzdrmyg .gt_left {
   text-align: left;
 }
 
-#vddfupiasg .gt_center {
+#foiqzdrmyg .gt_center {
   text-align: center;
 }
 
-#vddfupiasg .gt_right {
+#foiqzdrmyg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vddfupiasg .gt_font_normal {
+#foiqzdrmyg .gt_font_normal {
   font-weight: normal;
 }
 
-#vddfupiasg .gt_font_bold {
+#foiqzdrmyg .gt_font_bold {
   font-weight: bold;
 }
 
-#vddfupiasg .gt_font_italic {
+#foiqzdrmyg .gt_font_italic {
   font-style: italic;
 }
 
-#vddfupiasg .gt_super {
+#foiqzdrmyg .gt_super {
   font-size: 65%;
 }
 
-#vddfupiasg .gt_footnote_marks {
+#foiqzdrmyg .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#vddfupiasg .gt_asterisk {
+#foiqzdrmyg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vddfupiasg .gt_indent_1 {
+#foiqzdrmyg .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vddfupiasg .gt_indent_2 {
+#foiqzdrmyg .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vddfupiasg .gt_indent_3 {
+#foiqzdrmyg .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vddfupiasg .gt_indent_4 {
+#foiqzdrmyg .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vddfupiasg .gt_indent_5 {
+#foiqzdrmyg .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table">
-  <caption><h3>Odds Ratios for Phase 2 Unmet Need</h3>
+  <caption><h3>Phase 2 Unmet Need</h3>
+<h3>Odds Ratios</h3>
 </caption>
   
   <thead class="gt_col_headings">
     <tr>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"></th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Burkina Faso<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">95% CI<sup class="gt_footnote_marks">2</sup></th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Kenya<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">95% CI<sup class="gt_footnote_marks">2</sup></th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">(Intercept)</td>
+<td class="gt_row gt_center">0.14***</td>
+<td class="gt_row gt_center">0.12, 0.17</td>
+<td class="gt_row gt_center">0.09***</td>
+<td class="gt_row gt_center">0.08, 0.10</td></tr>
     <tr><td class="gt_row gt_left">Phase 1 Unmet Need</td>
 <td class="gt_row gt_center">4.22***</td>
-<td class="gt_row gt_center">3.94***</td></tr>
+<td class="gt_row gt_center">3.47, 5.14</td>
+<td class="gt_row gt_center">3.94***</td>
+<td class="gt_row gt_center">3.23, 4.80</td></tr>
   </tbody>
   
   <tfoot class="gt_footnotes">
     <tr>
-      <td class="gt_footnote" colspan="3"><sup class="gt_footnote_marks">1</sup> *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</td>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">1</sup> *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</td>
+    </tr>
+    <tr>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">2</sup> CI = Confidence Interval</td>
     </tr>
   </tfoot>
 </table>
@@ -2112,11 +2068,476 @@ IPUMS PMA Data Workshop
 </div>
 </div>
 </div>
-<div class="fragment">
-<p>Phase 1 Unmet Need is a significant predictor of Unmet Need at Phase 2.</p>
 </div>
-<div class="fragment">
+</section>
+<section id="logistic-regression-1" class="slide level2">
+<h2>Logistic Regression</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+
+</div>
+<p>Burkina Faso</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1"></a>svy<span class="op">:</span> logit unmetyn_2 unmetyn_1 <span class="cf">if</span> country <span class="op">==</span> <span class="dv">1</span><span class="op">,</span> or</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Kenya</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1"></a>svy<span class="op">:</span> logit unmetyn_2 unmetyn_1 <span class="cf">if</span> country <span class="op">==</span> <span class="dv">7</span><span class="op">,</span> or</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Phase 1 Unmet Need is a significant predictor of Unmet Need at Phase 2.</p>
 <p>Women with Unmet Need at Phase 1 have about <strong>four times</strong> the odds of Phase 2 Unmet Need compared with women who had none.</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="position: absolute; top: 20%;">
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="fgyrwiiufx" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#fgyrwiiufx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#fgyrwiiufx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fgyrwiiufx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#fgyrwiiufx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#fgyrwiiufx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fgyrwiiufx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fgyrwiiufx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#fgyrwiiufx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#fgyrwiiufx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#fgyrwiiufx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#fgyrwiiufx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#fgyrwiiufx .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fgyrwiiufx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fgyrwiiufx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#fgyrwiiufx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#fgyrwiiufx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#fgyrwiiufx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgyrwiiufx .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#fgyrwiiufx .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#fgyrwiiufx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgyrwiiufx .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#fgyrwiiufx .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#fgyrwiiufx .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fgyrwiiufx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgyrwiiufx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#fgyrwiiufx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#fgyrwiiufx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fgyrwiiufx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fgyrwiiufx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgyrwiiufx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fgyrwiiufx .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fgyrwiiufx .gt_left {
+  text-align: left;
+}
+
+#fgyrwiiufx .gt_center {
+  text-align: center;
+}
+
+#fgyrwiiufx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#fgyrwiiufx .gt_font_normal {
+  font-weight: normal;
+}
+
+#fgyrwiiufx .gt_font_bold {
+  font-weight: bold;
+}
+
+#fgyrwiiufx .gt_font_italic {
+  font-style: italic;
+}
+
+#fgyrwiiufx .gt_super {
+  font-size: 65%;
+}
+
+#fgyrwiiufx .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#fgyrwiiufx .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#fgyrwiiufx .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#fgyrwiiufx .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#fgyrwiiufx .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#fgyrwiiufx .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#fgyrwiiufx .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  <caption><h3>Phase 2 Unmet Need</h3>
+<h3>Odds Ratios</h3>
+</caption>
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Burkina Faso<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">95% CI<sup class="gt_footnote_marks">2</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Kenya<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">95% CI<sup class="gt_footnote_marks">2</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">(Intercept)</td>
+<td class="gt_row gt_center">0.14***</td>
+<td class="gt_row gt_center">0.12, 0.17</td>
+<td class="gt_row gt_center">0.09***</td>
+<td class="gt_row gt_center">0.08, 0.10</td></tr>
+    <tr><td class="gt_row gt_left">Phase 1 Unmet Need</td>
+<td class="gt_row gt_center">4.22***</td>
+<td class="gt_row gt_center">3.47, 5.14</td>
+<td class="gt_row gt_center">3.94***</td>
+<td class="gt_row gt_center">3.23, 4.80</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">1</sup> *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</td>
+    </tr>
+    <tr>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">2</sup> CI = Confidence Interval</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
+</div>
 </div>
 </section></section>
 <section>
@@ -2139,12 +2560,12 @@ IPUMS PMA Data Workshop
 </div>
 <div class="fragment">
 <p>Machiyama et al. <span class="citation" data-cites="Machiyama2017-mp">(<a href="#/ref-Machiyama2017-mp" role="doc-biblioref" onclick="return false;">2017</a>)</span> propose a 5-part causal framework for unmet need.</p>
-<p><img data-src="images/causes.png" class="absolute" style="top: 400px; left: 150px; width: 800px; "></p>
+<p><img data-src="images/causes.png" class="absolute" style="top: 300px; left: 150px; width: 800px; "></p>
 </div>
 </section>
 <section id="reasons-surveyed-by-pma" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Reasons Surveyed by PMA</h2>
-<div class="fragment">
+<div class="fragment" style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;">
 <pre><code style="padding-bottom: 1em; color: black;">
 Can you tell me why you are not using 
 a method to prevent pregnancy?
@@ -2185,6 +2606,7 @@ Recoding
 </section>
 <section id="reasons-surveyed-by-pma-1" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Reasons Surveyed by PMA</h2>
+<div style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;">
 <pre><code style="padding-bottom: 1em; color: black;">
 Can you tell me why you are not using 
 a method to prevent pregnancy?
@@ -2214,6 +2636,7 @@ a method to prevent pregnancy?
 <pre><code style="padding: 0; color: black;">[] Other</code></pre>
 <pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
 <pre><code style="padding: 0; color: black;">[] No response</code></pre>
+</div>
 <div style="position: absolute; top: 25%; left: 50%;">
 <h3>
 Recoding
@@ -2225,6 +2648,7 @@ Low risk of becoming pregnant
 </section>
 <section id="reasons-surveyed-by-pma-2" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Reasons Surveyed by PMA</h2>
+<div style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;">
 <pre><code style="padding-bottom: 1em; color: black;">
 Can you tell me why you are not using 
 a method to prevent pregnancy?
@@ -2254,6 +2678,7 @@ a method to prevent pregnancy?
 <pre><code style="padding: 0; color: black;">[] Other</code></pre>
 <pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
 <pre><code style="padding: 0; color: black;">[] No response</code></pre>
+</div>
 <div style="position: absolute; top: 25%; left: 50%;">
 <h3>
 Recoding
@@ -2268,6 +2693,7 @@ Opposition or prohibition
 </section>
 <section id="reasons-surveyed-by-pma-3" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Reasons Surveyed by PMA</h2>
+<div style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;">
 <pre><code style="padding-bottom: 1em; color: black;">
 Can you tell me why you are not using 
 a method to prevent pregnancy?
@@ -2297,6 +2723,7 @@ a method to prevent pregnancy?
 <pre><code style="padding: 0; color: black;">[] Other</code></pre>
 <pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
 <pre><code style="padding: 0; color: black;">[] No response</code></pre>
+</div>
 <div style="position: absolute; top: 25%; left: 50%;">
 <h3>
 Recoding
@@ -2347,82 +2774,61 @@ Other / Unknown
 Popularity of Reasons For Phase 1 Unmet Need
 </h3>
 
-<img data-src="r_slides_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+<img data-src="stata_slides_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section>
 <section id="recoding" class="slide level2">
 <h2>Recoding</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb7-3"><a href="#cb7-3"></a>    <span class="fu">across</span>(</span>
-<span id="cb7-4"><a href="#cb7-4"></a>      <span class="fu">c</span>(<span class="fu">starts_with</span>(<span class="st">"UNMETYN"</span>), <span class="fu">starts_with</span>(<span class="st">"FPYNOT"</span>), <span class="fu">starts_with</span>(<span class="st">"PREGNANT"</span>)),</span>
-<span id="cb7-5"><a href="#cb7-5"></a>      <span class="sc">~</span>.x <span class="sc">==</span> <span class="dv">1</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a>    ),</span>
-<span id="cb7-7"><a href="#cb7-7"></a>    <span class="at">FPYOPPOSED =</span> <span class="fu">if_any</span>(<span class="fu">c</span>(FPYNOTRELIG_1, FPYNOTOPPF_1, FPYNOTFATE_1,</span>
-<span id="cb7-8"><a href="#cb7-8"></a>                          FPYNOTOPPH_1, FPYNOTOPPO_1, FPYNOTSIDEF_1,</span>
-<span id="cb7-9"><a href="#cb7-9"></a>                          FPYNOTSDHLTH_1,  FPYNOTCONV_1, FPYNOTBODY_1)),</span>
-<span id="cb7-10"><a href="#cb7-10"></a>    <span class="at">FPYMETHOD =</span> <span class="fu">if_any</span>(<span class="fu">c</span>(FPYNOTFAR_1, FPYNOTCOST_1, FPYNOTKNO_1,</span>
-<span id="cb7-11"><a href="#cb7-11"></a>                      FPYNOTSRC_1, FPYNOTAVAIL_1, FPYNOTAVAILP_1, </span>
-<span id="cb7-12"><a href="#cb7-12"></a>                      PREGNANT_1)),</span>
-<span id="cb7-13"><a href="#cb7-13"></a>    <span class="at">FPYLOWRISK =</span> <span class="fu">if_any</span>(<span class="fu">c</span>(FPYNOTBSTFD_1, FPYNOTHSBAWAY_1, FPYNOTMENO_1,</span>
-<span id="cb7-14"><a href="#cb7-14"></a>                       FPYNOTAMEN_1, FPYNOTNOSEX_1, FPYNOTMAR_1, FPYNOTINF_1</span>
-<span id="cb7-15"><a href="#cb7-15"></a>                       )),</span>
-<span id="cb7-16"><a href="#cb7-16"></a>    <span class="at">FPYOTHER =</span> UNMETYN_1 <span class="sc">&amp;</span> <span class="sc">!</span>FPYOPPOSED <span class="sc">&amp;</span> <span class="sc">!</span>FPYMETHOD <span class="sc">&amp;</span> <span class="sc">!</span>FPYLOWRISK,</span>
-<span id="cb7-17"><a href="#cb7-17"></a>    <span class="fu">across</span>(</span>
-<span id="cb7-18"><a href="#cb7-18"></a>      <span class="fu">c</span>(FPYOPPOSED, FPYMETHOD, FPYLOWRISK),</span>
-<span id="cb7-19"><a href="#cb7-19"></a>      <span class="sc">~</span><span class="fu">if_else</span>(UNMETYN_1, .x, <span class="cn">FALSE</span>)</span>
-<span id="cb7-20"><a href="#cb7-20"></a>    )</span>
-<span id="cb7-21"><a href="#cb7-21"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="recoded-reasons-by-country" class="slide level2">
-<h2>Recoded Reasons by Country</h2>
 <div class="columns">
-<div class="column" style="width:50%;">
+<div class="column" style="width:52%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>dat <span class="sc">%&gt;%</span> </span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">filter</span>(UNMETYN_1) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">as_survey_design</span>(</span>
-<span id="cb8-4"><a href="#cb8-4"></a>    <span class="at">weight =</span> PANELWEIGHT, </span>
-<span id="cb8-5"><a href="#cb8-5"></a>    <span class="at">id =</span> EAID_1, </span>
-<span id="cb8-6"><a href="#cb8-6"></a>    <span class="at">strata =</span> STRATA_1</span>
-<span id="cb8-7"><a href="#cb8-7"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">tbl_svysummary</span>(</span>
-<span id="cb8-9"><a href="#cb8-9"></a>    <span class="at">by =</span> COUNTRY, </span>
-<span id="cb8-10"><a href="#cb8-10"></a>    <span class="at">include =</span> <span class="fu">c</span>(</span>
-<span id="cb8-11"><a href="#cb8-11"></a>      FPYOPPOSED, </span>
-<span id="cb8-12"><a href="#cb8-12"></a>      FPYMETHOD, </span>
-<span id="cb8-13"><a href="#cb8-13"></a>      FPYLOWRISK, </span>
-<span id="cb8-14"><a href="#cb8-14"></a>      FPYOTHER</span>
-<span id="cb8-15"><a href="#cb8-15"></a>    ), </span>
-<span id="cb8-16"><a href="#cb8-16"></a>    <span class="at">label =</span> <span class="fu">list</span>(</span>
-<span id="cb8-17"><a href="#cb8-17"></a>      FPYOPPOSED <span class="sc">~</span> <span class="st">"Opposition or prohibition"</span>, </span>
-<span id="cb8-18"><a href="#cb8-18"></a>      FPYMETHOD <span class="sc">~</span> <span class="st">"Method access"</span>,</span>
-<span id="cb8-19"><a href="#cb8-19"></a>      FPYLOWRISK <span class="sc">~</span> <span class="st">"Low risk of becoming pregnant"</span>,</span>
-<span id="cb8-20"><a href="#cb8-20"></a>      FPYOTHER <span class="sc">~</span> <span class="st">"Other / Unknown Reason"</span></span>
-<span id="cb8-21"><a href="#cb8-21"></a>    ),</span>
-<span id="cb8-22"><a href="#cb8-22"></a>    <span class="at">statistic =</span> <span class="fu">list</span>(<span class="fu">everything</span>() <span class="sc">~</span> <span class="st">"{p}%"</span>)</span>
-<span id="cb8-23"><a href="#cb8-23"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-24"><a href="#cb8-24"></a>  <span class="fu">modify_header</span>(<span class="at">update =</span> <span class="fu">list</span>(</span>
-<span id="cb8-25"><a href="#cb8-25"></a>      label <span class="sc">~</span> <span class="st">" "</span>, </span>
-<span id="cb8-26"><a href="#cb8-26"></a>      stat_1 <span class="sc">~</span> <span class="st">"Burkina Faso"</span>, </span>
-<span id="cb8-27"><a href="#cb8-27"></a>      stat_2 <span class="sc">~</span> <span class="st">"Kenya"</span></span>
-<span id="cb8-28"><a href="#cb8-28"></a>  )) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-29"><a href="#cb8-29"></a>  <span class="fu">modify_footnote</span>(</span>
-<span id="cb8-30"><a href="#cb8-30"></a>    <span class="fu">c</span>(stat_1, stat_2) <span class="sc">~</span> <span class="st">"Weighted Percent"</span></span>
-<span id="cb8-31"><a href="#cb8-31"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div><div class="column" style="width:5%;">
 
-</div><div class="column" style="width:45%;">
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1"></a>foreach var of varlist fpynot<span class="op">*</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>  replace `var' <span class="op">=</span> <span class="dv">0</span> <span class="cf">if</span> unmetyn_1 <span class="op">==</span> <span class="dv">1</span> <span class="op">&amp;</span> `var' <span class="op">==</span> <span class="dv">99</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>  recode `var' <span class="op">(</span><span class="dv">0</span><span class="op">=</span><span class="dv">0</span><span class="op">)</span> <span class="op">(</span><span class="dv">1</span><span class="op">=</span><span class="dv">1</span><span class="op">)</span> <span class="op">(</span><span class="cf">else</span><span class="op">=</span><span class="dv">0</span><span class="op">)</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="op">}</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a></span>
+<span id="cb15-6"><a href="#cb15-6"></a>replace pregnant_1 <span class="op">=</span> <span class="dv">0</span> <span class="cf">if</span> pregnant_1 <span class="op">&gt;</span> <span class="dv">90</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a></span>
+<span id="cb15-8"><a href="#cb15-8"></a></span>
+<span id="cb15-9"><a href="#cb15-9"></a>egen fpyopposed <span class="op">=</span> rowmax<span class="op">(</span>fpynotrelig_1 fpynotoppf_1 fpynotfate_1 <span class="co">/// </span></span>
+<span id="cb15-10"><a href="#cb15-10"></a>  fpynotopph_1 fpynotoppo_1 fpynotsidef_1 fpynotsdhlth_1 <span class="co">///</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a>  fpynotconv_1 fpynotbody_1<span class="op">)</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a>replace fpyopposed <span class="op">=</span> <span class="dv">0</span> <span class="cf">if</span> unmetyn_1 <span class="op">!=</span> <span class="dv">1</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a>  </span>
+<span id="cb15-14"><a href="#cb15-14"></a>  </span>
+<span id="cb15-15"><a href="#cb15-15"></a>egen fpymethod <span class="op">=</span> rowmax<span class="op">(</span>fpynotfar_1 fpynotcost_1 fpynotkno_1 <span class="co">/// </span></span>
+<span id="cb15-16"><a href="#cb15-16"></a>  fpynotsrc_1 fpynotavail_1 fpynotavailp_1 pregnant_1<span class="op">)</span></span>
+<span id="cb15-17"><a href="#cb15-17"></a>replace fpymethod <span class="op">=</span> <span class="dv">0</span> <span class="cf">if</span> unmetyn_1 <span class="op">!=</span> <span class="dv">1</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a>    </span>
+<span id="cb15-19"><a href="#cb15-19"></a>    </span>
+<span id="cb15-20"><a href="#cb15-20"></a>egen fpylowrisk <span class="op">=</span> rowmax<span class="op">(</span>fpynotbstfd_1 fpynothsbaway_1 <span class="co">///</span></span>
+<span id="cb15-21"><a href="#cb15-21"></a>  fpynotmeno_1 fpynotamen_1 fpynotnosex_1 <span class="co">///</span></span>
+<span id="cb15-22"><a href="#cb15-22"></a>  fpynotmar_1 fpynotinf_1<span class="op">)</span></span>
+<span id="cb15-23"><a href="#cb15-23"></a>replace fpylowrisk <span class="op">=</span> <span class="dv">0</span> <span class="cf">if</span> unmetyn_1 <span class="op">!=</span> <span class="dv">1</span></span>
+<span id="cb15-24"><a href="#cb15-24"></a></span>
+<span id="cb15-25"><a href="#cb15-25"></a></span>
+<span id="cb15-26"><a href="#cb15-26"></a>gen fpyother <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb15-27"><a href="#cb15-27"></a>replace fpyother <span class="op">=</span> <span class="dv">1</span> <span class="cf">if</span> unmetyn_1 <span class="op">==</span> <span class="dv">1</span> <span class="op">&amp;</span> fpyopposed <span class="op">!=</span><span class="dv">1</span> <span class="op">&amp;</span> <span class="co">///</span></span>
+<span id="cb15-28"><a href="#cb15-28"></a>  fpymethod <span class="op">!=</span><span class="dv">1</span> <span class="op">&amp;</span> fpylowrisk <span class="op">!=</span><span class="dv">1</span></span>
+<span id="cb15-29"><a href="#cb15-29"></a></span>
+<span id="cb15-30"><a href="#cb15-30"></a></span>
+<span id="cb15-31"><a href="#cb15-31"></a><span class="op">*</span> Check results </span>
+<span id="cb15-32"><a href="#cb15-32"></a>tabstat fpyopposed fpymethod fpylowrisk fpyother <span class="co">///</span></span>
+<span id="cb15-33"><a href="#cb15-33"></a>  <span class="cf">if</span> unmetyn_1 <span class="op">==</span> <span class="dv">1</span> <span class="op">[</span>weight<span class="op">=</span>panelweight<span class="op">],</span> by<span class="op">(</span>country<span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div><div class="column" style="width:3%;">
+
+</div><div class="column" style="position: absolute; top: 20%;">
 <div class="cell">
 <div class="cell-output-display">
 
-<div id="camaoepevq" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="pojjgzwmmv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#camaoepevq .gt_table {
+#pojjgzwmmv .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2447,7 +2853,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-left-color: #D3D3D3;
 }
 
-#camaoepevq .gt_heading {
+#pojjgzwmmv .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2459,7 +2865,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-right-color: #D3D3D3;
 }
 
-#camaoepevq .gt_title {
+#pojjgzwmmv .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2471,7 +2877,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-bottom-width: 0;
 }
 
-#camaoepevq .gt_subtitle {
+#pojjgzwmmv .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2483,13 +2889,13 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-top-width: 0;
 }
 
-#camaoepevq .gt_bottom_border {
+#pojjgzwmmv .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#camaoepevq .gt_col_headings {
+#pojjgzwmmv .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2504,7 +2910,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-right-color: #D3D3D3;
 }
 
-#camaoepevq .gt_col_heading {
+#pojjgzwmmv .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2524,7 +2930,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   overflow-x: hidden;
 }
 
-#camaoepevq .gt_column_spanner_outer {
+#pojjgzwmmv .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2536,15 +2942,15 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 4px;
 }
 
-#camaoepevq .gt_column_spanner_outer:first-child {
+#pojjgzwmmv .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#camaoepevq .gt_column_spanner_outer:last-child {
+#pojjgzwmmv .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#camaoepevq .gt_column_spanner {
+#pojjgzwmmv .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2556,7 +2962,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   width: 100%;
 }
 
-#camaoepevq .gt_group_heading {
+#pojjgzwmmv .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2581,7 +2987,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   vertical-align: middle;
 }
 
-#camaoepevq .gt_empty_group_heading {
+#pojjgzwmmv .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2596,15 +3002,15 @@ Popularity of Reasons For Phase 1 Unmet Need
   vertical-align: middle;
 }
 
-#camaoepevq .gt_from_md > :first-child {
+#pojjgzwmmv .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#camaoepevq .gt_from_md > :last-child {
+#pojjgzwmmv .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#camaoepevq .gt_row {
+#pojjgzwmmv .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2623,7 +3029,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   overflow-x: hidden;
 }
 
-#camaoepevq .gt_stub {
+#pojjgzwmmv .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2636,7 +3042,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 5px;
 }
 
-#camaoepevq .gt_stub_row_group {
+#pojjgzwmmv .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2650,11 +3056,11 @@ Popularity of Reasons For Phase 1 Unmet Need
   vertical-align: top;
 }
 
-#camaoepevq .gt_row_group_first td {
+#pojjgzwmmv .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#camaoepevq .gt_summary_row {
+#pojjgzwmmv .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2664,16 +3070,16 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 5px;
 }
 
-#camaoepevq .gt_first_summary_row {
+#pojjgzwmmv .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#camaoepevq .gt_first_summary_row.thick {
+#pojjgzwmmv .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#camaoepevq .gt_last_summary_row {
+#pojjgzwmmv .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2683,7 +3089,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-bottom-color: #D3D3D3;
 }
 
-#camaoepevq .gt_grand_summary_row {
+#pojjgzwmmv .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2693,7 +3099,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 5px;
 }
 
-#camaoepevq .gt_first_grand_summary_row {
+#pojjgzwmmv .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2703,11 +3109,11 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-top-color: #D3D3D3;
 }
 
-#camaoepevq .gt_striped {
+#pojjgzwmmv .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#camaoepevq .gt_table_body {
+#pojjgzwmmv .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2716,7 +3122,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-bottom-color: #D3D3D3;
 }
 
-#camaoepevq .gt_footnotes {
+#pojjgzwmmv .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2730,7 +3136,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-right-color: #D3D3D3;
 }
 
-#camaoepevq .gt_footnote {
+#pojjgzwmmv .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -2739,7 +3145,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 5px;
 }
 
-#camaoepevq .gt_sourcenotes {
+#pojjgzwmmv .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2753,7 +3159,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-right-color: #D3D3D3;
 }
 
-#camaoepevq .gt_sourcenote {
+#pojjgzwmmv .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2761,68 +3167,71 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 5px;
 }
 
-#camaoepevq .gt_left {
+#pojjgzwmmv .gt_left {
   text-align: left;
 }
 
-#camaoepevq .gt_center {
+#pojjgzwmmv .gt_center {
   text-align: center;
 }
 
-#camaoepevq .gt_right {
+#pojjgzwmmv .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#camaoepevq .gt_font_normal {
+#pojjgzwmmv .gt_font_normal {
   font-weight: normal;
 }
 
-#camaoepevq .gt_font_bold {
+#pojjgzwmmv .gt_font_bold {
   font-weight: bold;
 }
 
-#camaoepevq .gt_font_italic {
+#pojjgzwmmv .gt_font_italic {
   font-style: italic;
 }
 
-#camaoepevq .gt_super {
+#pojjgzwmmv .gt_super {
   font-size: 65%;
 }
 
-#camaoepevq .gt_footnote_marks {
+#pojjgzwmmv .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#camaoepevq .gt_asterisk {
+#pojjgzwmmv .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#camaoepevq .gt_indent_1 {
+#pojjgzwmmv .gt_indent_1 {
   text-indent: 5px;
 }
 
-#camaoepevq .gt_indent_2 {
+#pojjgzwmmv .gt_indent_2 {
   text-indent: 10px;
 }
 
-#camaoepevq .gt_indent_3 {
+#pojjgzwmmv .gt_indent_3 {
   text-indent: 15px;
 }
 
-#camaoepevq .gt_indent_4 {
+#pojjgzwmmv .gt_indent_4 {
   text-indent: 20px;
 }
 
-#camaoepevq .gt_indent_5 {
+#pojjgzwmmv .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table">
+  <caption><h3>Phase 1 Reasons</h3>
+<h3>for Unmet Need</h3>
+</caption>
   
   <thead class="gt_col_headings">
     <tr>
@@ -2848,80 +3257,50 @@ Popularity of Reasons For Phase 1 Unmet Need
   
   <tfoot class="gt_footnotes">
     <tr>
-      <td class="gt_footnote" colspan="3"><sup class="gt_footnote_marks">1</sup> Weighted Percent</td>
+      <td class="gt_footnote" colspan="3"><sup class="gt_footnote_marks">1</sup> Weighted Percent; Women could list multiple reasons</td>
     </tr>
   </tfoot>
 </table>
 </div>
 </div>
 </div>
-<p>Reminder: women could give more than one reason!</p>
 </div>
 </div>
 </section>
-<section id="model" class="slide level2">
-<h2>Model</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>models <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
-<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">group_by</span>(COUNTRY) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb9-4"><a href="#cb9-4"></a>    <span class="at">glm =</span> <span class="fu">cur_data</span>() <span class="sc">%&gt;%</span>  </span>
-<span id="cb9-5"><a href="#cb9-5"></a>      <span class="fu">as_survey_design</span>(<span class="at">weight =</span> PANELWEIGHT, <span class="at">id =</span> EAID_1, <span class="at">strata =</span> STRATA_1) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-6"><a href="#cb9-6"></a>      <span class="fu">svyglm</span>(</span>
-<span id="cb9-7"><a href="#cb9-7"></a>        <span class="at">formula =</span> UNMETYN_2 <span class="sc">~</span> FPYOPPOSED <span class="sc">+</span> FPYMETHOD <span class="sc">+</span> FPYLOWRISK <span class="sc">+</span> UNMETYN_1,</span>
-<span id="cb9-8"><a href="#cb9-8"></a>        <span class="at">family =</span> <span class="st">"quasibinomial"</span>,</span>
-<span id="cb9-9"><a href="#cb9-9"></a>        <span class="at">design =</span> .</span>
-<span id="cb9-10"><a href="#cb9-10"></a>      ) <span class="sc">%&gt;%</span> </span>
-<span id="cb9-11"><a href="#cb9-11"></a>      <span class="fu">list</span>()</span>
-<span id="cb9-12"><a href="#cb9-12"></a>  ) </span>
-<span id="cb9-13"><a href="#cb9-13"></a></span>
-<span id="cb9-14"><a href="#cb9-14"></a>models</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 2
-  COUNTRY      glm     
-  &lt;chr&gt;        &lt;list&gt;  
-1 Burkina Faso &lt;svyglm&gt;
-2 Kenya        &lt;svyglm&gt;</code></pre>
-</div>
-</div>
-</section>
-<section id="results-1" class="slide level2">
-<h2>Results</h2>
+<section id="logistic-regression-2" class="slide level2">
+<h2>Logistic Regression</h2>
 <div class="columns">
-<div class="column" style="width:60%;">
+<div class="column" style="width:45%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>models<span class="sc">$</span>glm <span class="sc">%&gt;%</span> </span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">map2</span>(models<span class="sc">$</span>COUNTRY,</span>
-<span id="cb11-3"><a href="#cb11-3"></a>    <span class="sc">~</span>.x <span class="sc">%&gt;%</span> </span>
-<span id="cb11-4"><a href="#cb11-4"></a>      <span class="fu">tbl_regression</span>(</span>
-<span id="cb11-5"><a href="#cb11-5"></a>        <span class="at">exp =</span> <span class="cn">TRUE</span>, <span class="at">show_single_row =</span> <span class="fu">where</span>(is.logical),</span>
-<span id="cb11-6"><a href="#cb11-6"></a>        <span class="at">pvalue_fun =</span> <span class="sc">~</span><span class="fu">style_pvalue</span>(.x, <span class="at">digits =</span> <span class="dv">2</span>),</span>
-<span id="cb11-7"><a href="#cb11-7"></a>        <span class="at">label =</span> <span class="fu">list</span>(</span>
-<span id="cb11-8"><a href="#cb11-8"></a>          FPYOPPOSED <span class="sc">~</span> <span class="st">"Opposition or prohibition"</span>, </span>
-<span id="cb11-9"><a href="#cb11-9"></a>          FPYMETHOD <span class="sc">~</span> <span class="st">"Method access"</span>,</span>
-<span id="cb11-10"><a href="#cb11-10"></a>          FPYLOWRISK <span class="sc">~</span> <span class="st">"Low risk of becoming pregnant"</span>,</span>
-<span id="cb11-11"><a href="#cb11-11"></a>          UNMETYN_1 <span class="sc">~</span> <span class="st">"Unmet Need"</span></span>
-<span id="cb11-12"><a href="#cb11-12"></a>        )</span>
-<span id="cb11-13"><a href="#cb11-13"></a>      ) <span class="sc">%&gt;%</span></span>
-<span id="cb11-14"><a href="#cb11-14"></a>      <span class="fu">add_significance_stars</span>(<span class="at">hide_se =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-15"><a href="#cb11-15"></a>      <span class="fu">modify_header</span>(<span class="at">update =</span> <span class="fu">list</span>(label <span class="sc">~</span> <span class="st">" "</span>, <span class="at">estimate =</span> .y)) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-16"><a href="#cb11-16"></a>      <span class="fu">modify_footnote</span>(estimate <span class="sc">~</span> <span class="cn">NA</span>, <span class="at">abbreviation =</span> <span class="cn">TRUE</span>) </span>
-<span id="cb11-17"><a href="#cb11-17"></a>  ) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-18"><a href="#cb11-18"></a>  <span class="fu">tbl_merge</span>(<span class="at">tab_spanner =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-19"><a href="#cb11-19"></a>  <span class="fu">modify_caption</span>(<span class="st">"### Odds Ratios for Phase 2 Unmet Need"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<div class="fragment">
+<p>Burkina Faso</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1"></a>svy<span class="op">:</span> logit unmetyn_2 fpyopposed fpymethod fpylowrisk <span class="co">///</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>  unmetyn_1 <span class="cf">if</span> country <span class="op">==</span> <span class="dv">1</span><span class="op">,</span> or</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p>Kenya</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1"></a>svy<span class="op">:</span> logit unmetyn_2 fpyopposed fpymethod fpylowrisk <span class="co">///</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>  unmetyn_1 <span class="cf">if</span> country <span class="op">==</span> <span class="dv">7</span><span class="op">,</span> or</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 </div><div class="column" style="width:5%;">
 
-</div><div class="column" style="width:35%;">
+</div><div class="column" style="position: absolute; top: 20%;">
+<div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
 
-<div id="yqegyvrcul" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="metzgkkhrg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>html {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#yqegyvrcul .gt_table {
+#metzgkkhrg .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -2946,7 +3325,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-left-color: #D3D3D3;
 }
 
-#yqegyvrcul .gt_heading {
+#metzgkkhrg .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2958,7 +3337,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-right-color: #D3D3D3;
 }
 
-#yqegyvrcul .gt_title {
+#metzgkkhrg .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2970,7 +3349,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-bottom-width: 0;
 }
 
-#yqegyvrcul .gt_subtitle {
+#metzgkkhrg .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2982,13 +3361,13 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-top-width: 0;
 }
 
-#yqegyvrcul .gt_bottom_border {
+#metzgkkhrg .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#yqegyvrcul .gt_col_headings {
+#metzgkkhrg .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3003,7 +3382,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-right-color: #D3D3D3;
 }
 
-#yqegyvrcul .gt_col_heading {
+#metzgkkhrg .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3023,7 +3402,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   overflow-x: hidden;
 }
 
-#yqegyvrcul .gt_column_spanner_outer {
+#metzgkkhrg .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3035,15 +3414,15 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 4px;
 }
 
-#yqegyvrcul .gt_column_spanner_outer:first-child {
+#metzgkkhrg .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#yqegyvrcul .gt_column_spanner_outer:last-child {
+#metzgkkhrg .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#yqegyvrcul .gt_column_spanner {
+#metzgkkhrg .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3055,7 +3434,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   width: 100%;
 }
 
-#yqegyvrcul .gt_group_heading {
+#metzgkkhrg .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3080,7 +3459,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   vertical-align: middle;
 }
 
-#yqegyvrcul .gt_empty_group_heading {
+#metzgkkhrg .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3095,15 +3474,15 @@ Popularity of Reasons For Phase 1 Unmet Need
   vertical-align: middle;
 }
 
-#yqegyvrcul .gt_from_md > :first-child {
+#metzgkkhrg .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#yqegyvrcul .gt_from_md > :last-child {
+#metzgkkhrg .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#yqegyvrcul .gt_row {
+#metzgkkhrg .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3122,7 +3501,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   overflow-x: hidden;
 }
 
-#yqegyvrcul .gt_stub {
+#metzgkkhrg .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3135,7 +3514,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 5px;
 }
 
-#yqegyvrcul .gt_stub_row_group {
+#metzgkkhrg .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3149,11 +3528,11 @@ Popularity of Reasons For Phase 1 Unmet Need
   vertical-align: top;
 }
 
-#yqegyvrcul .gt_row_group_first td {
+#metzgkkhrg .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#yqegyvrcul .gt_summary_row {
+#metzgkkhrg .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3163,16 +3542,16 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 5px;
 }
 
-#yqegyvrcul .gt_first_summary_row {
+#metzgkkhrg .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#yqegyvrcul .gt_first_summary_row.thick {
+#metzgkkhrg .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#yqegyvrcul .gt_last_summary_row {
+#metzgkkhrg .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3182,7 +3561,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-bottom-color: #D3D3D3;
 }
 
-#yqegyvrcul .gt_grand_summary_row {
+#metzgkkhrg .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3192,7 +3571,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 5px;
 }
 
-#yqegyvrcul .gt_first_grand_summary_row {
+#metzgkkhrg .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3202,11 +3581,11 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-top-color: #D3D3D3;
 }
 
-#yqegyvrcul .gt_striped {
+#metzgkkhrg .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#yqegyvrcul .gt_table_body {
+#metzgkkhrg .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3215,7 +3594,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-bottom-color: #D3D3D3;
 }
 
-#yqegyvrcul .gt_footnotes {
+#metzgkkhrg .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3229,7 +3608,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-right-color: #D3D3D3;
 }
 
-#yqegyvrcul .gt_footnote {
+#metzgkkhrg .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -3238,7 +3617,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 5px;
 }
 
-#yqegyvrcul .gt_sourcenotes {
+#metzgkkhrg .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3252,7 +3631,7 @@ Popularity of Reasons For Phase 1 Unmet Need
   border-right-color: #D3D3D3;
 }
 
-#yqegyvrcul .gt_sourcenote {
+#metzgkkhrg .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3260,112 +3639,625 @@ Popularity of Reasons For Phase 1 Unmet Need
   padding-right: 5px;
 }
 
-#yqegyvrcul .gt_left {
+#metzgkkhrg .gt_left {
   text-align: left;
 }
 
-#yqegyvrcul .gt_center {
+#metzgkkhrg .gt_center {
   text-align: center;
 }
 
-#yqegyvrcul .gt_right {
+#metzgkkhrg .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#yqegyvrcul .gt_font_normal {
+#metzgkkhrg .gt_font_normal {
   font-weight: normal;
 }
 
-#yqegyvrcul .gt_font_bold {
+#metzgkkhrg .gt_font_bold {
   font-weight: bold;
 }
 
-#yqegyvrcul .gt_font_italic {
+#metzgkkhrg .gt_font_italic {
   font-style: italic;
 }
 
-#yqegyvrcul .gt_super {
+#metzgkkhrg .gt_super {
   font-size: 65%;
 }
 
-#yqegyvrcul .gt_footnote_marks {
+#metzgkkhrg .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#yqegyvrcul .gt_asterisk {
+#metzgkkhrg .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#yqegyvrcul .gt_indent_1 {
+#metzgkkhrg .gt_indent_1 {
   text-indent: 5px;
 }
 
-#yqegyvrcul .gt_indent_2 {
+#metzgkkhrg .gt_indent_2 {
   text-indent: 10px;
 }
 
-#yqegyvrcul .gt_indent_3 {
+#metzgkkhrg .gt_indent_3 {
   text-indent: 15px;
 }
 
-#yqegyvrcul .gt_indent_4 {
+#metzgkkhrg .gt_indent_4 {
   text-indent: 20px;
 }
 
-#yqegyvrcul .gt_indent_5 {
+#metzgkkhrg .gt_indent_5 {
   text-indent: 25px;
+}
+
+.gt_table_body {
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 </style>
 <table class="gt_table">
-  <caption><h3>Odds Ratios for Phase 2 Unmet Need</h3>
+  <caption><h3>Phase 2 Unmet Need</h3>
+<h3>Odds Ratios</h3>
 </caption>
   
   <thead class="gt_col_headings">
     <tr>
       <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"></th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Burkina Faso<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">95% CI<sup class="gt_footnote_marks">2</sup></th>
       <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Kenya<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">95% CI<sup class="gt_footnote_marks">2</sup></th>
     </tr>
   </thead>
   <tbody class="gt_table_body">
-    <tr><td class="gt_row gt_left">Opposition or prohibition</td>
+    <tr><td class="gt_row gt_left">(Intercept)</td>
+<td class="gt_row gt_center">0.14***</td>
+<td class="gt_row gt_center">0.12, 0.17</td>
+<td class="gt_row gt_center">0.09***</td>
+<td class="gt_row gt_center">0.08, 0.10</td></tr>
+    <tr><td class="gt_row gt_left">Opposition or 
+  prohibition</td>
 <td class="gt_row gt_center">1.55*</td>
-<td class="gt_row gt_center">1.77*</td></tr>
+<td class="gt_row gt_center">1.10, 2.19</td>
+<td class="gt_row gt_center">1.77*</td>
+<td class="gt_row gt_center">1.14, 2.73</td></tr>
     <tr><td class="gt_row gt_left">Method access</td>
 <td class="gt_row gt_center">1.88</td>
-<td class="gt_row gt_center">0.84</td></tr>
-    <tr><td class="gt_row gt_left">Low risk of becoming pregnant</td>
+<td class="gt_row gt_center">0.99, 3.59</td>
+<td class="gt_row gt_center">0.84</td>
+<td class="gt_row gt_center">0.48, 1.45</td></tr>
+    <tr><td class="gt_row gt_left">Low risk of 
+  becoming pregnant</td>
 <td class="gt_row gt_center">1.44</td>
-<td class="gt_row gt_center">0.77</td></tr>
+<td class="gt_row gt_center">0.91, 2.29</td>
+<td class="gt_row gt_center">0.77</td>
+<td class="gt_row gt_center">0.52, 1.14</td></tr>
     <tr><td class="gt_row gt_left">Unmet Need</td>
 <td class="gt_row gt_center">2.78***</td>
-<td class="gt_row gt_center">3.61***</td></tr>
+<td class="gt_row gt_center">1.90, 4.06</td>
+<td class="gt_row gt_center">3.61***</td>
+<td class="gt_row gt_center">2.34, 5.58</td></tr>
   </tbody>
   
   <tfoot class="gt_footnotes">
     <tr>
-      <td class="gt_footnote" colspan="3"><sup class="gt_footnote_marks">1</sup> *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</td>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">1</sup> *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</td>
+    </tr>
+    <tr>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">2</sup> CI = Confidence Interval</td>
     </tr>
   </tfoot>
 </table>
 </div>
 </div>
 </div>
-</div><div class="fragment">
+</div>
+</div>
+</div>
+</section>
+<section id="logistic-regression-3" class="slide level2">
+<h2>Logistic Regression</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="cell">
+
+</div>
+<p>Burkina Faso</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1"></a>svy<span class="op">:</span> logit unmetyn_2 fpyopposed fpymethod fpylowrisk <span class="co">///</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>  unmetyn_1 <span class="cf">if</span> country <span class="op">==</span> <span class="dv">1</span><span class="op">,</span> or</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Kenya</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource c number-lines code-with-copy"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1"></a>svy<span class="op">:</span> logit unmetyn_2 fpyopposed fpymethod fpylowrisk <span class="co">///</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>  unmetyn_1 <span class="cf">if</span> country <span class="op">==</span> <span class="dv">7</span><span class="op">,</span> or</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <p>Compared to women who gave no reason, women who were <strong>opposed</strong> to using family planning were <em>significantly</em> more likely to have Phase 2 unmet need.</p>
-</div><div class="fragment">
-<p>Women with <strong>method access</strong> issues - less clear!</p>
-</div><div class="fragment">
-<p>Women <strong>not at risk</strong> for becoming pregnant were:</p>
-<ul>
-<li class="fragment"><em>not significantly</em> more likely to have Phase 2 unmet need in Burkina Faso</li>
-<li class="fragment">significantly <em>less</em> likely to have Phase 2 unmet need in Kenya</li>
-</ul>
+<div class="fragment">
+<p>Women with <strong>method access</strong> issues or at <strong>low risk</strong> of becoming pregant - less clear!</p>
+</div>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="position: absolute; top: 20%;">
+<div class="cell">
+<div class="cell-output-display">
+
+<div id="kswxtyznca" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#kswxtyznca .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kswxtyznca .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kswxtyznca .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kswxtyznca .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kswxtyznca .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kswxtyznca .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kswxtyznca .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kswxtyznca .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kswxtyznca .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kswxtyznca .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kswxtyznca .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kswxtyznca .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kswxtyznca .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kswxtyznca .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kswxtyznca .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kswxtyznca .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kswxtyznca .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kswxtyznca .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#kswxtyznca .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#kswxtyznca .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kswxtyznca .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#kswxtyznca .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#kswxtyznca .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kswxtyznca .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kswxtyznca .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kswxtyznca .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kswxtyznca .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kswxtyznca .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kswxtyznca .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kswxtyznca .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kswxtyznca .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kswxtyznca .gt_left {
+  text-align: left;
+}
+
+#kswxtyznca .gt_center {
+  text-align: center;
+}
+
+#kswxtyznca .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kswxtyznca .gt_font_normal {
+  font-weight: normal;
+}
+
+#kswxtyznca .gt_font_bold {
+  font-weight: bold;
+}
+
+#kswxtyznca .gt_font_italic {
+  font-style: italic;
+}
+
+#kswxtyznca .gt_super {
+  font-size: 65%;
+}
+
+#kswxtyznca .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#kswxtyznca .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#kswxtyznca .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#kswxtyznca .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#kswxtyznca .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#kswxtyznca .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#kswxtyznca .gt_indent_5 {
+  text-indent: 25px;
+}
+
+.gt_table_body {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+</style>
+<table class="gt_table">
+  <caption><h3>Phase 2 Unmet Need</h3>
+<h3>Odds Ratios</h3>
+</caption>
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Burkina Faso<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">95% CI<sup class="gt_footnote_marks">2</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">Kenya<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1" scope="col">95% CI<sup class="gt_footnote_marks">2</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">(Intercept)</td>
+<td class="gt_row gt_center">0.14***</td>
+<td class="gt_row gt_center">0.12, 0.17</td>
+<td class="gt_row gt_center">0.09***</td>
+<td class="gt_row gt_center">0.08, 0.10</td></tr>
+    <tr><td class="gt_row gt_left">Opposition or 
+  prohibition</td>
+<td class="gt_row gt_center">1.55*</td>
+<td class="gt_row gt_center">1.10, 2.19</td>
+<td class="gt_row gt_center">1.77*</td>
+<td class="gt_row gt_center">1.14, 2.73</td></tr>
+    <tr><td class="gt_row gt_left">Method access</td>
+<td class="gt_row gt_center">1.88</td>
+<td class="gt_row gt_center">0.99, 3.59</td>
+<td class="gt_row gt_center">0.84</td>
+<td class="gt_row gt_center">0.48, 1.45</td></tr>
+    <tr><td class="gt_row gt_left">Low risk of 
+  becoming pregnant</td>
+<td class="gt_row gt_center">1.44</td>
+<td class="gt_row gt_center">0.91, 2.29</td>
+<td class="gt_row gt_center">0.77</td>
+<td class="gt_row gt_center">0.52, 1.14</td></tr>
+    <tr><td class="gt_row gt_left">Unmet Need</td>
+<td class="gt_row gt_center">2.78***</td>
+<td class="gt_row gt_center">1.90, 4.06</td>
+<td class="gt_row gt_center">3.61***</td>
+<td class="gt_row gt_center">2.34, 5.58</td></tr>
+  </tbody>
+  
+  <tfoot class="gt_footnotes">
+    <tr>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">1</sup> *p&lt;0.05; **p&lt;0.01; ***p&lt;0.001</td>
+    </tr>
+    <tr>
+      <td class="gt_footnote" colspan="5"><sup class="gt_footnote_marks">2</sup> CI = Confidence Interval</td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -3415,20 +4307,20 @@ Senderowicz, Leigh, and Nicole Maloney. 2022. <span>“Supply-Side Versus Demand
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="r_slides_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="stata_slides_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="r_slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="r_slides_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="r_slides_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="r_slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="r_slides_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="r_slides_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="stata_slides_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="stata_slides_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="stata_slides_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="stata_slides_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="stata_slides_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="stata_slides_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="r_slides_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="r_slides_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="r_slides_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="r_slides_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="stata_slides_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="stata_slides_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="stata_slides_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="stata_slides_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

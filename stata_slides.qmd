@@ -27,17 +27,18 @@ format:
     scrollable: false
     incremental: true
     preview-links: false
-    echo: true
     reference-location: document
     link-external-icon: true
+    echo: false
 bibliography: cites.bib
 
 ---
 
+
 ## Today's Goals 
 
   - Introduce measures of Unmet Need in PMA Panel Surveys
-  - Open an IPUMS PMA data extract in **R** 
+  - Open an IPUMS PMA data extract in **Stata** 
   - Explore women's reasons for Unmet Need in Phase 1 of the panel
   - Predict women's Unmet Need in Phase 2 of the panel 
   
@@ -125,13 +126,11 @@ PMA uses several different survey questions to determine which women are:
   - **No**
 :::
 
-# Unmet Need in R 
+# Unmet Need in Stata
 
 ## Setup 
 
 Our extract includes data from two phases of the panel study in **Burkina Faso** and **Kenya** (female respondents only). 
-
-We drop women who only completed one of the two interviews, and those who are not members of the *de facto* population. 
 
 ::: {.fragment}
 ```{r, results='hide'}
@@ -157,11 +156,42 @@ dat <- dat %>%
     RESIDENT_1 %in% c(11, 22) & RESIDENT_2 %in% c(11, 22)
   )
 ```
-
 ```{r, echo=FALSE}
 dat <- dat %>% filter(COUNTRY %in% c("Burkina Faso", "Kenya"))
 ```
+
+```{c, echo=TRUE, eval=FALSE}
+cd "C:\Users\krist108\Documents\krist108 stuff\ISRDI\ICFP 2022 workshop"
+use pma_00178.dta
+```
 :::
+
+::: {.fragment}
+We drop women who only completed one of the two interviews... 
+:::
+
+::: {.fragment}
+```{c, echo=TRUE, eval=FALSE}
+keep if resultfq_1 == 1 & resultfq_2 == 1
+```
+```
+(8,361 observations deleted)
+```
+:::
+
+::: {.fragment}
+and those who are not members of the *de facto* population. 
+:::
+
+::: {.fragment}
+```{c, echo=TRUE, eval=FALSE}
+keep if (resident_1 == 11 | resident_1 == 22) & (resident_2 == 11 | resident_2 == 22)
+```
+```
+(358 observations deleted)
+```
+:::
+
 
 ## Unmet Need by Country at Phase 1
 
@@ -171,34 +201,28 @@ dat <- dat %>% filter(COUNTRY %in% c("Burkina Faso", "Kenya"))
 
 [EAID_1](https://pma.ipums.org/pma-action/variables/EAID_1) and [STRATA_1](https://pma.ipums.org/pma-action/variables/STRATA_1) are the sample clusters and strata used to select households at Phase 1.
 
-```{r, echo = TRUE, eval = FALSE}
-dat %>% 
-  as_survey_design(
-    weight = PANELWEIGHT, 
-    id = EAID_1, 
-    strata = STRATA_1
-  ) %>% 
-  mutate(across(
-    c(UNMETNEED_1, UNMETYN_1), 
-    ~.x %>%  as_factor %>% fct_drop
-  )) %>% 
-  tbl_svysummary(
-    by = COUNTRY, 
-    include = c(UNMETNEED_1, UNMETYN_1), 
-    statistic = list(everything() ~ "{p}%")
-  ) %>% 
-  modify_header(
-    update = list(
-      label ~ " ", 
-      stat_1 ~ "Burkina Faso", 
-      stat_2 ~ "Kenya"
-    )
-  ) %>% 
-  modify_footnote(
-    c(stat_1, stat_2) ~ "Weighted Percent"
-  )
+```{c, echo=TRUE, eval=FALSE}
+svyset [pw=panelweight], psu(eaid_1) strata(strata_1)
+```
+
+Information from `svyset` can be used to produce **weighted percentages** like those shown to the right. (SEs would also be adjusted for cluster sampling). 
+
+```{c, echo=TRUE, eval=FALSE}
+svy: tab unmetneed_1 country, col
+
+svy: tab unmetyn_1 country, col
+```
+
+Note: we will set NIU cases to `missing` (see universe tab for details).
+
+```{c, echo=TRUE, eval=FALSE}
+replace unmetyn_1 = . if unmetyn_1 == 99
+```
+```
+(2 real changes made, 2 to missing)
 ```
 ::::
+
 :::: {.column width="50%"}
 ```{r, echo = FALSE, eval = TRUE}
 dat %>% 
@@ -224,32 +248,12 @@ dat %>%
 
 Panel members were found in the same study area again at Phase 2. 
 
-```{r, echo = TRUE, eval = FALSE, `code-line-numbers`="4,5,8,13"}
-dat %>% 
-  as_survey_design(
-    weight = PANELWEIGHT, 
-    id = EAID_1, 
-    strata = STRATA_1
-  ) %>% 
-  mutate(across(
-    c(UNMETNEED_2, UNMETYN_2), 
-    ~.x %>%  as_factor %>% fct_drop
-  )) %>% 
-  tbl_svysummary(
-    by = COUNTRY, 
-    include = c(UNMETNEED_2, UNMETYN_2), 
-    statistic = list(everything() ~ "{p}%")
-  ) %>% 
-  modify_header(
-    update = list(
-      label ~ " ", 
-      stat_1 ~ "Burkina Faso", 
-      stat_2 ~ "Kenya"
-    )
-  ) %>% 
-  modify_footnote(
-    c(stat_1, stat_2) ~ "Weighted Percent"
-  )
+No need to adjust `svyset`! 
+
+```{c, echo=TRUE, eval=FALSE}
+svy: tab unmetneed_2 country, col
+
+svy: tab unmetyn_2 country, col
 ```
 ::::
 :::: {.column width="50%"}
@@ -290,8 +294,11 @@ dat %>%
 How well can we predict **Phase 2 Unmet Need** if we only know whether a woman had **Phase 1 Unmet Need**? 
 :::
 
-## Logistic Regression 
+## Logistic Regression
 
+::: {.columns}
+
+:::: {.column width="40%"}
 ```{r}
 models <- dat %>% 
   mutate(across(matches("UNMETYN"), ~.x == 1)) %>% 
@@ -302,60 +309,106 @@ models <- dat %>%
       svyglm(UNMETYN_2 ~ UNMETYN_1, design = ., family = "quasibinomial") %>% 
       list()
   )
-
-models
 ```
 
-## Results 
+::::: {.fragment}
+Burkina Faso
 
-::: {.columns}
-:::: {.column width="60%"}
-```{r, echo=TRUE, eval=FALSE}
-models$glm %>% 
-  map2(models$COUNTRY,
-    ~.x %>% 
-      tbl_regression(
-        exponentiate = TRUE,
-        show_single_row = where(is.logical),
-        pvalue_fun = ~style_pvalue(.x, digits = 2),
-        label = list(UNMETYN_1 ~ "Phase 1 Unmet Need")
-      ) %>%
-      add_significance_stars(hide_se = TRUE) %>% 
-      modify_header(update = list(label ~ " ", estimate = .y)) %>% 
-      modify_footnote(estimate ~ NA, abbreviation = TRUE) 
-  ) %>% 
-  tbl_merge(tab_spanner = FALSE) %>% 
-  modify_caption("### Odds Ratios for Phase 2 Unmet Need")
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 unmetyn_1 if country == 1, or
 ```
+:::::
+
+::::: {.fragment}
+Kenya
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 unmetyn_1 if country == 7, or
+```
+:::::
 ::::
 :::: {.column width="5%"}
-::::
-:::: {.column width="35%"}
+:::: 
+:::: {.column width="55%" style="position: absolute; top: 20%;"}
+::::: {.fragment}
 ```{r, echo=FALSE}
 models$glm %>% 
   map2(models$COUNTRY,
     ~.x %>% 
       tbl_regression(
         exponentiate = TRUE,
+        intercept= TRUE,
         show_single_row = where(is.logical),
         pvalue_fun = ~style_pvalue(.x, digits = 2),
         label = list(UNMETYN_1 ~ "Phase 1 Unmet Need")
       ) %>%
-      add_significance_stars(hide_se = TRUE) %>% 
-      modify_header(update = list(label ~ " ", estimate = .y)) %>% 
+      add_significance_stars(hide_se = TRUE, hide_ci = T) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y, ci = "95% CI")) %>% 
       modify_footnote(estimate ~ NA, abbreviation = TRUE) 
   ) %>% 
   tbl_merge(tab_spanner = FALSE) %>% 
-  modify_caption("### Odds Ratios for Phase 2 Unmet Need")
+  modify_caption("### Phase 2 Unmet Need \n ### Odds Ratios")
+```
+::::: 
+::::
+:::
+
+## Logistic Regression
+
+::: {.columns}
+
+:::: {.column width="40%"}
+```{r}
+models <- dat %>% 
+  mutate(across(matches("UNMETYN"), ~.x == 1)) %>% 
+  group_by(COUNTRY) %>% 
+  summarise(
+    glm = cur_data() %>% 
+      as_survey_design(weight = PANELWEIGHT, id = EAID_1, strata = STRATA_1) %>% 
+      svyglm(UNMETYN_2 ~ UNMETYN_1, design = ., family = "quasibinomial") %>% 
+      list()
+  )
+```
+
+Burkina Faso
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 unmetyn_1 if country == 1, or
+```
+
+Kenya
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 unmetyn_1 if country == 7, or
+```
+
+Phase 1 Unmet Need is a significant predictor of Unmet Need at Phase 2. 
+
+Women with Unmet Need at Phase 1 have about **four times** the odds of Phase 2 Unmet Need compared with women who had none. 
+::::
+:::: {.column width="5%"}
+:::: 
+:::: {.column width="55%" style="position: absolute; top: 20%;"}
+```{r, echo=FALSE}
+models$glm %>% 
+  map2(models$COUNTRY,
+    ~.x %>% 
+      tbl_regression(
+        exponentiate = TRUE,
+        intercept= TRUE,
+        show_single_row = where(is.logical),
+        pvalue_fun = ~style_pvalue(.x, digits = 2),
+        label = list(UNMETYN_1 ~ "Phase 1 Unmet Need")
+      ) %>%
+      add_significance_stars(hide_se = TRUE, hide_ci = T) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y, ci = "95% CI")) %>% 
+      modify_footnote(estimate ~ NA, abbreviation = TRUE) 
+  ) %>% 
+  tbl_merge(tab_spanner = FALSE) %>% 
+  modify_caption("### Phase 2 Unmet Need \n ### Odds Ratios")
 ```
 ::::
 :::
-::: {.fragment}
-Phase 1 Unmet Need is a significant predictor of Unmet Need at Phase 2. 
-:::
-::: {.fragment}
-Women with Unmet Need at Phase 1 have about **four times** the odds of Phase 2 Unmet Need compared with women who had none. 
-::: 
 
 # Reasons for Unmet Need 
 
@@ -377,14 +430,14 @@ Senderowicz and Maloney [-@Senderowicz2022-ao] suggest dividing Unmet Need into 
 ::: {.fragment}
 Machiyama et al. [-@Machiyama2017-mp] propose a 5-part causal framework for unmet need. 
 
-![](images/causes.png){.absolute top=400 left=150 width="800"}
+![](images/causes.png){.absolute top=300 left=150 width="800"}
 
 :::
 
 
 ## Reasons Surveyed by PMA {auto-animate=true} 
 
-::: {.fragment}
+::: {.fragment  style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;"}
 <pre><code style="padding-bottom: 1em; color: black;">
 Can you tell me why you are not using 
 a method to prevent pregnancy?
@@ -426,6 +479,7 @@ Recoding
 
 ## Reasons Surveyed by PMA  {auto-animate=true} 
 
+::: {style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;"}
 <pre><code style="padding-bottom: 1em; color: black;">
 Can you tell me why you are not using 
 a method to prevent pregnancy?
@@ -456,6 +510,7 @@ a method to prevent pregnancy?
 <pre><code style="padding: 0; color: black;">[] Other</code></pre>
 <pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
 <pre><code style="padding: 0; color: black;">[] No response</code></pre>
+:::
 
 <div style="position: absolute; top: 25%; left: 50%;">
 <h3>
@@ -466,6 +521,7 @@ Recoding
 
 ## Reasons Surveyed by PMA  {auto-animate=true} 
 
+::: {style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;"}
 <pre><code style="padding-bottom: 1em; color: black;">
 Can you tell me why you are not using 
 a method to prevent pregnancy?
@@ -496,6 +552,7 @@ a method to prevent pregnancy?
 <pre><code style="padding: 0; color: black;">[] Other</code></pre>
 <pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
 <pre><code style="padding: 0; color: black;">[] No response</code></pre>
+:::
 
 <div style="position: absolute; top: 25%; left: 50%;">
 <h3>
@@ -507,6 +564,7 @@ Recoding
 
 ## Reasons Surveyed by PMA  {auto-animate=true} 
 
+::: {style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;"}
 <pre><code style="padding-bottom: 1em; color: black;">
 Can you tell me why you are not using 
 a method to prevent pregnancy?
@@ -537,6 +595,7 @@ a method to prevent pregnancy?
 <pre><code style="padding: 0; color: black;">[] Other</code></pre>
 <pre><code style="padding: 0; color: black;">[] Do not know</code></pre>
 <pre><code style="padding: 0; color: black;">[] No response</code></pre>
+:::
 
 <div style="position: absolute; top: 25%; left: 50%;">
 <h3>
@@ -650,6 +709,8 @@ dat %>%
 
 ## Recoding 
 
+::: {.columns}
+:::: {.column width="52%"}
 ```{r}
 dat <- dat %>% 
   mutate(
@@ -674,48 +735,45 @@ dat <- dat %>%
   )
 ```
 
+```{c, echo=TRUE, eval=FALSE}
+foreach var of varlist fpynot* {
+  replace `var' = 0 if unmetyn_1 == 1 & `var' == 99
+  recode `var' (0=0) (1=1) (else=0)
+}
 
-## Recoded Reasons by Country
+replace pregnant_1 = 0 if pregnant_1 > 90
 
-::: {.columns}
-:::: {.column width="50%"}
-```{r, echo = TRUE, eval = FALSE}
-dat %>% 
-  filter(UNMETYN_1) %>% 
-  as_survey_design(
-    weight = PANELWEIGHT, 
-    id = EAID_1, 
-    strata = STRATA_1
-  ) %>% 
-  tbl_svysummary(
-    by = COUNTRY, 
-    include = c(
-      FPYOPPOSED, 
-      FPYMETHOD, 
-      FPYLOWRISK, 
-      FPYOTHER
-    ), 
-    label = list(
-      FPYOPPOSED ~ "Opposition or prohibition", 
-      FPYMETHOD ~ "Method access",
-      FPYLOWRISK ~ "Low risk of becoming pregnant",
-      FPYOTHER ~ "Other / Unknown Reason"
-    ),
-    statistic = list(everything() ~ "{p}%")
-  ) %>% 
-  modify_header(update = list(
-      label ~ " ", 
-      stat_1 ~ "Burkina Faso", 
-      stat_2 ~ "Kenya"
-  )) %>% 
-  modify_footnote(
-    c(stat_1, stat_2) ~ "Weighted Percent"
-  )
+
+egen fpyopposed = rowmax(fpynotrelig_1 fpynotoppf_1 fpynotfate_1 /// 
+  fpynotopph_1 fpynotoppo_1 fpynotsidef_1 fpynotsdhlth_1 ///
+  fpynotconv_1 fpynotbody_1)
+replace fpyopposed = 0 if unmetyn_1 != 1
+  
+  
+egen fpymethod = rowmax(fpynotfar_1 fpynotcost_1 fpynotkno_1 /// 
+  fpynotsrc_1 fpynotavail_1 fpynotavailp_1 pregnant_1)
+replace fpymethod = 0 if unmetyn_1 != 1
+    
+    
+egen fpylowrisk = rowmax(fpynotbstfd_1 fpynothsbaway_1 ///
+  fpynotmeno_1 fpynotamen_1 fpynotnosex_1 ///
+  fpynotmar_1 fpynotinf_1)
+replace fpylowrisk = 0 if unmetyn_1 != 1
+
+
+gen fpyother = 0
+replace fpyother = 1 if unmetyn_1 == 1 & fpyopposed !=1 & ///
+  fpymethod !=1 & fpylowrisk !=1
+
+
+* Check results 
+tabstat fpyopposed fpymethod fpylowrisk fpyother ///
+  if unmetyn_1 == 1 [weight=panelweight], by(country)
 ```
 ::::
-:::: {.column width="5%"}
+:::: {.column width="3%"}
 ::::
-:::: {.column width="45%"}
+:::: {.column width="45%" style="position: absolute; top: 20%;"}
 ```{r, echo = FALSE, eval = TRUE}
 dat %>% 
   filter(UNMETYN_1) %>% 
@@ -745,15 +803,17 @@ dat %>%
       stat_1 ~ "Burkina Faso", 
       stat_2 ~ "Kenya"
   )) %>% 
-  modify_footnote(c(stat_1, stat_2) ~ "Weighted Percent")
+  modify_footnote(c(stat_1, stat_2) ~ "Weighted Percent; Women could list multiple reasons") %>% 
+  modify_caption("### Phase 1 Reasons \n ### for Unmet Need")
 ```
-
-Reminder: women could give more than one reason!
 ::::
 :::
 
-## Model
+## Logistic Regression
 
+::: {.columns}
+
+:::: {.column width="45%"}
 ```{r}
 models <- dat %>% 
   group_by(COUNTRY) %>% 
@@ -767,74 +827,135 @@ models <- dat %>%
       ) %>% 
       list()
   ) 
-
-models
 ```
 
-## Results 
+::::: {.fragment}
+Burkina Faso
 
-::: {.columns}
-:::: {.column width="60%"}
-```{r, echo=TRUE, eval = FALSE}
-models$glm %>% 
-  map2(models$COUNTRY,
-    ~.x %>% 
-      tbl_regression(
-        exp = TRUE, show_single_row = where(is.logical),
-        pvalue_fun = ~style_pvalue(.x, digits = 2),
-        label = list(
-          FPYOPPOSED ~ "Opposition or prohibition", 
-          FPYMETHOD ~ "Method access",
-          FPYLOWRISK ~ "Low risk of becoming pregnant",
-          UNMETYN_1 ~ "Unmet Need"
-        )
-      ) %>%
-      add_significance_stars(hide_se = TRUE) %>% 
-      modify_header(update = list(label ~ " ", estimate = .y)) %>% 
-      modify_footnote(estimate ~ NA, abbreviation = TRUE) 
-  ) %>% 
-  tbl_merge(tab_spanner = FALSE) %>% 
-  modify_caption("### Odds Ratios for Phase 2 Unmet Need")
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk ///
+  unmetyn_1 if country == 1, or
 ```
+:::::
+::::: {.fragment}
+Kenya
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk ///
+  unmetyn_1 if country == 7, or
+```
+:::::
 ::::
+
 :::: {.column width="5%"}
-::::
-:::: {.column width="35%"}
-```{r, echo=FALSE, eval = TRUE}
+:::: 
+
+:::: {.column width="50%" style="position: absolute; top: 20%;"}
+::::: {.fragment}
+```{r}
 models$glm %>% 
   map2(models$COUNTRY,
     ~.x %>% 
       tbl_regression(
         exponentiate = TRUE,
+        intercept= TRUE,
         show_single_row = where(is.logical),
         pvalue_fun = ~style_pvalue(.x, digits = 2),
         label = list(
-          FPYOPPOSED ~ "Opposition or prohibition",
+          FPYOPPOSED ~ "Opposition or \n  prohibition",
           FPYMETHOD ~ "Method access",
-          FPYLOWRISK ~ "Low risk of becoming pregnant",
+          FPYLOWRISK ~ "Low risk of \n  becoming pregnant",
           UNMETYN_1 ~ "Unmet Need"
         )
       ) %>%
-      add_significance_stars(hide_se = TRUE) %>% 
-      modify_header(update = list(label ~ " ", estimate = .y)) %>% 
+      add_significance_stars(hide_se = TRUE, hide_ci = FALSE) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y, ci = "95% CI")) %>% 
       modify_footnote(estimate ~ NA, abbreviation = TRUE) 
   ) %>% 
   tbl_merge(tab_spanner = FALSE) %>% 
-  modify_caption("### Odds Ratios for Phase 2 Unmet Need")
+  modify_caption("### Phase 2 Unmet Need \n ### Odds Ratios") %>% 
+  as_gt() %>% 
+  gt::opt_css(
+    css = ".gt_table_body {white-space:pre-wrap; word-wrap:break-word;}"
+  )
 ```
+:::::
 ::::
+:::
 
-:::: {.fragment}
+## Logistic Regression
+
+::: {.columns}
+
+:::: {.column width="45%"}
+```{r}
+models <- dat %>% 
+  group_by(COUNTRY) %>% 
+  summarise(
+    glm = cur_data() %>%  
+      as_survey_design(weight = PANELWEIGHT, id = EAID_1, strata = STRATA_1) %>% 
+      svyglm(
+        formula = UNMETYN_2 ~ FPYOPPOSED + FPYMETHOD + FPYLOWRISK + UNMETYN_1,
+        family = "quasibinomial",
+        design = .
+      ) %>% 
+      list()
+  ) 
+```
+
+Burkina Faso
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk ///
+  unmetyn_1 if country == 1, or
+```
+
+Kenya
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk ///
+  unmetyn_1 if country == 7, or
+```
+
 Compared to women who gave no reason, women who were **opposed** to using family planning were *significantly* more likely to have Phase 2 unmet need. 
-::::
-:::: {.fragment}
-Women with **method access** issues - less clear! 
-::::
-:::: {.fragment}
-Women **not at risk** for becoming pregnant were: 
 
-  * *not significantly* more likely to have Phase 2 unmet need in Burkina Faso
-  * significantly *less* likely to have Phase 2 unmet need in Kenya 
+::::: {.fragment}
+Women with **method access** issues or at **low risk** of becoming pregant - less clear! 
+:::::
+
+::::
+
+:::: {.column width="5%"}
+:::: 
+
+:::: {.column width="50%" style="position: absolute; top: 20%;"}
+```{r}
+models$glm %>% 
+  map2(models$COUNTRY,
+    ~.x %>% 
+      tbl_regression(
+        exponentiate = TRUE,
+        intercept= TRUE,
+        show_single_row = where(is.logical),
+        pvalue_fun = ~style_pvalue(.x, digits = 2),
+        label = list(
+          FPYOPPOSED ~ "Opposition or \n  prohibition",
+          FPYMETHOD ~ "Method access",
+          FPYLOWRISK ~ "Low risk of \n  becoming pregnant",
+          UNMETYN_1 ~ "Unmet Need"
+        )
+      ) %>%
+      add_significance_stars(hide_se = TRUE, hide_ci = FALSE) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y, ci = "95% CI")) %>% 
+      modify_footnote(estimate ~ NA, abbreviation = TRUE) 
+  ) %>% 
+  tbl_merge(tab_spanner = FALSE) %>% 
+  modify_caption("### Phase 2 Unmet Need \n ### Odds Ratios") %>% 
+  as_gt() %>% 
+  gt::opt_css(
+    css = ".gt_table_body {white-space:pre-wrap; word-wrap:break-word;}"
+  )
+```
 ::::
 :::
 
