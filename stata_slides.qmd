@@ -865,7 +865,7 @@ models$glm %>%
           FPYOPPOSED ~ "Opposition or \n  prohibition",
           FPYMETHOD ~ "Method access",
           FPYLOWRISK ~ "Low risk of \n  becoming pregnant",
-          UNMETYN_1 ~ "Unmet Need"
+          UNMETYN_1 ~ "Phase 1 Unmet Need"
         )
       ) %>%
       add_significance_stars(hide_se = TRUE, hide_ci = FALSE) %>% 
@@ -920,7 +920,7 @@ svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk ///
 Compared to women who gave no reason, women who were **opposed** to using family planning were *significantly* more likely to have Phase 2 unmet need. 
 
 ::::: {.fragment}
-Women with **method access** issues or at **low risk** of becoming pregant - less clear! 
+Women with **method access** issues or at **low risk** of becoming pregnant - less clear! 
 :::::
 
 ::::
@@ -942,7 +942,7 @@ models$glm %>%
           FPYOPPOSED ~ "Opposition or \n  prohibition",
           FPYMETHOD ~ "Method access",
           FPYLOWRISK ~ "Low risk of \n  becoming pregnant",
-          UNMETYN_1 ~ "Unmet Need"
+          UNMETYN_1 ~ "Phase 1 Unmet Need"
         )
       ) %>%
       add_significance_stars(hide_se = TRUE, hide_ci = FALSE) %>% 
