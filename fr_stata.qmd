@@ -1,0 +1,1080 @@
+---
+title: |
+  <h2 style='font-size: 64px'>
+  SESSION DE DONNÉES IPUMS PMA 
+  </h2>
+  <div style='margin-bottom: 50px; font-size: 40px'>
+  Les raisons du besoin non satisfait en matière de  <br> planification familiale dans les enquêtes par panel PMA
+  </div>
+author: 
+  - |
+    <p style='font-size: 25px; margin-left: 50px'>
+      <img src='images/devon.png' width='100' style='vertical-align: middle'> 
+      Devon Kristiansen - Chef de projet
+    </p>
+  - |
+    <p style='font-size: 25px; margin-left: 50px'>
+      <img src='images/matt.png' width='100' style='vertical-align: middle'>
+      Matt Gunther - Analyste principal de données
+    </p>
+    
+format: 
+  revealjs: 
+    theme: [default, custom.scss]
+    logo: images/logo-navy.png
+    chalkboard: true
+    smaller: true
+    scrollable: false
+    incremental: true
+    preview-links: false
+    reference-location: document
+    link-external-icon: true
+    echo: false
+bibliography: cites.bib
+
+---
+
+
+## LES OBJECTIFS D'AUJOURD'HUI
+
+::: {style="font-size: 0.8em;"}
+  -	Présenter les mesures du besoin non satisfait dans les enquêtes par panel PMA
+  -	Ouvrir un extrait de données IPUMS PMA dans **Stata**
+  -	Explorer les raisons des femmes d'un besoin non satisfait dans la Phase 1 du panel
+  -	Prédire le besoin non satisfait des femmes dans la Phase 2 du panel
+:::
+::: {.fragment}  
+```{r, echo=FALSE}
+library(kableExtra)
+library(tidyverse)
+
+options(knitr.kable.NA = '')
+
+avail <- read_csv("data/fr_sample_avail.csv") 
+names(avail)[2] <- paste0(
+  names(avail)[2], 
+  footnote_marker_symbol(1)
+)
+
+avail %>%   
+  arrange(Échantillon) %>% 
+  kable(escape = FALSE, format = "html", table.attr = "style='width:100%;'") %>% 
+  kable_styling(font_size = 18) %>% 
+  add_header_above(c(" " = 2, "Maintenant disponible auprès de IPUMS PMA" = 3)) %>% 
+  scroll_box(
+    width = "100%", 
+    box_css = paste(
+      sep = "; ",
+      "margin-bottom: 1em",
+      "margin-top: 0em",
+      "border: 0px solid #ddd",
+      "padding: 5px"
+    )
+  ) %>%
+  footnote(
+    symbol = paste0(
+      "<small><em>",
+      "Chaque phase de collecte de données est espacée d'un an.",
+      "</em></small>"), 
+    escape = FALSE
+  )
+```
+:::
+
+# BESOIN NON SATISFAIT
+
+## C'EST QUOI, LE BESOIN NON SATISFAIT?
+
+::: {.fragment}
+On dit que les femmes qui sont capables de devenir enceintes ont un besoin non satisfait si elles veulent **limiter** ou **espacer** les naissances, mais n'utilisent aucune méthode de planification familiale.
+:::
+::: {.fragment}
+Examples: 
+
+  - Layla veut avoir un enfant un jour, mais n'est pas sûre d'en vouloir un dans l'immédiat. Si ni elle ni son mari n'utilisent une méthode de planification familiale, Layla aurait **un besoin non satisfait pour espacer** des grossesses.
+  - Yasmine est actuellement enceinte de son quatrième enfant. Elle avait l'intention d'arrêter d'avoir des enfants après son troisième enfant, alors sa quatrième grossesse indique que Yasmine a un **besoin non satisfait de limiter** des grossesses.
+  - A 15 ans, Fatimata n'utilise aucune méthode de planification familiale parce qu'elle n'est pas sexuellement active. Fatimata n'a pas de besoin non satisfait parce qu'elle **ne risque pas** de tomber enceinte.
+
+:::
+
+## COMMENT MESURE-T-ON LE BESOIN NON SATISFAIT ?
+
+::: {.fragment}
+PMA utilise plusieurs questions d'enquête différentes pour déterminer quelles femmes:
+
+  -	sont sexuellement actives (y compris les femmes non-mariées qui ont eu des rapports sexuels dans les 30 derniers jours)
+  -	ne sont ni infécondes ni ménopausées
+  - expriment l'incertitude ou l'intention d'espacer ou limiter les grossesses (y compris leur grossesse actuelle, ou leur grossesse récente, si aménorrhée post-partum)
+  - n'utilisent pas une méthode de planification familiale pour le moment (y compris la stérilisation précédente, les méthodes d'urgence au cours de l'année passée, les méthodes traditionnelles, et toutes les méthodes modernes)
+
+:::
+
+## LES VARIABLES HARMONISÉES IPUMS PMA
+
+::: {.fragment}
+[UNMETNEED](https://pma.ipums.org/pma-action/variables/UNMETNEED) (BESOIN NON SATISFAIT) explique si chaque enquêtée: 
+
+  - a un besoin non satisfait pour **espacer** les naissances
+  - a un besoin non satisfait de **limiter** les naissances
+  - **ne risque pas** de tomber enceinte
+  - utilise actuellement la planification familiale pour **espacer** les naissances
+  - utilise actuellement la planification familiale pour **limiter** les naissances
+  - n'utilise pas la planification familiale avec **aucun besoin non satisfait**
+
+:::
+
+::: {.fragment}
+[UNMETYN](https://pma.ipums.org/pma-action/variables/UNMETYN) UNMETYN est binaire:
+
+  - **Oui**
+  - **Non**
+
+:::
+
+# BESOIN NON SATISFAIT DANS STATA
+
+## CONFIGURATION 
+
+Notre extrait comprend des données provenant de deux phases de l'étude de panel au **Burkina Faso** et au **Kenya** (uniquement les enquêtées).
+
+::: {.fragment}
+```{r, results='hide'}
+library(ipumsr)
+library(tidyverse)
+library(srvyr)
+library(survey)
+library(scales)
+library(broom)
+library(gtsummary)
+
+# load pma longitudinal samples (wide format, female respondents only)
+dat <- read_ipums_micro(
+ ddi = here::here("data/pma_00114.xml"),
+ data = here::here("data/pma_00114.dat.gz")
+)
+
+# keep only panel members in the de facto population 
+dat <- dat %>% 
+  mutate(COUNTRY = COUNTRY %>% as_factor %>% as.character) %>% 
+  filter(
+    RESULTFQ_1 == 1 & RESULTFQ_2 == 1,
+    RESIDENT_1 %in% c(11, 22) & RESIDENT_2 %in% c(11, 22)
+  )
+```
+```{r, echo=FALSE}
+dat <- dat %>% filter(COUNTRY %in% c("Burkina Faso", "Kenya"))
+```
+
+```{c, echo=TRUE, eval=FALSE}
+cd "C:\Users\krist108\Documents\krist108 stuff\ISRDI\ICFP 2022 workshop"
+use pma_00178.dta
+```
+:::
+
+::: {.fragment}
+Nous excluons les femmes qui n'ont répondu qu'à un seul des deux entretiens...
+
+```{c, echo=TRUE, eval=FALSE}
+keep if resultfq_1 == 1 & resultfq_2 == 1
+```
+```
+(8,361 observations deleted)
+```
+:::
+::: {.fragment}
+et celles qui ne font pas partie de la population de fait.
+
+```{c, echo=TRUE, eval=FALSE}
+keep if (resident_1 == 11 | resident_1 == 22) & (resident_2 == 11 | resident_2 == 22)
+```
+```
+(358 observations deleted)
+```
+:::
+
+
+## BESOIN NON SATISFAIT PAR PAYS À LA PHASE 1
+
+::: {.columns}
+:::: {.column width="50%"}
+[PANELWEIGHT](https://pma.ipums.org/pma-action/variables/UNMETNEED) est le poids d'échantillonnage pour les membres du panel (il permet de contrôler la perte de suivi)
+
+[EAID_1](https://pma.ipums.org/pma-action/variables/EAID_1) et [STRATA_1](https://pma.ipums.org/pma-action/variables/STRATA_1) sont le groupe d'échantillons et les strates utilisés pour sélectionner les ménages à la Phase 1.
+
+```{c, echo=TRUE, eval=FALSE}
+svyset [pw=panelweight], psu(eaid_1) strata(strata_1)
+```
+
+Les informations de `svyset` produisent des **pourcentages pondérés** ainsi.
+
+```{c, echo=TRUE, eval=FALSE}
+svy: tab unmetneed_1 country, col
+
+svy: tab unmetyn_1 country, col
+```
+
+Remarque: nous allons changer les cas NIU en `.`
+
+```{c, echo=TRUE, eval=FALSE}
+replace unmetyn_1 = . if unmetyn_1 == 99
+```
+```
+(2 real changes made, 2 to missing)
+```
+::::
+
+:::: {.column width="50%"}
+```{r, echo = FALSE, eval = TRUE}
+dat$UNMETYN_1 <- dat$UNMETYN_1 %>% 
+  lbl_relabel(
+    lbl(0, "Aucun besoin non satisfait") ~ .val == 0,
+    lbl(1, "Besoin non satisfait") ~ .val == 1,
+    lbl(99, '"NIU" (non inclus dans dénombrement)') ~ .val == 99
+  ) %>% 
+  labelled::set_variable_labels(.labels = "Total du besoin non satisfait")
+
+dat$UNMETNEED_1 <- dat$UNMETNEED_1 %>% 
+  lbl_relabel(
+    lbl(11, "Besoin non satisfait pour espacer") ~ .val == 11,
+    lbl(12, "Besoin non satisfait de limiter") ~ .val == 12,
+    lbl(21, "Utilisation pour espacer") ~ .val == 21,
+    lbl(22, "Utilisation pour limiter") ~ .val == 22,
+    lbl(31, "Inféconde ou ménopausée") ~ .val == 31,
+    lbl(32, "Pas sexuellement active") ~ .val == 32,
+    lbl(40, "Aucun besoin non satisfait") ~ .val == 40,
+    lbl(98, 'Aucune réponse ou manquante') ~ .val == 98,
+    lbl(99, '"NIU" (non inclus dans dénombrement)') ~ .val == 99
+  ) %>% 
+  labelled::set_variable_labels(.labels = "Besoin non satisfait")
+
+dat %>% 
+  as_survey_design(weight = PANELWEIGHT, id = EAID_1, strata = STRATA_1) %>% 
+  mutate(across(c(UNMETNEED_1, UNMETYN_1), ~.x %>%  as_factor %>% fct_drop)) %>% 
+  tbl_svysummary(
+    by = COUNTRY, 
+    include = c(UNMETNEED_1, UNMETYN_1), 
+    statistic = list(everything() ~ "{p}%")
+  ) %>% 
+  modify_header(update = list(label ~ " ", 
+                              stat_1 ~ "Burkina Faso", stat_2 ~ "Kenya")) %>% 
+  modify_footnote(c(stat_1, stat_2) ~ "Pourcentage pondéré")
+```
+::::
+:::
+
+## BESOIN NON SATISFAIT PAR PAYS À LA PHASE 2
+
+::: {.columns}
+:::: {.column width="50%"}
+[EAID_1](https://pma.ipums.org/pma-action/variables/EAID_1) et [STRATA_1](https://pma.ipums.org/pma-action/variables/STRATA_1) peuvent être utilisés pour estimer les résultats de Phase 2.
+
+Les membres du panel ont été retrouvés dans le même secteur d’étude à la Phase 2.
+
+Ne pas ajuster `svyset`. 
+
+```{c, echo=TRUE, eval=FALSE}
+svy: tab unmetneed_2 country, col
+
+svy: tab unmetyn_2 country, col
+```
+::::
+:::: {.column width="50%"}
+```{r, echo = FALSE, eval = TRUE}
+dat$UNMETYN_2 <- dat$UNMETYN_2 %>% 
+  lbl_relabel(
+    lbl(0, "Aucun besoin non satisfait") ~ .val == 0,
+    lbl(1, "Besoin non satisfait") ~ .val == 1,
+    lbl(99, '"NIU" (non inclus dans dénombrement)') ~ .val == 99
+  ) %>% 
+  labelled::set_variable_labels(.labels = "Total du besoin non satisfait")
+
+dat$UNMETNEED_2 <- dat$UNMETNEED_2 %>% 
+  lbl_relabel(
+    lbl(11, "Besoin non satisfait pour espacer") ~ .val == 11,
+    lbl(12, "Besoin non satisfait de limiter") ~ .val == 12,
+    lbl(21, "Utilisation pour espacer") ~ .val == 21,
+    lbl(22, "Utilisation pour limiter") ~ .val == 22,
+    lbl(31, "Inféconde ou ménopausée") ~ .val == 31,
+    lbl(32, "Pas sexuellement active") ~ .val == 32,
+    lbl(40, "Aucun besoin non satisfait") ~ .val == 40,
+    lbl(98, 'Aucune réponse ou manquante') ~ .val == 98,
+    lbl(99, '"NIU" (non inclus dans dénombrement)') ~ .val == 99
+  ) %>% 
+  labelled::set_variable_labels(.labels = "Besoin non satisfait")
+
+dat %>% 
+  as_survey_design(
+    weight = PANELWEIGHT, 
+    id = EAID_1, 
+    strata = STRATA_1
+  ) %>% 
+  mutate(across(
+    c(UNMETNEED_2, UNMETYN_2), 
+    ~.x %>%  as_factor %>% fct_drop
+  )) %>% 
+  tbl_svysummary(
+    by = COUNTRY, 
+    include = c(UNMETNEED_2, UNMETYN_2), 
+    statistic = list(everything() ~ "{p}%")
+  ) %>% 
+  modify_header(
+    update = list(
+      label ~ " ", 
+      stat_1 ~ "Burkina Faso", 
+      stat_2 ~ "Kenya"
+    )
+  ) %>% 
+  modify_footnote(
+    c(stat_1, stat_2) ~ "Pourcentage pondéré"
+  )
+```
+::::
+:::
+
+
+# QUESTION DE RECHERCHE
+
+::: {.fragment}
+Dans quelle mesure pouvons-nous prédire **le besoin non satisfait à la Phase 2** si nous savons seulement si oui ou non une femme avait **un besoin non satisfait à la Phase 1**?
+:::
+
+## RÉGRESSION LOGISTIQUE
+
+::: {.columns}
+
+:::: {.column width="40%"}
+```{r}
+models <- dat %>% 
+  mutate(across(matches("UNMETYN"), ~.x == 1)) %>% 
+  group_by(COUNTRY) %>% 
+  summarise(
+    glm = cur_data() %>% 
+      as_survey_design(weight = PANELWEIGHT, id = EAID_1, strata = STRATA_1) %>% 
+      svyglm(UNMETYN_2 ~ UNMETYN_1, design = ., family = "quasibinomial") %>% 
+      list()
+  )
+```
+
+::::: {.fragment}
+Burkina Faso
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 unmetyn_1 if country == 1, or
+```
+:::::
+
+::::: {.fragment}
+Kenya
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 unmetyn_1 if country == 7, or
+```
+:::::
+::::
+:::: {.column width="5%"}
+:::: 
+:::: {.column width="55%" style="position: absolute; top: 20%;"}
+::::: {.fragment}
+```{r, echo=FALSE}
+models$glm %>% 
+  map2(models$COUNTRY,
+    ~.x %>% 
+      tbl_regression(
+        exponentiate = TRUE,
+        intercept= TRUE,
+        show_single_row = where(is.logical),
+        pvalue_fun = ~style_pvalue(.x, digits = 2),
+        label = list(
+          '(Intercept)' ~ "(Constant)",
+          UNMETYN_1 ~ "Phase 1\n  besoin non satisfait"
+        )
+      ) %>%
+      add_significance_stars(hide_se = TRUE, hide_ci = T) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y, ci = "95% CI")) %>% 
+      modify_footnote(estimate ~ NA, ci ~ "Intervalle de confiance", abbreviation = TRUE) 
+  ) %>% 
+  tbl_merge(tab_spanner = FALSE) %>% 
+  modify_caption("### Rapports de Cotes \n ### Phase 2 Besoin Non Satisfait") %>% 
+  as_gt() %>% 
+  gt::opt_css(
+    css = ".gt_table_body {white-space:pre-wrap; word-wrap:break-word;}"
+  )
+```
+::::: 
+::::
+:::
+
+## RÉGRESSION LOGISTIQUE
+
+::: {.columns}
+
+:::: {.column width="40%"}
+```{r}
+models <- dat %>% 
+  mutate(across(matches("UNMETYN"), ~.x == 1)) %>% 
+  group_by(COUNTRY) %>% 
+  summarise(
+    glm = cur_data() %>% 
+      as_survey_design(weight = PANELWEIGHT, id = EAID_1, strata = STRATA_1) %>% 
+      svyglm(UNMETYN_2 ~ UNMETYN_1, design = ., family = "quasibinomial") %>% 
+      list()
+  )
+```
+
+Burkina Faso
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 unmetyn_1 if country == 1, or
+```
+
+Kenya
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 unmetyn_1 if country == 7, or
+```
+
+Le besoin non satisfait à la Phase 1 est un prédicteur important du besoin non satisfait à la Phase 2.
+
+Les femmes ayant un besoin non satisfait à la Phase 1 ont à peu près **quatre fois** plus de chances d'avoir un besoin non satisfait à la Phase 2 par rapport aux femmes qui n'en avaient pas.
+
+::::
+:::: {.column width="5%"}
+:::: 
+:::: {.column width="55%" style="position: absolute; top: 20%;"}
+```{r, echo=FALSE}
+models$glm %>% 
+  map2(models$COUNTRY,
+    ~.x %>% 
+      tbl_regression(
+        exponentiate = TRUE,
+        intercept= TRUE,
+        show_single_row = where(is.logical),
+        pvalue_fun = ~style_pvalue(.x, digits = 2),
+        label = list(
+          '(Intercept)' ~ "(Constant)",
+          UNMETYN_1 ~ "Phase 1\n  besoin non satisfait"
+        )
+      ) %>%
+      add_significance_stars(hide_se = TRUE, hide_ci = T) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y, ci = "95% CI")) %>% 
+      modify_footnote(estimate ~ NA, ci ~ "Intervalle de confiance", abbreviation = TRUE) 
+  ) %>% 
+  tbl_merge(tab_spanner = FALSE) %>% 
+  modify_caption("### Rapports de Cotes \n ### Phase 2 Besoin Non Satisfait") %>% 
+  as_gt() %>% 
+  gt::opt_css(
+    css = ".gt_table_body {white-space:pre-wrap; word-wrap:break-word;}"
+  )
+```
+::::
+:::
+
+# RAISONS POUR UN BESOIN NON SATISFAIT
+
+::: {.fragment}
+Si nous savons **pourquoi une femme avait un besoin non satisfait à la Phase 1**, cela améliore-t-il notre capacité à prédire son **besoin non satisfait à la Phase 2**?
+:::
+
+## POURQUOI LES RAISONS SONT-ELLES IMPORTANTES?
+
+::: {.fragment}
+À lui seul, un besoin non satisfait n'explique pas l'accès ou le désir d'utiliser la planification familiale.
+:::
+::: {.fragment}
+Senderowicz and Maloney [-@Senderowicz2022-ao] suggèrent la division du besoin non satisfait en facteurs liés à **l'offre** et à **la demande**.
+
+> Le besoin non satisfait lié à la demande représente les femmes qui ne choisissent pas d'utiliser la contraception, non pas parce que la contraception est inaccessible, mais parce qu'elles ne voient pas la nécessité de l'avoir dans leurs propres vies.
+
+:::
+::: {.fragment}
+Machiyama et al. [-@Machiyama2017-mp] proposent un cadre causal en 5 parties pour les besoins non satisfaits.
+
+![](images/causes.png){.absolute top=400 left=250 width="500"}
+:::
+
+
+## RAISONS ETUDIÉES PAR PMA	{auto-animate=true} 
+
+::: {.fragment  style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;"}
+<pre><code style="padding-bottom: 1em; color: black;">
+Pouvez-vous me dire pourquoi vous n'utilisez  
+pas une méthode pour éviter la grossesse?
+</code></pre>
+
+<pre><code style="padding: 0; color: black;">[] Pas mariée</code></pre>
+<pre><code style="padding: 0; color: black;">[] Rapports sexuels peu fréquents/pas de rapports sexuels</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ménopausée/hystérectomie</code></pre>
+<pre><code style="padding: 0; color: black;">[] Fécondité réduite/inféconde</code></pre>
+<pre><code style="padding: 0; color: black;">[] Pas de règles depuis dernière naissance</code></pre>
+<pre><code style="padding: 0; color: black;">[] Allaitement</code></pre>
+<pre><code style="padding: 0; color: black;">[] Mari parti pour plusieurs jours</code></pre>
+<pre><code style="padding: 0; color: black;">[] Dans les mains de Dieu/fataliste</code></pre>
+<pre><code style="padding: 0; color: black;">[] Enquêtée opposée</code></pre>
+<pre><code style="padding: 0; color: black;">[] Mari/partenaire opposé</code></pre>
+<pre><code style="padding: 0; color: black;">[] D'autres opposés</code></pre>
+<pre><code style="padding: 0; color: black;">[] Prohibition religieuse</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ne connaît aucune méthode</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ne connaît aucune source</code></pre>
+<pre><code style="padding: 0; color: black;">[] Peur des effets secondaires</code></pre>
+<pre><code style="padding: 0; color: black;">[] Problèmes de santé</code></pre>
+<pre><code style="padding: 0; color: black;">[] Manque d'accès/trop loin</code></pre>
+<pre><code style="padding: 0; color: black;">[] Coûte trop cher</code></pre>
+<pre><code style="padding: 0; color: black;">[] Méthode préférée non disponible</code></pre>
+<pre><code style="padding: 0; color: black;">[] Aucune méthode disponible</code></pre>
+<pre><code style="padding: 0; color: black;">[] Peu pratique à utiliser</code></pre>
+<pre><code style="padding: 0; color: black;">[] Interfère avec les processus du corps</code></pre>
+<pre><code style="padding: 0; color: black;">[] Autre</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ne sait pas</code></pre>
+<pre><code style="padding: 0; color: black;">[] Pas de réponse</code></pre>
+:::
+::: {.fragment}
+<div style="position: absolute; top: 35%; left: 50%;">
+<h3>
+Recodage
+</h3>
+</div>
+:::
+
+## RAISONS ETUDIÉES PAR PMA	  {auto-animate=true} 
+
+::: {style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;"}
+<pre><code style="padding-bottom: 1em; color: black;">
+Pouvez-vous me dire pourquoi vous n'utilisez  
+pas une méthode pour éviter la grossesse?
+</code></pre>
+
+<pre><code style="padding: 0; color: #B41821;">[] Pas mariée</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Rapports sexuels peu fréquents/pas de rapports sexuels</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Ménopausée/hystérectomie</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Fécondité réduite/inféconde</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Pas de règles depuis dernière naissance</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Allaitement</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Mari parti pour plusieurs jours</code></pre>
+<pre><code style="padding: 0; color: black;">[] Dans les mains de Dieu/fataliste</code></pre>
+<pre><code style="padding: 0; color: black;">[] Enquêtée opposée</code></pre>
+<pre><code style="padding: 0; color: black;">[] Mari/partenaire opposé</code></pre>
+<pre><code style="padding: 0; color: black;">[] D'autres opposés</code></pre>
+<pre><code style="padding: 0; color: black;">[] Prohibition religieuse</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ne connaît aucune méthode</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ne connaît aucune source</code></pre>
+<pre><code style="padding: 0; color: black;">[] Peur des effets secondaires</code></pre>
+<pre><code style="padding: 0; color: black;">[] Problèmes de santé</code></pre>
+<pre><code style="padding: 0; color: black;">[] Manque d'accès/trop loin</code></pre>
+<pre><code style="padding: 0; color: black;">[] Coûte trop cher</code></pre>
+<pre><code style="padding: 0; color: black;">[] Méthode préférée non disponible</code></pre>
+<pre><code style="padding: 0; color: black;">[] Aucune méthode disponible</code></pre>
+<pre><code style="padding: 0; color: black;">[] Peu pratique à utiliser</code></pre>
+<pre><code style="padding: 0; color: black;">[] Interfère avec les processus du corps</code></pre>
+<pre><code style="padding: 0; color: black;">[] Autre</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ne sait pas</code></pre>
+<pre><code style="padding: 0; color: black;">[] Pas de réponse</code></pre>
+:::
+
+<div style="position: absolute; top: 35%; left: 50%;">
+<h3>
+Recodage
+</h3>
+<p style="color: #B41821;">Faible risque de grossesse</p>
+</div>
+
+## RAISONS ETUDIÉES PAR PMA	  {auto-animate=true} 
+
+::: {style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;"}
+<pre><code style="padding-bottom: 1em; color: black;">
+Pouvez-vous me dire pourquoi vous n'utilisez  
+pas une méthode pour éviter la grossesse?
+</code></pre>
+
+<pre><code style="padding: 0; color: #B41821;">[] Pas mariée</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Rapports sexuels peu fréquents/pas de rapports sexuels</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Ménopausée/hystérectomie</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Fécondité réduite/inféconde</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Pas de règles depuis dernière naissance</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Allaitement</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Mari parti pour plusieurs jours</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Dans les mains de Dieu/fataliste</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Enquêtée opposée</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Mari/partenaire opposé</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] D'autres opposés</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Prohibition religieuse</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ne connaît aucune méthode</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ne connaît aucune source</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Peur des effets secondaires</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Problèmes de santé</code></pre>
+<pre><code style="padding: 0; color: black;">[] Manque d'accès/trop loin</code></pre>
+<pre><code style="padding: 0; color: black;">[] Coûte trop cher</code></pre>
+<pre><code style="padding: 0; color: black;">[] Méthode préférée non disponible</code></pre>
+<pre><code style="padding: 0; color: black;">[] Aucune méthode disponible</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Peu pratique à utiliser</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Interfère avec les processus du corps</code></pre>
+<pre><code style="padding: 0; color: black;">[] Autre</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ne sait pas</code></pre>
+<pre><code style="padding: 0; color: black;">[] Pas de réponse</code></pre>
+:::
+
+<div style="position: absolute; top: 35%; left: 50%;">
+<h3>
+Recodage
+</h3>
+<p style="color: #B41821;">Faible risque de grossesse</p>
+<p style="color: #DC863C;">Opposition ou interdiction</p>
+</div>
+
+## RAISONS ETUDIÉES PAR PMA	  {auto-animate=true} 
+
+::: {style="position: absolute; top: 10%; left: 5%; font-size: 1.5em;"}
+<pre><code style="padding-bottom: 1em; color: black;">
+Pouvez-vous me dire pourquoi vous n'utilisez  
+pas une méthode pour éviter la grossesse?
+</code></pre>
+
+<pre><code style="padding: 0; color: #B41821;">[] Pas mariée</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Rapports sexuels peu fréquents/pas de rapports sexuels</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Ménopausée/hystérectomie</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Fécondité réduite/inféconde</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Pas de règles depuis dernière naissance</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Allaitement</code></pre>
+<pre><code style="padding: 0; color: #B41821;">[] Mari parti pour plusieurs jours</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Dans les mains de Dieu/fataliste</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Enquêtée opposée</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Mari/partenaire opposé</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] D'autres opposés</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Prohibition religieuse</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Ne connaît aucune méthode</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Ne connaît aucune source</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Peur des effets secondaires</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Problèmes de santé</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Manque d'accès/trop loin</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Coûte trop cher</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Méthode préférée non disponible</code></pre>
+<pre><code style="padding: 0; color: #44ACC8;">[] Aucune méthode disponible</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Peu pratique à utiliser</code></pre>
+<pre><code style="padding: 0; color: #DC863C;">[] Interfère avec les processus du corps</code></pre>
+<pre><code style="padding: 0; color: black;">[] Autre</code></pre>
+<pre><code style="padding: 0; color: black;">[] Ne sait pas</code></pre>
+<pre><code style="padding: 0; color: black;">[] Pas de réponse</code></pre>
+:::
+
+<div style="position: absolute; top: 35%; left: 50%;">
+<h3>
+Recodage
+</h3>
+<p style="color: #B41821;">Faible risque de grossesse</p>
+<p style="color: #DC863C;">Opposition ou interdiction</p>
+<p style="color: #44ACC8;">Accès à la méthode</p>
+::: {.fragment}
+<p>Autre / Inconnue</p>
+:::
+</div>
+
+
+## QUI A DONNÉ DES RAISONS?
+
+La plupart - mais pas toutes - des femmes ayant un besoin non satisfait ont été invitées à donner les raisons de leur non-utilisation.
+
+La plupart - mais pas toutes - des femmes qui ont donné des raisons de non-utilisation ont aussi un besoin non satisfait.
+
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(here::here("images/fr1.png"))
+```
+
+## QUI A DONNÉ DES RAISONS?
+
+La plupart - mais pas toutes - des femmes ayant un besoin non satisfait ont été invitées à donner les raisons de leur non-utilisation.
+
+La plupart - mais pas toutes - des femmes qui ont donné des raisons de non-utilisation ont aussi un besoin non satisfait.
+
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(here::here("images/fr2.png"))
+```
+
+## QUI A DONNÉ DES RAISONS?
+
+La plupart - mais pas toutes - des femmes ayant un besoin non satisfait ont été invitées à donner les raisons de leur non-utilisation.
+
+La plupart - mais pas toutes - des femmes qui ont donné des raisons de non-utilisation ont aussi un besoin non satisfait.
+
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(here::here("images/fr3.png"))
+```
+
+## QUI A DONNÉ DES RAISONS?
+
+La plupart - mais pas toutes - des femmes ayant un besoin non satisfait ont été invitées à donner les raisons de leur non-utilisation.
+
+La plupart - mais pas toutes - des femmes qui ont donné des raisons de non-utilisation ont aussi un besoin non satisfait.
+
+```{r, echo = FALSE, fig.align='center'}
+knitr::include_graphics(here::here("images/fr4.png"))
+```
+
+---
+<h3> POPULARITÉ DES RAISONS POUR UN BESOIN NON SATISFAIT EN PHASE 1 </h3>
+
+```{r, echo = FALSE}
+library(sysfonts)
+library(showtext)
+sysfonts::font_add(
+    family = "cabrito", 
+    regular = here::here("fonts/cabritosansnormregular-webfont.ttf")
+  )
+update_geom_defaults("text", list(family = "cabrito", size = 3))
+showtext::showtext_auto()
+  
+figure <- dat %>% 
+  filter(UNMETYN_1 == 1) %>% 
+  group_by(COUNTRY) %>% 
+  summarise(across(
+    c(starts_with("FPYNOT") & ends_with("1"), PREGNANT_1),
+    ~cur_data() %>% summarise(prop = weighted.mean(.x == 1, PANELWEIGHT))
+  )) %>% 
+  pivot_longer(!COUNTRY, names_to = "var_name") %>% 
+  unnest(value) %>% 
+  left_join(
+    dat %>% 
+      select(starts_with("FPYNOT") & ends_with("1"), PREGNANT_1) %>% 
+      ipums_var_info() %>% 
+      select(var_name, var_label) 
+  ) %>% 
+  mutate(
+    var_label = var_label %>% 
+      str_remove("Reason not using FP: ") %>% 
+      str_to_title() %>% 
+      str_replace("Pregnancy Status", "Currently Pregnant") %>% 
+      fct_reorder(prop, mean)
+  ) 
+
+figure %>% 
+  mutate(var_label = var_label %>% recode(
+    `Fear Of Side Effects` = 'Peur des effets secondaires',
+    `Currently Pregnant` = 'Actuellement enceinte',
+    `Not Having Sex` = 'Pas de rapports sexuels',
+    `Health Concerns` = 'Problèmes de santé',
+    `Husband Away` = 'Mari parti',
+    `Other` = 'Autre',
+    `Not Married` = 'Pas mariée',
+    `Breastfeeding` = 'Allaitement',
+    `Husband/Partner Opposed` = 'Mari/partenaire opposé',
+    `No Menses Since Last Birth` = 'Pas de menstruation depuis dernière naissance',
+    `Respondent Opposed` = 'Enquêtée opposée',
+    `Intereferes With Body` = 'Interfère avec corps',
+    `Up To God/Fatalistic` = 'À Dieu/fataliste',
+    `Religious Prohibition` = 'Prohibition religieuse',
+    `Costs Too Much` = 'Coûte trop',
+    `Inconvenient To Use` = 'Utilisation pas commode',
+    `Sub/Infecund` = 'Fécondité réduite/inféconde',
+    `Knows No Method` = 'Ne connaît pas de méthode',
+    `Lack Of Access/Too Far` = "Manque d'accès/trop loin",
+    `Others Opposed` = "D'autres opposés",
+    `Preferred Method Not Avail` = 'Méthode préférée pas disponible',
+    `No Method Available` = 'Aucune méthode disponible',
+    `Knows No Source` = 'Ne connaît aucune source',
+    `Don't Know` = 'Ne sait pas',
+    `Menopausal/Hysterectomy` = 'Ménopausée/hystérectomie',
+  )) %>% 
+  ggplot(aes(x = COUNTRY, y = var_label, fill = prop)) + 
+  geom_tile() + 
+  geom_text(aes(
+    label = prop %>% scales::percent(1), 
+    color = prop > 0.11
+  )) +
+  theme_minimal() %+replace% 
+  theme(
+    legend.position = "none",
+    text = element_text(family = "cabrito", size = 13),
+    panel.grid = element_blank(),
+    axis.title = element_blank()
+  ) + 
+  scale_fill_gradient(
+    na.value = "transparent",
+    low =  "#00263A05",
+    high = "#00263A"
+  ) + 
+  scale_color_manual(values = c("black", "white")) +
+  scale_x_discrete(position = "top") 
+```
+
+## RECODAGE 
+
+::: {.columns}
+:::: {.column width="52%"}
+```{r}
+dat <- dat %>% 
+  mutate(
+    across(
+      c(starts_with("UNMETYN"), starts_with("FPYNOT"), starts_with("PREGNANT")),
+      ~.x == 1
+    ),
+    FPYOPPOSED = if_any(c(FPYNOTRELIG_1, FPYNOTOPPF_1, FPYNOTFATE_1,
+                          FPYNOTOPPH_1, FPYNOTOPPO_1, FPYNOTSIDEF_1,
+                          FPYNOTSDHLTH_1,  FPYNOTCONV_1, FPYNOTBODY_1)),
+    FPYMETHOD = if_any(c(FPYNOTFAR_1, FPYNOTCOST_1, FPYNOTKNO_1,
+                      FPYNOTSRC_1, FPYNOTAVAIL_1, FPYNOTAVAILP_1, 
+                      PREGNANT_1)),
+    FPYLOWRISK = if_any(c(FPYNOTBSTFD_1, FPYNOTHSBAWAY_1, FPYNOTMENO_1,
+                       FPYNOTAMEN_1, FPYNOTNOSEX_1, FPYNOTMAR_1, FPYNOTINF_1
+                       )),
+    FPYOTHER = UNMETYN_1 & !FPYOPPOSED & !FPYMETHOD & !FPYLOWRISK,
+    across(
+      c(FPYOPPOSED, FPYMETHOD, FPYLOWRISK),
+      ~if_else(UNMETYN_1, .x, FALSE)
+    )
+  )
+```
+
+```{c, echo=TRUE, eval=FALSE}
+foreach var of varlist fpynot* {
+  replace `var' = 0 if unmetyn_1 == 1 & `var' == 99
+  recode `var' (0=0) (1=1) (else=0)
+}
+
+replace pregnant_1 = 0 if pregnant_1 > 90
+
+
+egen fpyopposed = rowmax(fpynotrelig_1 fpynotoppf_1 fpynotfate_1 /// 
+  fpynotopph_1 fpynotoppo_1 fpynotsidef_1 fpynotsdhlth_1 ///
+  fpynotconv_1 fpynotbody_1)
+replace fpyopposed = 0 if unmetyn_1 != 1
+  
+  
+egen fpymethod = rowmax(fpynotfar_1 fpynotcost_1 fpynotkno_1 /// 
+  fpynotsrc_1 fpynotavail_1 fpynotavailp_1 pregnant_1)
+replace fpymethod = 0 if unmetyn_1 != 1
+    
+    
+egen fpylowrisk = rowmax(fpynotbstfd_1 fpynothsbaway_1 ///
+  fpynotmeno_1 fpynotamen_1 fpynotnosex_1 ///
+  fpynotmar_1 fpynotinf_1)
+replace fpylowrisk = 0 if unmetyn_1 != 1
+
+
+gen fpyother = 0
+replace fpyother = 1 if unmetyn_1 == 1 & fpyopposed !=1 & ///
+  fpymethod !=1 & fpylowrisk !=1
+
+
+* Check results 
+tabstat fpyopposed fpymethod fpylowrisk fpyother ///
+  if unmetyn_1 == 1 [weight=panelweight], by(country)
+```
+::::
+:::: {.column width="3%"}
+::::
+:::: {.column width="45%" style="position: absolute; top: 20%;"}
+```{r, echo = FALSE, eval = TRUE}
+dat %>% 
+  filter(UNMETYN_1) %>% 
+  as_survey_design(
+    weight = PANELWEIGHT, 
+    id = EAID_1, 
+    strata = STRATA_1
+  ) %>% 
+  tbl_svysummary(
+    by = COUNTRY, 
+    include = c(
+      FPYOPPOSED, 
+      FPYMETHOD, 
+      FPYLOWRISK, 
+      FPYOTHER
+    ), 
+    label = list(
+      FPYOPPOSED ~ "Opposition ou prohibition", 
+      FPYMETHOD ~ "Accès à la méthode",
+      FPYLOWRISK ~ "Peu de risques de tomber enceinte",
+      FPYOTHER ~ "Autre / Raison inconnue"
+    ),
+    statistic = list(everything() ~ "{p}%")
+  ) %>% 
+  modify_header(update = list(
+      label ~ " ", 
+      stat_1 ~ "Burkina Faso", 
+      stat_2 ~ "Kenya"
+  )) %>% 
+  modify_footnote(c(stat_1, stat_2) ~ "Pourcentage pondéré; Les femmes pouvaient donner plus qu'une seule raison") %>% 
+  modify_caption("### Phase 1 Raisons Pour \n ### Un Besoin Non Satisfait")
+```
+::::
+:::
+
+## RÉGRESSION LOGISTIQUE
+
+::: {.columns}
+
+:::: {.column width="45%"}
+```{r}
+models <- dat %>% 
+  group_by(COUNTRY) %>% 
+  summarise(
+    glm = cur_data() %>%  
+      as_survey_design(weight = PANELWEIGHT, id = EAID_1, strata = STRATA_1) %>% 
+      svyglm(
+        formula = UNMETYN_2 ~ FPYOPPOSED + FPYMETHOD + FPYLOWRISK + UNMETYN_1,
+        family = "quasibinomial",
+        design = .
+      ) %>% 
+      list()
+  ) 
+```
+
+::::: {.fragment}
+Burkina Faso
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk ///
+  unmetyn_1 if country == 1, or
+```
+:::::
+::::: {.fragment}
+Kenya
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk ///
+  unmetyn_1 if country == 7, or
+```
+:::::
+::::
+
+:::: {.column width="5%"}
+:::: 
+
+:::: {.column width="50%" style="position: absolute; top: 20%;"}
+::::: {.fragment}
+```{r}
+models$glm %>% 
+  map2(models$COUNTRY,
+    ~.x %>% 
+      tbl_regression(
+        exponentiate = TRUE,
+        intercept= TRUE,
+        show_single_row = where(is.logical),
+        pvalue_fun = ~style_pvalue(.x, digits = 2),
+        label = list(
+          '(Intercept)' ~ "(Constant)",
+          FPYOPPOSED ~ "Opposition \n  ou prohibition",
+          FPYMETHOD ~ "Accès à la \n  méthode",
+          FPYLOWRISK ~ "Peu de risques \n  de tomber enceinte",
+          UNMETYN_1 ~ "Phase 1 \n  besoin non satisfait"
+        )
+      ) %>%
+      add_significance_stars(hide_se = TRUE, hide_ci = FALSE) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y, ci = "95% CI")) %>% 
+      modify_footnote(estimate ~ NA, abbreviation = TRUE) 
+  ) %>% 
+  tbl_merge(tab_spanner = FALSE) %>% 
+  modify_caption("### Rapports de Cotes \n ### Phase 2 Besoin Non Satisfait") %>% 
+  as_gt() %>% 
+  gt::opt_css(
+    css = ".gt_table_body {white-space:pre-wrap; word-wrap:break-word;}"
+  )
+```
+:::::
+::::
+:::
+
+## RÉGRESSION LOGISTIQUE
+
+::: {.columns}
+
+:::: {.column width="45%"}
+```{r}
+models <- dat %>% 
+  group_by(COUNTRY) %>% 
+  summarise(
+    glm = cur_data() %>%  
+      as_survey_design(weight = PANELWEIGHT, id = EAID_1, strata = STRATA_1) %>% 
+      svyglm(
+        formula = UNMETYN_2 ~ FPYOPPOSED + FPYMETHOD + FPYLOWRISK + UNMETYN_1,
+        family = "quasibinomial",
+        design = .
+      ) %>% 
+      list()
+  ) 
+```
+
+Burkina Faso
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk ///
+  unmetyn_1 if country == 1, or
+```
+
+Kenya
+
+```{c, echo=TRUE, eval=FALSE}
+svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk ///
+  unmetyn_1 if country == 7, or
+```
+
+Comparées aux femmes qui n'ont donné aucune raison, les femmes qui étaient **opposées** à l'utilisation de la planification familiale étaient significativement plus susceptibles d'avoir un besoin non satisfait à la Phase 2.
+
+::::: {.fragment}
+Les femmes avec des **problèmes d'accès** à la méthode / les femmes qui ne courraient **pas de risque** de devenir enceintes: c'est moins évident!
+:::::
+
+::::
+
+:::: {.column width="5%"}
+:::: 
+
+:::: {.column width="50%" style="position: absolute; top: 20%;"}
+```{r}
+models$glm %>% 
+  map2(models$COUNTRY,
+    ~.x %>% 
+      tbl_regression(
+        exponentiate = TRUE,
+        intercept= TRUE,
+        show_single_row = where(is.logical),
+        pvalue_fun = ~style_pvalue(.x, digits = 2),
+        label = list(
+          '(Intercept)' ~ "(Constant)",
+          FPYOPPOSED ~ "Opposition \n  ou prohibition",
+          FPYMETHOD ~ "Accès à la \n  méthode",
+          FPYLOWRISK ~ "Peu de risques \n  de tomber enceinte",
+          UNMETYN_1 ~ "Phase 1 \n  besoin non satisfait"
+        )
+      ) %>%
+      add_significance_stars(hide_se = TRUE, hide_ci = FALSE) %>% 
+      modify_header(update = list(label ~ " ", estimate = .y, ci = "95% CI")) %>% 
+      modify_footnote(estimate ~ NA, abbreviation = TRUE) 
+  ) %>% 
+  tbl_merge(tab_spanner = FALSE) %>% 
+  modify_caption("### Rapports de Cotes \n ### Phase 2 Besoin Non Satisfait") %>% 
+  as_gt() %>% 
+  gt::opt_css(
+    css = ".gt_table_body {white-space:pre-wrap; word-wrap:break-word;}"
+  )
+```
+::::
+:::
+
+## PROCHAINES ÉTAPES
+
+::: {.fragment}
+Quels contrôles pourrait-on ajouter à notre modèle?
+
+  - [AGE](https://pma.ipums.org/pma-action/variables/AGE) âge 
+  - [MARSTAT](https://pma.ipums.org/pma-action/variables/MARSTAT) état matrimonial
+  - [WEALTHQ](https://pma.ipums.org/pma-action/variables/WEALTHQ) bien-être économique du ménage (quartile ou tertile)
+  - [CHEB](https://pma.ipums.org/pma-action/variables/CHEB) parité 
+  - [FPUSPLAN](https://pma.ipums.org/pma-action/variables/FPUSPLAN) projets pour utilisation future d'une méthode
+:::
+
+::: {.fragment}
+Comparaison avec les résultats d'autres enquêtes IPUMS Global Health
+
+  - IPUMS DHS: [Why Not Use Family Planning](https://www.idhsdata.org/idhs-action/variables/group?id=fp_whynot) groupe variable; [UNMETNEED](https://www.idhsdata.org/idhs-action/variables/UNMETNEED), [UNMETNEED2](https://www.idhsdata.org/idhs-action/variables/UNMETNEED2), and [UNMETNEED3](https://www.idhsdata.org/idhs-action/variables/UNMETNEED3),
+  - IPUMS MICS: *bientôt disponible!* 
+:::
+
+## NOUVEAUTÉS CHEZ IPUMS
+
+```{r, out.width="100%"}
+#| echo: false
+knitr::include_url(
+  height = "600px",
+  url = "https://variable-search.ipums.org/#/?query=unmetneed"
+)
+```
+
+## RÉFÉRENCES

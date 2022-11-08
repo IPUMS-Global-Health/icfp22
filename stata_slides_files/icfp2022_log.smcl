@@ -1,0 +1,361 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\krist108\Documents\krist108 stuff\ISRDI\ICFP 2022 workshop\icfp2022_log.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}26 Oct 2022, 15:52:02
+{txt}
+{com}. 
+. *********
+. **SETUP**
+. *********
+. 
+. cd "C:\Users\krist108\Documents\krist108 stuff\ISRDI\ICFP 2022 workshop"
+{res}C:\Users\krist108\Documents\krist108 stuff\ISRDI\ICFP 2022 workshop
+{txt}
+{com}. 
+. use pma_00178.dta
+{txt}
+{com}. 
+. 
+. *keep only panel members in the de facto population 
+. keep if resultfq_1 == 1 & resultfq_2 == 1
+{txt}(8,361 observations deleted)
+
+{com}. keep if (resident_1 == 11 | resident_1 == 22) & (resident_2 == 11 | resident_2 == 22)
+{txt}(358 observations deleted)
+
+{com}. 
+. ************************************
+. **UNMET NEED BY COUNTRY AT PHASE 1**
+. ************************************
+. svyset [pw=panelweight], psu(eaid_1) strata(strata_1)
+
+      {txt}pweight:{col 16}{res}panelweight
+          {txt}VCE:{col 16}{res}linearized
+  {txt}Single unit:{col 16}{res}missing
+     {txt}Strata 1:{col 16}{res}strata_1
+         {txt}SU 1:{col 16}{res}eaid_1
+        {txt}FPC 1:{col 16}<zero>
+{p2colreset}{...}
+
+{com}. 
+. svy: tab unmetneed_1 country, col
+{txt}(running {bf:tabulate} on estimation sample)
+{res}
+{txt}{col 1}Number of strata{col 20}= {res}       23{txt}{col 49}Number of obs{col 67}= {res}    12,143
+{txt}{col 1}Number of PSUs{col 20}= {res}      474{txt}{col 49}Population size{col 67}={res} 12,136.849
+{txt}{col 49}Design df{col 67}= {res}       451
+
+{txt}{hline 10}{c TT}{hline 26}
+unmet     {c |}        pma country       
+need      {c |} burkina    kenya    Total
+{hline 10}{c +}{hline 26}
+ unmet ne {c |}   {res}.1718    .0731    .1155
+ {txt}unmet ne {c |}   {res}.0371    .0494    .0441
+ {txt}using to {c |}   {res}.2218    .2394    .2318
+ {txt}using to {c |}   {res}.0659    .2175    .1524
+ {txt}infecund {c |}   {res}.0882    .0576    .0707
+ {txt}not sexu {c |}   {res}.1706     .265    .2245
+ {txt}no unmet {c |}    {res}.243    .0969    .1597
+ {txt}no respo {c |}   {res}.0014  8.5e-04    .0011
+ {txt}niu (not {c |} {res}9.0e-05  2.0e-04  1.5e-04
+          {txt}{c |} 
+    Total {c |}       {res}1        1        1
+{txt}{hline 10}{c BT}{hline 26}
+  Key:  {col 1}{res}column proportion
+
+{txt}  Pearson:
+{col 5}Uncorrected{col 19}chi2({res}8{txt}){col 35}= {res}1270.6150
+{txt}{col 5}Design-based{col 19}F({res}6.19{txt}, {res}2789.83{txt}){col 35}= {res}  67.0182{col 51}{txt}P = {res}0.0000
+{txt}
+{com}. svy: tab unmetyn_1 country, col
+{txt}(running {bf:tabulate} on estimation sample)
+{res}
+{txt}{col 1}Number of strata{col 20}= {res}       23{txt}{col 49}Number of obs{col 67}= {res}    12,143
+{txt}{col 1}Number of PSUs{col 20}= {res}      474{txt}{col 49}Population size{col 67}={res} 12,136.849
+{txt}{col 49}Design df{col 67}= {res}       451
+
+{txt}{hline 10}{c TT}{hline 26}
+total     {c |}
+unmet     {c |}        pma country       
+need      {c |} burkina    kenya    Total
+{hline 10}{c +}{hline 26}
+ no unmet {c |}    {res}.791    .8773    .8402
+ {txt}unmet ne {c |}   {res}.2089    .1225    .1596
+ {txt}niu (not {c |} {res}9.0e-05  2.0e-04  1.5e-04
+          {txt}{c |} 
+    Total {c |}       {res}1        1        1
+{txt}{hline 10}{c BT}{hline 26}
+  Key:  {col 1}{res}column proportion
+
+{txt}  Pearson:
+{col 5}Uncorrected{col 19}chi2({res}2{txt}){col 35}= {res} 165.7603
+{txt}{col 5}Design-based{col 19}F({res}1.42{txt}, {res}640.20{txt}){col 35}= {res}  43.2949{col 51}{txt}P = {res}0.0000
+{txt}
+{com}. 
+. *******************************
+. **LOGISTIC REGRESSION RESULTS**
+. *******************************
+. 
+. replace unmetyn_1 = . if unmetyn_1 == 99
+{txt}(2 real changes made, 2 to missing)
+
+{com}. svy: logit unmetyn_2 unmetyn_1 if country == 1, or
+{txt}(running {bf:logit} on estimation sample)
+{res}
+{txt}Survey: Logistic regression
+
+{col 1}Number of strata{col 20}= {res}        2{txt}{col 49}Number of obs{col 67}= {res}     5,207
+{txt}{col 1}Number of PSUs{col 20}= {res}      167{txt}{col 49}Population size{col 67}={res} 5,215.6413
+{txt}{col 49}Design df{col 67}= {res}       165
+{txt}{col 49}F({res}   1{txt},{res}    165{txt}){col 67}= {res}    208.37
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}  Linearized
+{col 1}   unmetyn_2{col 14}{c |} Odds Ratio{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}unmetyn_1 {c |}{col 14}{res}{space 2} 4.220383{col 26}{space 2} .4209883{col 37}{space 1}   14.44{col 46}{space 3}0.000{col 54}{space 4} 3.465901{col 67}{space 3} 5.139106
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .1431847{col 26}{space 2} .0132954{col 37}{space 1}  -20.93{col 46}{space 3}0.000{col 54}{space 4} .1191995{col 67}{space 3} .1719962
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 2}Note: {res:_cons} estimates baseline odds{txt}.{p_end}
+
+{com}. svy: logit unmetyn_2 unmetyn_1 if country == 7, or
+{txt}(running {bf:logit} on estimation sample)
+{res}
+{txt}Survey: Logistic regression
+
+{col 1}Number of strata{col 20}= {res}       21{txt}{col 49}Number of obs{col 67}= {res}     6,934
+{txt}{col 1}Number of PSUs{col 20}= {res}      307{txt}{col 49}Population size{col 67}={res} 6,919.3398
+{txt}{col 49}Design df{col 67}= {res}       286
+{txt}{col 49}F({res}   1{txt},{res}    286{txt}){col 67}= {res}    185.45
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}  Linearized
+{col 1}   unmetyn_2{col 14}{c |} Odds Ratio{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 3}unmetyn_1 {c |}{col 14}{res}{space 2} 3.947647{col 26}{space 2}  .398042{col 37}{space 1}   13.62{col 46}{space 3}0.000{col 54}{space 4}  3.23703{col 67}{space 3} 4.814263
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0874784{col 26}{space 2} .0051955{col 37}{space 1}  -41.02{col 46}{space 3}0.000{col 54}{space 4} .0778273{col 67}{space 3} .0983264
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 2}Note: {res:_cons} estimates baseline odds{txt}.{p_end}
+
+{com}. 
+. ************
+. **RECODING**
+. ************
+. 
+. foreach var of varlist fpynot* {c -(}
+{txt}  2{com}. replace `var' = 0 if unmetyn_1 == 1 & `var' == 99
+{txt}  3{com}. recode `var' (0=0) (1=1) (else=0)
+{txt}  4{com}. {c )-}
+{txt}(400 real changes made)
+(fpynotfar_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotfar_2: 7269 changes made)
+(400 real changes made)
+(fpynotbody_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotbody_2: 7269 changes made)
+(400 real changes made)
+(fpynotbstfd_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotbstfd_2: 7269 changes made)
+(400 real changes made)
+(fpynotcost_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotcost_2: 7269 changes made)
+(400 real changes made)
+(fpynotkno_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotkno_2: 7269 changes made)
+(400 real changes made)
+(fpynotsrc_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotsrc_2: 7269 changes made)
+(400 real changes made)
+(fpynotdk_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotdk_2: 7269 changes made)
+(400 real changes made)
+(fpynotsidef_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotsidef_2: 7269 changes made)
+(400 real changes made)
+(fpynotsdhlth_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotsdhlth_2: 7269 changes made)
+(400 real changes made)
+(fpynothsbaway_1: 7434 changes made)
+(1,069 real changes made)
+(fpynothsbaway_2: 7269 changes made)
+(400 real changes made)
+(fpynotopph_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotopph_2: 7269 changes made)
+(400 real changes made)
+(fpynotconv_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotconv_2: 7269 changes made)
+(400 real changes made)
+(fpynotmeno_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotmeno_2: 7269 changes made)
+(400 real changes made)
+(fpynotamen_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotamen_2: 7269 changes made)
+(400 real changes made)
+(fpynotavail_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotavail_2: 7269 changes made)
+(400 real changes made)
+(fpynotnosex_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotnosex_2: 7269 changes made)
+(400 real changes made)
+(fpynotmar_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotmar_2: 7269 changes made)
+(400 real changes made)
+(fpynototh_1: 7434 changes made)
+(1,069 real changes made)
+(fpynototh_2: 7269 changes made)
+(400 real changes made)
+(fpynotoppo_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotoppo_2: 7269 changes made)
+(400 real changes made)
+(fpynotavailp_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotavailp_2: 7269 changes made)
+(400 real changes made)
+(fpynotrelig_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotrelig_2: 7269 changes made)
+(400 real changes made)
+(fpynotoppf_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotoppf_2: 7269 changes made)
+(400 real changes made)
+(fpynotinf_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotinf_2: 7269 changes made)
+(400 real changes made)
+(fpynotfate_1: 7434 changes made)
+(1,069 real changes made)
+(fpynotfate_2: 7269 changes made)
+
+{com}. 
+. replace pregnant_1 = 0 if pregnant_1 > 90
+{txt}(76 real changes made)
+
+{com}. 
+. egen fpyopposed = rowmax(fpynotrelig_1 fpynotoppf_1 fpynotfate_1 fpynotopph_1 fpynotoppo_1 fpynotsidef_1 fpynotsdhlth_1 fpynotconv_1 fpynotbody_1)
+{txt}
+{com}. replace fpyopposed = 0 if unmetyn_1 != 1
+{txt}(825 real changes made)
+
+{com}. egen fpymethod = rowmax(fpynotfar_1 fpynotcost_1 fpynotkno_1 fpynotsrc_1 fpynotavail_1 fpynotavailp_1 pregnant_1)
+{txt}
+{com}. replace fpymethod = 0 if unmetyn_1 != 1
+{txt}(599 real changes made)
+
+{com}. egen fpylowrisk = rowmax(fpynotbstfd_1 fpynothsbaway_1 fpynotmeno_1 fpynotamen_1 fpynotnosex_1 fpynotmar_1 fpynotinf_1)
+{txt}
+{com}. replace fpylowrisk = 0 if unmetyn_1 != 1
+{txt}(2,445 real changes made)
+
+{com}. gen fpyother = 0
+{txt}
+{com}. replace fpyother = 1 if unmetyn_1 == 1 & fpyopposed !=1 & fpymethod !=1 & fpylowrisk !=1
+{txt}(247 real changes made)
+
+{com}. 
+. ******************************
+. **RECODED REASONS BY COUNTRY**
+. ******************************
+. 
+. tabstat fpyopposed fpymethod fpylowrisk fpyother if unmetyn_1 == 1 [weight=panelweight], by(country)
+{txt}(analytic weights assumed)
+
+Summary statistics: mean
+  by categories of: country (pma country)
+
+{ralign 16:country} {...}
+{c |}{...}
+  fpyopp~d  fpymet~d  fpylow~k  fpyother
+{hline 17}{c +}{hline 40}
+{ralign 16:burkina faso} {...}
+{c |}{...}
+ {res} .3755273   .200753  .3247792  .1889587
+{txt}{ralign 16:kenya} {...}
+{c |}{...}
+ {res} .3837284  .2391273  .4570723  .0792624
+{txt}{hline 17}{c +}{hline 40}
+{ralign 16:Total} {...}
+{c |}{...}
+ {res}  .379116  .2175452  .3826693  .1409567
+{txt}{hline 17}{c BT}{hline 40}
+
+{com}. 
+. ***********
+. **RESULTS**
+. ***********
+. 
+. svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk unmetyn_1 if country == 1, or
+{txt}(running {bf:logit} on estimation sample)
+{res}
+{txt}Survey: Logistic regression
+
+{col 1}Number of strata{col 20}= {res}        2{txt}{col 49}Number of obs{col 67}= {res}     5,207
+{txt}{col 1}Number of PSUs{col 20}= {res}      167{txt}{col 49}Population size{col 67}={res} 5,215.6413
+{txt}{col 49}Design df{col 67}= {res}       165
+{txt}{col 49}F({res}   4{txt},{res}    162{txt}){col 67}= {res}     57.98
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}  Linearized
+{col 1}   unmetyn_2{col 14}{c |} Odds Ratio{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}fpyopposed {c |}{col 14}{res}{space 2} 1.551948{col 26}{space 2} .2693164{col 37}{space 1}    2.53{col 46}{space 3}0.012{col 54}{space 4} 1.101724{col 67}{space 3} 2.186157
+{txt}{space 3}fpymethod {c |}{col 14}{res}{space 2} 1.881067{col 26}{space 2} .6144527{col 37}{space 1}    1.93{col 46}{space 3}0.055{col 54}{space 4}   .98697{col 67}{space 3} 3.585128
+{txt}{space 2}fpylowrisk {c |}{col 14}{res}{space 2} 1.440541{col 26}{space 2} .3382058{col 37}{space 1}    1.55{col 46}{space 3}0.122{col 54}{space 4} .9061632{col 67}{space 3} 2.290048
+{txt}{space 3}unmetyn_1 {c |}{col 14}{res}{space 2} 2.778543{col 26}{space 2} .5322761{col 37}{space 1}    5.33{col 46}{space 3}0.000{col 54}{space 4} 1.903489{col 67}{space 3} 4.055867
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .1431847{col 26}{space 2} .0132954{col 37}{space 1}  -20.93{col 46}{space 3}0.000{col 54}{space 4} .1191995{col 67}{space 3} .1719962
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 2}Note: {res:_cons} estimates baseline odds{txt}.{p_end}
+
+{com}. svy: logit unmetyn_2 fpyopposed fpymethod fpylowrisk unmetyn_1 if country == 7, or
+{txt}(running {bf:logit} on estimation sample)
+{res}
+{txt}Survey: Logistic regression
+
+{col 1}Number of strata{col 20}= {res}       21{txt}{col 49}Number of obs{col 67}= {res}     6,934
+{txt}{col 1}Number of PSUs{col 20}= {res}      307{txt}{col 49}Population size{col 67}={res} 6,919.3398
+{txt}{col 49}Design df{col 67}= {res}       286
+{txt}{col 49}F({res}   4{txt},{res}    283{txt}){col 67}= {res}     49.81
+{txt}{col 49}Prob > F{col 67}= {res}    0.0000
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}  Linearized
+{col 1}   unmetyn_2{col 14}{c |} Odds Ratio{col 26}   Std. Err.{col 38}      t{col 46}   P>|t|{col 54}     [95% Con{col 67}f. Interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 2}fpyopposed {c |}{col 14}{res}{space 2} 1.765569{col 26}{space 2} .3912075{col 37}{space 1}    2.57{col 46}{space 3}0.011{col 54}{space 4} 1.141504{col 67}{space 3} 2.730813
+{txt}{space 3}fpymethod {c |}{col 14}{res}{space 2} .8369395{col 26}{space 2} .2341004{col 37}{space 1}   -0.64{col 46}{space 3}0.525{col 54}{space 4}  .482606{col 67}{space 3} 1.451428
+{txt}{space 2}fpylowrisk {c |}{col 14}{res}{space 2} .7701535{col 26}{space 2} .1529459{col 37}{space 1}   -1.32{col 46}{space 3}0.190{col 54}{space 4} .5209758{col 67}{space 3} 1.138511
+{txt}{space 3}unmetyn_1 {c |}{col 14}{res}{space 2} 3.625104{col 26}{space 2} .8001123{col 37}{space 1}    5.84{col 46}{space 3}0.000{col 54}{space 4} 2.347738{col 67}{space 3} 5.597463
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .0874784{col 26}{space 2} .0051955{col 37}{space 1}  -41.02{col 46}{space 3}0.000{col 54}{space 4} .0778273{col 67}{space 3} .0983264
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{p 0 6 2}Note: {res:_cons} estimates baseline odds{txt}.{p_end}
+
+{com}. 
+. log close
+      {txt}name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\krist108\Documents\krist108 stuff\ISRDI\ICFP 2022 workshop\icfp2022_log.smcl
+  {txt}log type:  {res}smcl
+ {txt}closed on:  {res}26 Oct 2022, 15:52:04
+{txt}{.-}
+{smcl}
+{txt}{sf}{ul off}
