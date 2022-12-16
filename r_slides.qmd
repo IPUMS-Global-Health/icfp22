@@ -17,21 +17,42 @@ author:
       <img src='images/matt.png' width='100' style='vertical-align: middle'>
       Matt Gunther - Senior Data Analyst 
     </p>
-    
+bibliography: cites.bib
+# date: "`r Sys.Date()`"
 format: 
   revealjs: 
+    # For more options, see: 
+    # https://quarto.org/docs/reference/formats/presentations/revealjs.html
     theme: [default, custom.scss]
+    embed-resources: true # standalone HTML file with no external dependencies?
+    chalkboard: true # allow user markup on slides? 
+    menu: true # allow user to access navigation menu? 
+    smaller: true # smaller font? see css 
+    scrollable: false # allow vertical overflow content to scroll?
+    incremental: true # show list items incrementally? 
+    preview-links: false # open links in an iframe preview overlay?
+    reference-location: document # location of cited references 
+    link-external-icon: false # don't use this if code-link: true
+    code-link: true # create hyperlinks to function documentation (preferred)
+    code-line-numbers: false # bug: cannot have this and code-link! 
+    auto-animate: true # enabled by default 
+    center: false # Vertical centering of slides
+    code-overflow: scroll # 'scroll' or 'wrap' wide code chunks 
+    df-print: paged # 'paged', 'kable', or 'tibble'
+    fig-align: center
+    link-external-newwindow: true 
+    # footer: 'write a running footer here'
     logo: images/logo-navy.png
-    chalkboard: true
-    smaller: true
-    scrollable: false
-    incremental: true
-    preview-links: false
-    echo: true
-    reference-location: document
-    link-external-icon: true
-bibliography: cites.bib
-
+execute:
+  echo: true # show source code 
+  eval: true # evaluate source code 
+  warning: false # include warning messages
+  error: false # include error messages and do not halt processing
+knitr:
+  opts_chunk:
+    # fig.width: 6
+    # fig.height: 4.25
+    fig.align: center
 ---
 
 ## Today's Goals 
