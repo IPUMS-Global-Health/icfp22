@@ -24,6 +24,7 @@ format:
     # For more options, see: 
     # https://quarto.org/docs/reference/formats/presentations/revealjs.html
     theme: [default, custom.scss]
+    standalone: true 
     embed-resources: true # standalone HTML file with no external dependencies?
     chalkboard: true # allow user markup on slides? 
     menu: true # allow user to access navigation menu? 
